@@ -105,7 +105,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="160" />
+            <ColumnDefinition Width="55" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
@@ -127,6 +127,7 @@
 		    VerticalAlignment="Center"
 		    FontSize="14"
 		    Text="{Binding ProductName, ElementName=windowHeaderView}" 
+            TextAlignment="Center"
             Foreground="AliceBlue">
             <TextBlock.Style>
                 <Style TargetType="TextBlock">

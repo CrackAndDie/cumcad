@@ -68,6 +68,9 @@ namespace cumcad.ViewModels
         public ICommand MaximizeWindowCommand { get; set; }
         public ICommand RestoreWindowCommand { get; set; }
         public ICommand CloseWindowCommand { get; set; }
+
+        public ICommand OpenFileCommand { get; set; }
+        public ICommand SaveFileCommand { get; set; }
         #endregion
 
         public MainWindowViewModel()
@@ -76,6 +79,9 @@ namespace cumcad.ViewModels
             MaximizeWindowCommand = new DelegateCommand(OnMaximizeWindowCommand);
             RestoreWindowCommand = new DelegateCommand(OnRestoreWindowCommand);
             CloseWindowCommand = new DelegateCommand(OnCloseWindowCommand);
+
+            OpenFileCommand = new DelegateCommand(OnOpenFileCommand);
+            SaveFileCommand = new DelegateCommand(OnSaveFileCommand);
 
             WaiterHelper.CollectionChanged += OnStaticAllDoneChanged;
             WaiterHelper.AddWaiter();
@@ -130,6 +136,16 @@ namespace cumcad.ViewModels
                 MaximizeButtonVisibility = Visibility.Visible;
                 RestoreButtonVisibility = Visibility.Collapsed;
             }
+        }
+
+        private void OnSaveFileCommand(object parameter)
+        {
+
+        }
+
+        private void OnOpenFileCommand(object parameter)
+        {
+
         }
 
         private void OnMinimizeWindowCommand(object paramenter)
