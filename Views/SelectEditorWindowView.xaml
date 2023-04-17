@@ -15,6 +15,10 @@
         Width="540"
         Background="#FF2a2a2a"
         WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+        <local:EditorTypeConverter x:Key="editorTypeConverterKey" />
+    </Window.Resources>
+    
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="22"
                       ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}" />
@@ -30,6 +34,7 @@
                 <RowDefinition Height="22" />
                 <RowDefinition Height="50" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="60" />
             </Grid.RowDefinitions>
 
             <Rectangle Grid.ColumnSpan="3"
@@ -55,7 +60,7 @@
                         HorizontalAlignment="Center">
                 <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
                              Margin="4"
-                             IsChecked="True"
+                             IsChecked="{Binding SelectedTabIndex, Converter={StaticResource ResourceKey=editorTypeConverterKey}, ConverterParameter=0}"
                              x:Name="ImageRB">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="ImageOutline"
@@ -67,7 +72,7 @@
                 </RadioButton>
                 <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
                              Margin="4"
-                             IsChecked="False">
+                             IsChecked="{Binding SelectedTabIndex, Converter={StaticResource ResourceKey=editorTypeConverterKey}, ConverterParameter=1}">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="CameraOutline"
                                                  Foreground="AliceBlue" />
@@ -78,7 +83,7 @@
                 </RadioButton>
                 <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
                              Margin="4"
-                             IsChecked="False"
+                             IsChecked="{Binding SelectedTabIndex, Converter={StaticResource ResourceKey=editorTypeConverterKey}, ConverterParameter=2}"
                              IsEnabled="False">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Snail"
@@ -90,7 +95,9 @@
                 </RadioButton>
             </StackPanel>
 
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="2"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch">
                 <Grid.Style>
                     <Style>
                         <Style.Triggers>
@@ -107,7 +114,49 @@
                         </Style.Triggers>
                     </Style>
                 </Grid.Style>
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            MinHeight="76">
+                    <Button Style="{StaticResource MaterialDesignOutlinedLightButton}"
+                            ToolTip="OpenFile"
+                            Width="56"
+                            Height="56"
+                            Padding="0"
+                            Command="{Binding OpenFileCommand}">
+                        <materialDesign:PackIcon Kind="FolderOpenOutline"
+                                                 Height="32"
+                                                 Width="32"
+                                                 Foreground="AliceBlue" />
+                    </Button>
+                    <TextBox MinWidth="250"
+                             MaxWidth="400"
+                             IsTabStop="False"
+                             Text="{Binding ImageFilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             TextWrapping="Wrap"
+                             FontSize="16"
+                             Margin="10, 10, 0, 10"
+                             MinHeight="56"
+                             TextAlignment="Center"
+                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                             materialDesign:HintAssist.Hint="Image path"
+                             materialDesign:HintAssist.Foreground="AliceBlue"
+                             Foreground="AliceBlue"
+                             AcceptsReturn="False" />
+                </StackPanel>
             </Grid>
+            <Button Style="{StaticResource MaterialDesignOutlinedLightButton}"
+                    ToolTip="OpenFile"
+                    Width="144"
+                    Height="42"
+                    Padding="0"
+                    Grid.Row="3"
+                    Content="Create"
+                    Foreground="AliceBlue"
+                    FontSize="18"
+                    Command="{Binding CreateEditorCommand}"
+                    CommandParameter="{Binding ElementName=ThisWindow}">
+            </Button>
         </Grid>
     </Border>
 </Window>
