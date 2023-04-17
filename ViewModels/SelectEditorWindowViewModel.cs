@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace cumcad.ViewModels
 {
@@ -23,6 +24,7 @@ namespace cumcad.ViewModels
         internal bool? IsSelected { get; set; }
         internal EditorType SelectedType { get; set; }
         internal string ImagePath { get; set; }
+        internal Color IconColor { get; set; }
     }
 
     internal class SelectEditorWindowViewModel : BindableBase
@@ -41,6 +43,13 @@ namespace cumcad.ViewModels
         {
             get { return imageFilePath; }
             set { SetProperty(ref imageFilePath, value); }
+        }
+
+        private Color iconColor;
+        public Color IconColor
+        {
+            get { return iconColor; }
+            set { SetProperty(ref iconColor, value); }
         }
 
         #region Commands

@@ -1,0 +1,66 @@
+﻿<Window x:Class="cumcad.Views.ColorPickerWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:cumcad.Views"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        x:Name="ThisWindow"
+        Title="SelectEditorWindow"
+        Height="262"
+        Width="240"
+        Background="#FF2a2a2a"
+        WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+        <local:EditorTypeConverter x:Key="editorTypeConverterKey" />
+    </Window.Resources>
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="22"
+                      ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}" />
+    </WindowChrome.WindowChrome>
+    
+    <Border Style="{StaticResource WindowMainPanelStyle}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="22" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Rectangle Grid.ColumnSpan="3"
+                       Grid.Row="0"
+                       Fill="#FF303030" />
+            <local:WindowHeaderView x:Name="WindowHeader"
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="3"
+                                    LogoImage="/Resources/logo_cc.png"
+                                    ProductName="cumcad"
+                                    CloseWindowCommand="{Binding CloseWindowCommand}"
+                                    WindowParameter="{Binding ElementName=ThisWindow}"
+                                    MinimizeButtonVisibility="Collapsed"
+                                    MaximizeButtonVisibility="Collapsed"
+                                    RestoreButtonVisibility="Collapsed"
+                                    ProgressBarVisibility="Collapsed"
+                                    CheckAllDoneVisibility="Collapsed" />
+
+            <Image Source="/Resources/color_palette.png"
+                   Grid.Row="1"
+                   Stretch="UniformToFill">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseLeftButtonUp">
+                        <i:InvokeCommandAction Command="{Binding MouseUpCommand}" PassEventArgsToCommand="True"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Image>
+
+        </Grid>
+    </Border>
+</Window>

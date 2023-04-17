@@ -145,18 +145,29 @@
                              AcceptsReturn="False" />
                 </StackPanel>
             </Grid>
-            <Button Style="{StaticResource MaterialDesignOutlinedLightButton}"
-                    ToolTip="OpenFile"
-                    Width="144"
-                    Height="42"
-                    Padding="0"
-                    Grid.Row="3"
-                    Content="Create"
-                    Foreground="AliceBlue"
-                    FontSize="18"
-                    Command="{Binding CreateEditorCommand}"
-                    CommandParameter="{Binding ElementName=ThisWindow}">
-            </Button>
+            <StackPanel Grid.Row="3" VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Style="{StaticResource MaterialDesignOutlinedLightButton}"
+                        ToolTip="OpenFile"
+                        Width="144"
+                        Height="42"
+                        Padding="0"
+                        Content="Create"
+                        Foreground="AliceBlue"
+                        FontSize="18"
+                        Command="{Binding CreateEditorCommand}"
+                        CommandParameter="{Binding ElementName=ThisWindow}">
+                </Button>
+                <Button Width="42"
+                        Height="42"
+                        Margin="10, 0, 0, 0"
+                        Background="Red"
+                        BorderBrush="AliceBlue"
+                        BorderThickness="1"
+                        materialDesign:ButtonAssist.CornerRadius="4"
+                        RenderOptions.BitmapScalingMode="Fant">
+                </Button>
+            </StackPanel>
+            
         </Grid>
     </Border>
 </Window>

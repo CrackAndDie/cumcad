@@ -101,9 +101,13 @@
     <Compile Include="Models\Other\DelegateCommand.cs" />
     <Compile Include="Models\Other\MyEventArgs\WindowStateChangedEventArgs.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
+    <Compile Include="ViewModels\ColorPickerWindowViewModel.cs" />
     <Compile Include="ViewModels\EditorPageViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\SelectEditorWindowViewModel.cs" />
+    <Compile Include="Views\ColorPickerWindowView.xaml.cs">
+      <DependentUpon>ColorPickerWindowView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EditorPageView.xaml.cs">
       <DependentUpon>EditorPageView.xaml</DependentUpon>
     </Compile>
@@ -125,6 +129,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ColorPickerWindowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\EditorPageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -170,6 +178,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\logo_cc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\color_palette.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
