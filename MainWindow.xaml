@@ -7,123 +7,165 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:views="clr-namespace:cumcad.Views"
         xmlns:viewModels="clr-namespace:cumcad.ViewModels"
-        mc:Ignorable="d" SourceInitialized="Window_SourceInitialized"
-        Title="MainWindow" Height="600" Width="900" 
-        WindowStyle="None" x:Name="ThisWindow"
-        WindowState="{Binding CurrentWindowState, Mode=TwoWay}" Background="#FF2a2a2a">
+        mc:Ignorable="d"
+        SourceInitialized="Window_SourceInitialized"
+        Title="MainWindow"
+        Height="600"
+        Width="900"
+        WindowStyle="None"
+        x:Name="ThisWindow"
+        WindowState="{Binding CurrentWindowState, Mode=TwoWay}"
+        Background="#FF2a2a2a">
 
     <Window.DataContext>
-        <viewModels:MainWindowViewModel/>
+        <viewModels:MainWindowViewModel />
     </Window.DataContext>
 
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="22" 
+        <WindowChrome CaptionHeight="22"
                       ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}" />
     </WindowChrome.WindowChrome>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="73"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="22"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Border Style="{StaticResource WindowMainPanelStyle}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="22" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <Rectangle Grid.ColumnSpan="3" 
+            <Rectangle Grid.ColumnSpan="3"
                        Grid.Row="0"
                        Fill="#FF303030" />
-        <views:WindowHeaderView x:Name="WindowHeader"  
-                                         Grid.Row="0" 
-                                         Grid.Column="0" 
-                                         Grid.ColumnSpan="3"
-                                         LogoImage="/Resources/logo_cc.png"
-                                         ProductName="cumcad"
-                                         MinimizeWindowCommand="{Binding MinimizeWindowCommand}"
-                                         MaximizeWindowCommand="{Binding MaximizeWindowCommand}"
-                                         RestoreWindowCommand="{Binding RestoreWindowCommand}"
-                                         CloseWindowCommand="{Binding CloseWindowCommand}"
-                                         WindowParameter="{Binding ElementName=ThisWindow}"
-                                         MinimizeButtonVisibility="Visible"
-                                         MaximizeButtonVisibility="{Binding MaximizeButtonVisibility}"
-                                         RestoreButtonVisibility="{Binding RestoreButtonVisibility}"
-                                         ProgressBarVisibility="{Binding ProgressBarVisibility}"
-                                         CheckAllDoneVisibility="{Binding CheckAllDoneVisibility}"/>
-        <Menu Grid.Row="0" materialDesign:MenuAssist.TopLevelMenuItemHeight="22" 
-              HorizontalAlignment="Left" Grid.ColumnSpan="1" Margin="80, 0" WindowChrome.IsHitTestVisibleInChrome="True">
-            <MenuItem Header="_File" FontFamily="Trebuchet MS" FontSize="14" FontWeight="Light" Foreground="AliceBlue">
-                <MenuItem
-                    Header="Save"
-                    InputGestureText="Ctrl+S"
-                    Icon="{materialDesign:PackIcon Kind=ContentSaveOutline}"
-                    Command="{Binding SaveFileCommand}"/>
-                <MenuItem
-                    Header="Open" 
-                    InputGestureText="Ctrl+O"
-                    Icon="{materialDesign:PackIcon Kind=FolderOpenOutline}"
-                    Command="{Binding OpenFileCommand}"/>
-                <MenuItem
-                    Header="Exit"
-                    Icon="{materialDesign:PackIcon Kind=ExitToApp}" 
-                    Command="{Binding CloseWindowCommand}"/>
-            </MenuItem>
-        </Menu>
+            <views:WindowHeaderView x:Name="WindowHeader"
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="3"
+                                    LogoImage="/Resources/logo_cc.png"
+                                    ProductName="cumcad"
+                                    MinimizeWindowCommand="{Binding MinimizeWindowCommand}"
+                                    MaximizeWindowCommand="{Binding MaximizeWindowCommand}"
+                                    RestoreWindowCommand="{Binding RestoreWindowCommand}"
+                                    CloseWindowCommand="{Binding CloseWindowCommand}"
+                                    WindowParameter="{Binding ElementName=ThisWindow}"
+                                    MinimizeButtonVisibility="Visible"
+                                    MaximizeButtonVisibility="{Binding MaximizeButtonVisibility}"
+                                    RestoreButtonVisibility="{Binding RestoreButtonVisibility}"
+                                    ProgressBarVisibility="{Binding ProgressBarVisibility}"
+                                    CheckAllDoneVisibility="{Binding CheckAllDoneVisibility}" />
+            <Menu Grid.Row="0"
+                  materialDesign:MenuAssist.TopLevelMenuItemHeight="22"
+                  HorizontalAlignment="Left"
+                  Grid.ColumnSpan="1"
+                  Margin="80, 0"
+                  WindowChrome.IsHitTestVisibleInChrome="True">
+                <MenuItem Header="_File"
+                          FontFamily="Trebuchet MS"
+                          FontSize="14"
+                          FontWeight="Light"
+                          Foreground="AliceBlue">
+                    <MenuItem Header="Save"
+                              InputGestureText="Ctrl+S"
+                              Icon="{materialDesign:PackIcon Kind=ContentSaveOutline}"
+                              Command="{Binding SaveFileCommand}" />
+                    <MenuItem Header="Open"
+                              InputGestureText="Ctrl+O"
+                              Icon="{materialDesign:PackIcon Kind=FolderOpenOutline}"
+                              Command="{Binding OpenFileCommand}" />
+                    <MenuItem Header="Exit"
+                              Icon="{materialDesign:PackIcon Kind=ExitToApp}"
+                              Command="{Binding CloseWindowCommand}"
+                              CommandParameter="{Binding ElementName=ThisWindow}" />
+                </MenuItem>
+            </Menu>
 
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled" Style="{StaticResource FavsScrollViewer}" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1">
-            <materialDesign:Card>
-                <TabControl
-                    HorizontalContentAlignment="Center"
-                    materialDesign:ColorZoneAssist.Mode="Dark"
-                    materialDesign:NavigationRailAssist.SelectionCornerRadius="16"
-                    materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
-                    Style="{StaticResource MaterialDesignNavigationRailTabControl}" x:Name="MyTabControl"
-                    TabStripPlacement="Left" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}" Width="60">
-                    <TabItem Width="48" Height="48" Margin="6, 5">
-                        <TabItem.Header>
-                            <StackPanel
-                              Width="auto"
-                              Height="auto">
-                                <materialDesign:PackIcon
-                                    Width="36"
-                                    Height="36"
-                                    HorizontalAlignment="Center"
-                                    Kind="PlusCircleOutline" />
-                            </StackPanel>
-                        </TabItem.Header>
-                    </TabItem>
-                </TabControl>
-            </materialDesign:Card>
-        </ScrollViewer>
-
-        <Grid Grid.Row="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="50"/>
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" 
-                       Text="cumcad" 
-                       Foreground="AliceBlue" 
-                       FontSize="70" 
-                       FontFamily="Trebuchet MS" 
-                       HorizontalAlignment="Center" 
-                       VerticalAlignment="Bottom"/>
-            <Image Grid.Row="1"
-               RenderOptions.BitmapScalingMode="Fant" 
-               HorizontalAlignment="Stretch" 
-               VerticalAlignment="Stretch" 
-               Stretch="Uniform" 
-               Source="/Resources/logo_cc.png"
-               Margin="40"/>
-            <TextBlock Grid.Row="2" 
-                       Text="Powered by: OpenCV, MeterialDesignToolkitXAML, funcad" 
-                       Foreground="AliceBlue" 
-                       FontSize="16" 
-                       FontFamily="Trebuchet MS" 
-                       HorizontalAlignment="Center" 
-                       VerticalAlignment="Center"/>
+            <Grid Grid.Row="1"
+                  Grid.RowSpan="2"
+                  Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="60" />
+                </Grid.RowDefinitions>
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                              Style="{StaticResource FavsScrollViewer}">
+                    <TabControl HorizontalContentAlignment="Stretch"
+                                materialDesign:ColorZoneAssist.Mode="Dark"
+                                materialDesign:NavigationRailAssist.SelectionCornerRadius="16"
+                                materialDesign:NavigationRailAssist.SelectionHeight="48"
+                                materialDesign:NavigationRailAssist.SelectionWidth="48"
+                                materialDesign:NavigationRailAssist.ShowSelectionBackground="False"
+                                HorizontalAlignment="Left"
+                                Style="{StaticResource MaterialDesignNavigationRailTabControl}"
+                                x:Name="MyTabControl"
+                                TabStripPlacement="Left"
+                                SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ItemsSource="{Binding TabItems, UpdateSourceTrigger=PropertyChanged}"
+                                Padding="0">
+                        <TabControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="48"
+                                      Height="48">
+                                    <materialDesign:PackIcon Width="36"
+                                                             Height="36"
+                                                             HorizontalAlignment="Center"
+                                                             VerticalAlignment="Center"
+                                                             Kind="{Binding IconKind}" />
+                                </Grid>
+                            </DataTemplate>
+                        </TabControl.ItemTemplate>
+                        <TabControl.ContentTemplate>
+                            <DataTemplate>
+                            </DataTemplate>
+                        </TabControl.ContentTemplate>
+                    </TabControl>
+                </ScrollViewer>
+                <Button Style="{StaticResource MaterialDesignIconForegroundButton}"
+                        ToolTip="MaterialDesignFloatingActionButton"
+                        Grid.Row="1"
+                        Width="46"
+                        Height="46"
+                        materialDesign:ColorZoneAssist.Mode="Dark"
+                        Command="{Binding AddEditorCommand}">
+                    <materialDesign:PackIcon Kind="PlusCircleOutline"
+                                             Height="32"
+                                             Width="32"
+                                             Foreground="AliceBlue" />
+                </Button>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="50" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0"
+                           Text="cumcad"
+                           Foreground="AliceBlue"
+                           FontSize="70"
+                           FontFamily="Trebuchet MS"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Bottom" />
+                <Image Grid.Row="1"
+                       RenderOptions.BitmapScalingMode="Fant"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch"
+                       Stretch="Uniform"
+                       Source="/Resources/logo_cc.png"
+                       Margin="40" />
+                <TextBlock Grid.Row="2"
+                           Text="Powered by: OpenCV, MeterialDesignToolkitXAML, funcad"
+                           Foreground="AliceBlue"
+                           FontSize="16"
+                           FontFamily="Trebuchet MS"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center" />
+            </Grid>
+            <Frame Content="{Binding MainFrameSource, Mode=TwoWay}"
+                   NavigationUIVisibility="Hidden"
+                   Grid.Row="2" />
         </Grid>
-        <Frame Content="{Binding MainFrameSource, Mode=TwoWay}" NavigationUIVisibility="Hidden" Grid.Row="2"/>
-    </Grid>
+    </Border>
 </Window>

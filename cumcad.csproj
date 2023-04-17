@@ -53,10 +53,17 @@
     <Reference Include="OpenCvSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6adad1e807fea099, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenCvSharp4.4.7.0.20230115\lib\netstandard2.0\OpenCvSharp.dll</HintPath>
     </Reference>
+    <Reference Include="Prism, Version=8.1.97.5141, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Core.8.1.97\lib\net47\Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Wpf, Version=8.1.97.5141, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Wpf.8.1.97\lib\net47\Prism.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
@@ -86,13 +93,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Factories\SelectEditorFactory.cs" />
+    <Compile Include="Models\Helpers\EditorsHelper.cs" />
     <Compile Include="Models\Helpers\WaiterHelper.cs" />
+    <Compile Include="Models\MainTabsModel.cs" />
     <Compile Include="Models\Other\DelegateCommand.cs" />
     <Compile Include="Models\Other\MyEventArgs\WindowStateChangedEventArgs.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
+    <Compile Include="ViewModels\EditorPageViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\SelectEditorWindowViewModel.cs" />
     <Compile Include="Views\EditorPageView.xaml.cs">
       <DependentUpon>EditorPageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SelectEditorWindowView.xaml.cs">
+      <DependentUpon>SelectEditorWindowView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WindowHeaderView.xaml.cs">
       <DependentUpon>WindowHeaderView.xaml</DependentUpon>
@@ -110,6 +125,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\EditorPageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SelectEditorWindowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

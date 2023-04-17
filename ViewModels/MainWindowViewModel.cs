@@ -9,59 +9,68 @@ using System.Windows.Input;
 using System.Windows;
 using cumcad.ViewModels.Base;
 using cumcad.Models.Helpers;
+using System.Collections.ObjectModel;
+using cumcad.Models;
+using Prism.Mvvm;
+using System.Threading;
+using cumcad.Models.Factories;
 
 namespace cumcad.ViewModels
 {
-    internal class MainWindowViewModel : BaseViewModel
+    internal class MainWindowViewModel : BindableBase
     {
+        internal MainTabsModel mainTabsModel = new MainTabsModel();
+
         private WindowState currentWindowState;
         public WindowState CurrentWindowState
         {
             get { return currentWindowState; }
-            set { currentWindowState = value; OnPropertyChanged(); OnStateChanged(currentWindowState); }
+            set { SetProperty(ref currentWindowState, value); OnStateChanged(currentWindowState); }
         }
 
         private Visibility maximizeButtonVisibility;
         public Visibility MaximizeButtonVisibility
         {
             get { return maximizeButtonVisibility; }
-            set { maximizeButtonVisibility = value; OnPropertyChanged(); }
+            set { SetProperty(ref maximizeButtonVisibility, value); }
         }
 
         private Visibility restoreButtonVisibility;
         public Visibility RestoreButtonVisibility
         {
             get { return restoreButtonVisibility; }
-            set { restoreButtonVisibility = value; OnPropertyChanged(); }
+            set { SetProperty(ref restoreButtonVisibility, value); }
         }
 
         private Visibility progressBarVisibility;
         public Visibility ProgressBarVisibility
         {
             get { return progressBarVisibility; }
-            set { progressBarVisibility = value; OnPropertyChanged(); }
+            set { SetProperty(ref progressBarVisibility, value); }
         }
 
         private Visibility checkAllDoneVisibility;
         public Visibility CheckAllDoneVisibility
         {
             get { return checkAllDoneVisibility; }
-            set { checkAllDoneVisibility = value; OnPropertyChanged(); }
+            set { SetProperty(ref checkAllDoneVisibility, value); }
         }
 
         private Page mainFrameSource;
         public Page MainFrameSource
         {
             get { return mainFrameSource; }
-            set { mainFrameSource = value; OnPropertyChanged(); }
+            set { SetProperty(ref mainFrameSource, value); }
         }
 
         private int selectedTabIndex;
         public int SelectedTabIndex
         {
             get { return selectedTabIndex; }
-            set { selectedTabIndex = value; OnPropertyChanged(); TabSelectionChanged(selectedTabIndex); }
+            set { SetProperty(ref selectedTabIndex, value); TabSelectionChanged(selectedTabIndex); }
         }
+
+        public ReadOnlyObservableCollection<TabItemClass> TabItems => mainTabsModel.TabItems;
 
         #region Commands
         public ICommand MinimizeWindowCommand { get; set; }
@@ -71,10 +80,14 @@ namespace cumcad.ViewModels
 
         public ICommand OpenFileCommand { get; set; }
         public ICommand SaveFileCommand { get; set; }
+
+        public ICommand AddEditorCommand { get; set; }
         #endregion
 
         public MainWindowViewModel()
         {
+            mainTabsModel.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
+
             MinimizeWindowCommand = new DelegateCommand(OnMinimizeWindowCommand);
             MaximizeWindowCommand = new DelegateCommand(OnMaximizeWindowCommand);
             RestoreWindowCommand = new DelegateCommand(OnRestoreWindowCommand);
@@ -83,11 +96,14 @@ namespace cumcad.ViewModels
             OpenFileCommand = new DelegateCommand(OnOpenFileCommand);
             SaveFileCommand = new DelegateCommand(OnSaveFileCommand);
 
+            AddEditorCommand = new DelegateCommand(OnAddEditorCommand);
+
             WaiterHelper.CollectionChanged += OnStaticAllDoneChanged;
             WaiterHelper.AddWaiter();
 
             // OnActionChanged(false);
             OnStateChanged(WindowState.Normal);
+            SelectedTabIndex = 0;
 
             WaiterHelper.RemoveWaiter();
         }
@@ -107,7 +123,25 @@ namespace cumcad.ViewModels
 
         private void TabSelectionChanged(int index)
         {
-            
+            if (index == 0)
+            {
+                GoToPage(null);
+            }
+            else
+            {
+                GoToPage(EditorsHelper.GetPageView(index - 1));
+            }
+        }
+
+        async private void OnAddEditorCommand(object parameter)
+        {
+            var result = await SelectEditorFactory.OpenSelectEditorWindow();
+            if ((bool)result.IsSelected)
+            {
+                mainTabsModel.AddNewItem();
+                GoToPage(EditorsHelper.AddNewEditorPage());
+                SelectedTabIndex = EditorsHelper.GetListCount();
+            }
         }
 
         private void OnActionChanged(bool done)
