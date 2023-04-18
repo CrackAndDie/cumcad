@@ -4,11 +4,37 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:cumcad.Views"
-      mc:Ignorable="d" Background="Aqua"
-      d:DesignHeight="450" d:DesignWidth="800"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:classes="clr-namespace:cumcad.Models.Classes"
+      mc:Ignorable="d"
+      Background="#FF2a2a2a"
+      d:DesignHeight="450" 
+      d:DesignWidth="800"
       Title="EditorPageView">
 
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="240"/>
+        </Grid.ColumnDefinitions>
+
+        <TreeView Grid.Column="1"
+                  SelectedItemChanged="TreeView_SelectedItemChanged"
+                  ItemsSource="{Binding TreeViewItems}"
+                  VerticalAlignment="Stretch">
+            <TreeView.Resources>
+                <Style TargetType="TreeViewItem"
+                       BasedOn="{StaticResource MaterialDesignTreeViewItem}">
+                </Style>
+                <HierarchicalDataTemplate DataType="{x:Type classes:EditorItem}"
+                                          ItemsSource="{Binding Controls, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBlock Text="{Binding Name}" />
+                </HierarchicalDataTemplate>
+                <DataTemplate DataType="{x:Type classes:EditorInsideItem}">
+                    <Frame Content="{Binding SettingsContent}" NavigationUIVisibility="Hidden"/>
+                    <!--<TextBlock Text="ANIME" Foreground="AliceBlue"/>-->
+                </DataTemplate>
+            </TreeView.Resources>
+        </TreeView>
     </Grid>
 </Page>

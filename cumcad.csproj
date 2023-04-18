@@ -94,6 +94,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Classes\EditorItem.cs" />
+    <Compile Include="Models\EditorModel.cs" />
     <Compile Include="Models\Factories\ColorPickerFactory.cs" />
     <Compile Include="Models\Factories\SelectEditorFactory.cs" />
     <Compile Include="Models\Helpers\EditorsHelper.cs" />
@@ -111,6 +113,9 @@
     </Compile>
     <Compile Include="Views\EditorPageView.xaml.cs">
       <DependentUpon>EditorPageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Handlers\InRangeView.xaml.cs">
+      <DependentUpon>InRangeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SelectEditorWindowView.xaml.cs">
       <DependentUpon>SelectEditorWindowView.xaml</DependentUpon>
@@ -135,6 +140,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EditorPageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Handlers\InRangeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

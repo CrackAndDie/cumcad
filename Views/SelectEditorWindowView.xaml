@@ -72,7 +72,8 @@
                 </RadioButton>
                 <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
                              Margin="4"
-                             IsChecked="{Binding SelectedTabIndex, Converter={StaticResource ResourceKey=editorTypeConverterKey}, ConverterParameter=1}">
+                             IsChecked="{Binding SelectedTabIndex, Converter={StaticResource ResourceKey=editorTypeConverterKey}, ConverterParameter=1}"
+                             IsEnabled="False">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="CameraOutline"
                                                  Foreground="AliceBlue" />
