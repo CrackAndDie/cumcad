@@ -112,7 +112,8 @@
                                                              Height="36"
                                                              HorizontalAlignment="Center"
                                                              VerticalAlignment="Center"
-                                                             Kind="{Binding IconKind}" />
+                                                             Kind="{Binding IconKind}" 
+                                                             Foreground="{Binding IconColor}"/>
                                 </Grid>
                             </DataTemplate>
                         </TabControl.ItemTemplate>

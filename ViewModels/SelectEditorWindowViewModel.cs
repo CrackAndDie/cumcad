@@ -1,4 +1,7 @@
-﻿using cumcad.Models.Other;
+﻿using cumcad.Models.Factories;
+using cumcad.Models.Helpers;
+using cumcad.Models;
+using cumcad.Models.Other;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
@@ -24,7 +27,7 @@ namespace cumcad.ViewModels
         internal bool? IsSelected { get; set; }
         internal EditorType SelectedType { get; set; }
         internal string ImagePath { get; set; }
-        internal Color IconColor { get; set; }
+        internal SolidColorBrush IconColor { get; set; }
     }
 
     internal class SelectEditorWindowViewModel : BindableBase
@@ -45,15 +48,16 @@ namespace cumcad.ViewModels
             set { SetProperty(ref imageFilePath, value); }
         }
 
-        private Color iconColor;
-        public Color IconColor
+        private SolidColorBrush iconColor;
+        public SolidColorBrush IconColor
         {
             get { return iconColor; }
-            set { SetProperty(ref iconColor, value); }
+            set { SetProperty(ref iconColor, value); result.IconColor = value; }
         }
 
         #region Commands
         public ICommand OpenFileCommand { get; set; }
+        public ICommand OpenColorPickerCommand { get; set; }
         public ICommand CreateEditorCommand { get; set; }
         public ICommand CloseWindowCommand { get; set; }
         #endregion
@@ -63,6 +67,10 @@ namespace cumcad.ViewModels
             CloseWindowCommand = new DelegateCommand(OnCloseWindowCommand);
             CreateEditorCommand = new DelegateCommand(OnCreateWindowCommand);
             OpenFileCommand = new DelegateCommand(OnOpenFileCommand);
+            OpenColorPickerCommand = new DelegateCommand(OnOpenColorPickerCommand);
+
+            // setting default color
+            IconColor = new SolidColorBrush(Colors.AliceBlue);
         }
 
         async internal Task<SelectEditorResult> GetSelectionTask()
@@ -100,6 +108,15 @@ namespace cumcad.ViewModels
                 string selectedFile = openFileDialog.FileName;
 
                 ImageFilePath = selectedFile;
+            }
+        }
+
+        async private void OnOpenColorPickerCommand(object paramenter)
+        {
+            var brush = await ColorPickerFactory.OpenColorPickerWindow();
+            if (result != null)
+            {
+                IconColor = brush;
             }
         }
 

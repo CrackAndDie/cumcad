@@ -7,12 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace cumcad.Models
 {
     internal class TabItemClass
     {
         public PackIconKind IconKind { get; set; }
+        public SolidColorBrush IconColor { get; set; }
     }
 
     internal class MainTabsModel : BindableBase
@@ -23,12 +25,12 @@ namespace cumcad.Models
         internal MainTabsModel() 
         {
             TabItems = new ReadOnlyObservableCollection<TabItemClass>(tabItems);
-            tabItems.Add(new TabItemClass() { IconKind = PackIconKind.PaperRollOutline });
+            tabItems.Add(new TabItemClass() { IconKind = PackIconKind.PaperRollOutline, IconColor = new SolidColorBrush(Colors.AliceBlue) });
         }
 
-        internal void AddNewItem()
+        internal void AddNewItem(SolidColorBrush iconColor)
         {
-            tabItems.Add(new TabItemClass() { IconKind = PackIconKind.Karate });
+            tabItems.Add(new TabItemClass() { IconKind = PackIconKind.Karate, IconColor = iconColor });
         }
     }
 }

@@ -160,11 +160,12 @@
                 <Button Width="42"
                         Height="42"
                         Margin="10, 0, 0, 0"
-                        Background="Red"
+                        Background="{Binding IconColor}"
                         BorderBrush="AliceBlue"
                         BorderThickness="1"
                         materialDesign:ButtonAssist.CornerRadius="4"
-                        RenderOptions.BitmapScalingMode="Fant">
+                        RenderOptions.BitmapScalingMode="Fant"
+                        Command="{Binding OpenColorPickerCommand}">
                 </Button>
             </StackPanel>
             

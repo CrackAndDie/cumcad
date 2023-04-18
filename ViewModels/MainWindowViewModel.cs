@@ -138,7 +138,7 @@ namespace cumcad.ViewModels
             var result = await SelectEditorFactory.OpenSelectEditorWindow();
             if ((bool)result.IsSelected)
             {
-                mainTabsModel.AddNewItem();
+                mainTabsModel.AddNewItem(result.IconColor);
                 GoToPage(EditorsHelper.AddNewEditorPage());
                 SelectedTabIndex = EditorsHelper.GetListCount();
             }

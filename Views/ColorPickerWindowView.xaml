@@ -11,8 +11,8 @@
         WindowStyle="None"
         x:Name="ThisWindow"
         Title="SelectEditorWindow"
-        Height="262"
-        Width="240"
+        Height="272"
+        Width="204"
         Background="#FF2a2a2a"
         WindowStartupLocation="CenterOwner">
     <Window.Resources>
@@ -32,6 +32,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="22" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="50" />
             </Grid.RowDefinitions>
 
             <Rectangle Grid.ColumnSpan="3"
@@ -51,16 +52,47 @@
                                     ProgressBarVisibility="Collapsed"
                                     CheckAllDoneVisibility="Collapsed" />
 
-            <Image Source="/Resources/color_palette.png"
+            <Image Source="{Binding PickerImage}"
                    Grid.Row="1"
-                   Stretch="UniformToFill">
+                   Stretch="None">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonUp">
                         <i:InvokeCommandAction Command="{Binding MouseUpCommand}" PassEventArgsToCommand="True"/>
                     </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                        <i:InvokeCommandAction Command="{Binding MouseDownCommand}"
+                                               PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseMove">
+                        <i:InvokeCommandAction Command="{Binding MouseMoveCommand}"
+                                               PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Image>
 
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Style="{StaticResource MaterialDesignOutlinedLightButton}"
+                        ToolTip="OpenFile"
+                        Width="36"
+                        Height="36"
+                        Padding="0"
+                        Grid.Row="1"
+                        Margin="5, 0"
+                        Command="{Binding DoneCommand}"
+                        CommandParameter="{Binding ElementName=ThisWindow}">
+                    <materialDesign:PackIcon Kind="CheckOutline"
+                                             Height="22"
+                                             Width="22"
+                                             Foreground="AliceBlue" />
+                </Button>
+                <Border Background="{Binding BorderColor}" 
+                        Width="36" 
+                        Height="36" 
+                        Margin="5, 0"
+                        BorderThickness="1"
+                        BorderBrush="AliceBlue"
+                        CornerRadius="2"/>
+            </StackPanel>
         </Grid>
     </Border>
 </Window>
