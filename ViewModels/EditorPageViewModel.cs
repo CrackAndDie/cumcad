@@ -8,5 +8,14 @@ namespace cumcad.ViewModels
 {
     internal class EditorPageViewModel
     {
+        internal EditorPageViewModel(SelectEditorResult parameter)
+        {
+
+        }
+
+        internal void OnRemove()
+        {
+
+        }
     }
 }

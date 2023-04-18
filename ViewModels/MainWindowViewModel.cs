@@ -129,7 +129,15 @@ namespace cumcad.ViewModels
             }
             else
             {
-                GoToPage(EditorsHelper.GetPageView(index - 1));
+                // I don't want to fix that
+                try
+                {
+                    GoToPage(EditorsHelper.GetPageView(index - 1));
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    GoToPage(null);
+                }
             }
         }
 
@@ -138,10 +146,19 @@ namespace cumcad.ViewModels
             var result = await SelectEditorFactory.OpenSelectEditorWindow();
             if ((bool)result.IsSelected)
             {
-                mainTabsModel.AddNewItem(result.IconColor);
-                GoToPage(EditorsHelper.AddNewEditorPage());
+                mainTabsModel.AddNewItem(result.IconColor).OnRemove += OnItemRemove;
+                GoToPage(EditorsHelper.AddNewEditorPage(result));
                 SelectedTabIndex = EditorsHelper.GetListCount();
             }
+        }
+
+        private void OnItemRemove(object sender, EventArgs args)
+        {
+            var item = sender as TabItemClass;
+            item.OnRemove -= OnItemRemove;
+            int ind = mainTabsModel.IndexOf(item);
+            mainTabsModel.RemoveItem(ind);
+            EditorsHelper.RemoveAt(ind - 1);
         }
 
         private void OnActionChanged(bool done)

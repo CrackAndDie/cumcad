@@ -114,6 +114,12 @@
                                                              VerticalAlignment="Center"
                                                              Kind="{Binding IconKind}" 
                                                              Foreground="{Binding IconColor}"/>
+                                    <Grid.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Remove"
+                                                      Command="{Binding DeleteCommand}"/>
+                                        </ContextMenu>
+                                    </Grid.ContextMenu>
                                 </Grid>
                             </DataTemplate>
                         </TabControl.ItemTemplate>

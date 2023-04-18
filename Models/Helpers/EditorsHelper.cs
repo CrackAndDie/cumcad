@@ -17,9 +17,19 @@ namespace cumcad.Models.Helpers
             return editorPageViews.Count;
         }
 
-        internal static EditorPageView AddNewEditorPage()
+        internal static void RemoveAt(int index)
+        {
+            var editor = editorPageViews[index];
+            var dc = editor.DataContext as EditorPageViewModel;
+            dc.OnRemove();
+            editorPageViews.RemoveAt(index);
+        }
+
+        internal static EditorPageView AddNewEditorPage(SelectEditorResult parameter)
         {
             var editorView = new EditorPageView();
+            var vm = new EditorPageViewModel(parameter);
+            editorView.DataContext = vm;
             editorPageViews.Add(editorView);
             return editorView;
         }
