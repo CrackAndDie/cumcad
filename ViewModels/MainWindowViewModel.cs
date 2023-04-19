@@ -143,7 +143,7 @@ namespace cumcad.ViewModels
 
         async private void OnAddEditorCommand(object parameter)
         {
-            var result = await SelectEditorFactory.OpenSelectEditorWindow();
+            var result = await SelectorsFactory.OpenSelectEditorWindow();
             if ((bool)result.IsSelected)
             {
                 mainTabsModel.AddNewItem(result.IconColor).OnRemove += OnItemRemove;

@@ -1,4 +1,4 @@
-﻿<Window x:Class="cumcad.Views.ColorPickerWindowView"
+﻿<Window x:Class="cumcad.Views.SelectHandlerWindowView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,17 +10,17 @@
         ResizeMode="NoResize"
         WindowStyle="None"
         x:Name="ThisWindow"
-        Title="SelectEditorWindow"
+        Title=""
         Height="272"
         Width="204"
         Background="#FF2a2a2a"
         WindowStartupLocation="CenterOwner">
-    
+
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="22"
                       ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}" />
     </WindowChrome.WindowChrome>
-    
+
     <Border Style="{StaticResource WindowMainPanelStyle}">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -49,25 +49,17 @@
                                     ProgressBarVisibility="Collapsed"
                                     CheckAllDoneVisibility="Collapsed" />
 
-            <Image Source="{Binding PickerImage}"
-                   Grid.Row="1"
-                   Stretch="None">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseLeftButtonUp">
-                        <i:InvokeCommandAction Command="{Binding MouseUpCommand}" PassEventArgsToCommand="True"/>
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="MouseLeftButtonDown">
-                        <i:InvokeCommandAction Command="{Binding MouseDownCommand}"
-                                               PassEventArgsToCommand="True" />
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="MouseMove">
-                        <i:InvokeCommandAction Command="{Binding MouseMoveCommand}"
-                                               PassEventArgsToCommand="True" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Image>
+            <ListView Grid.Row="1" Margin="20" ItemsSource="{Binding ListViewItems}" SelectedIndex="{Binding SelectedIndex}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Foreground="AliceBlue" Text="{Binding}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel Grid.Row="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center">
                 <Button Style="{StaticResource MaterialDesignOutlinedLightButton}"
                         ToolTip="OpenFile"
                         Width="36"
@@ -82,13 +74,6 @@
                                              Width="22"
                                              Foreground="AliceBlue" />
                 </Button>
-                <Border Background="{Binding BorderColor}" 
-                        Width="36" 
-                        Height="36" 
-                        Margin="5, 0"
-                        BorderThickness="1"
-                        BorderBrush="AliceBlue"
-                        CornerRadius="2"/>
             </StackPanel>
         </Grid>
     </Border>

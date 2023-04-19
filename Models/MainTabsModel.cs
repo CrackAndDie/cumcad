@@ -47,7 +47,7 @@ namespace cumcad.Models
 
         internal TabItemClass AddNewItem(SolidColorBrush iconColor)
         {
-            var item = new TabItemClass() { IconKind = PackIconKind.Karate, IconColor = iconColor };
+            var item = new TabItemClass() { IconKind = PackIconKind.ImageEditOutline, IconColor = iconColor };
             tabItems.Add(item);
             return item;
         }

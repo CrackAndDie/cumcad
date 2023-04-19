@@ -7,6 +7,6 @@
              mc:Ignorable="d"
              Background="Red">
     <Grid Width="175" Height="300">
-            
+        
     </Grid>
 </UserControl>

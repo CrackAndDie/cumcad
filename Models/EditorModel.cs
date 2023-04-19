@@ -1,4 +1,5 @@
 ﻿using cumcad.Models.Classes;
+using cumcad.Models.Factories;
 using cumcad.ViewModels;
 using cumcad.ViewModels.Handlers;
 using cumcad.Views.Handlers;
@@ -9,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace cumcad.Models
 {
@@ -32,18 +34,26 @@ namespace cumcad.Models
             EditorItems.Add(mainHandler);
         }
 
-        //internal void Test()
-        //{
-        //    var item1 = new EditorItem(new InRangeView())
-        //    {
-        //        Name = "Test",
-        //    };
-        //    EditorItems.Add(item1);
-        //    var item2 = new EditorItem(new InRangeView())
-        //    {
-        //        Name = "Test2",
-        //    };
-        //    EditorItems.Add(item2);
-        //}
+        internal void Add(UserControl item, string name)
+        {
+            var handler = new EditorItem(item)
+            {
+                Name = name,
+            };
+            EditorItems.Add(handler);
+        }
+
+        internal void Remove(EditorItem item)
+        {
+            var ind = EditorItems.IndexOf(item);
+            if (ind != 0)
+            {
+                EditorItems.Remove(item);
+            }
+            else
+            {
+                MessageBoxFactory.Show("Remove youself, you're a mess", MessageBoxFactory.INFO_LOGO);
+            }
+        }
     }
 }

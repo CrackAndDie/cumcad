@@ -106,21 +106,23 @@
                                 Padding="0">
                         <TabControl.ItemTemplate>
                             <DataTemplate>
-                                <Grid Width="48"
-                                      Height="48">
+                                <Border Width="48"
+                                        Height="48"
+                                        Background="Transparent"
+                                        BorderThickness="0">
                                     <materialDesign:PackIcon Width="36"
                                                              Height="36"
                                                              HorizontalAlignment="Center"
                                                              VerticalAlignment="Center"
                                                              Kind="{Binding IconKind}" 
                                                              Foreground="{Binding IconColor}"/>
-                                    <Grid.ContextMenu>
+                                    <Border.ContextMenu>
                                         <ContextMenu>
                                             <MenuItem Header="Remove"
                                                       Command="{Binding DeleteCommand}"/>
                                         </ContextMenu>
-                                    </Grid.ContextMenu>
-                                </Grid>
+                                    </Border.ContextMenu>
+                                </Border>
                             </DataTemplate>
                         </TabControl.ItemTemplate>
                         <TabControl.ContentTemplate>
@@ -135,8 +137,9 @@
                         Height="48"
                         Padding="0"
                         Grid.Row="1"
+                        materialDesign:ButtonAssist.CornerRadius="6"
                         Command="{Binding AddEditorCommand}">
-                    <materialDesign:PackIcon Kind="PlusCircleOutline"
+                    <materialDesign:PackIcon Kind="Plus"
                                              Height="32"
                                              Width="32"
                                              Foreground="AliceBlue" />

@@ -96,9 +96,9 @@
     </ApplicationDefinition>
     <Compile Include="Models\Classes\EditorItem.cs" />
     <Compile Include="Models\EditorModel.cs" />
-    <Compile Include="Models\Factories\ColorPickerFactory.cs" />
+    <Compile Include="Models\Factories\HandlerFactory.cs" />
     <Compile Include="Models\Factories\MessageBoxFactory.cs" />
-    <Compile Include="Models\Factories\SelectEditorFactory.cs" />
+    <Compile Include="Models\Factories\SelectorsFactory.cs" />
     <Compile Include="Models\Helpers\EditorsHelper.cs" />
     <Compile Include="Models\Helpers\WaiterHelper.cs" />
     <Compile Include="Models\MainTabsModel.cs" />
@@ -108,10 +108,12 @@
     <Compile Include="ViewModels\Base\IHandler.cs" />
     <Compile Include="ViewModels\ColorPickerWindowViewModel.cs" />
     <Compile Include="ViewModels\EditorPageViewModel.cs" />
+    <Compile Include="ViewModels\Handlers\InRangeViewModel.cs" />
     <Compile Include="ViewModels\Handlers\MainHandlerViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\MyMessageBoxViewModel.cs" />
     <Compile Include="ViewModels\SelectEditorWindowViewModel.cs" />
+    <Compile Include="ViewModels\SelectHandlerWindowViewModel.cs" />
     <Compile Include="Views\ColorPickerWindowView.xaml.cs">
       <DependentUpon>ColorPickerWindowView.xaml</DependentUpon>
     </Compile>
@@ -129,6 +131,9 @@
     </Compile>
     <Compile Include="Views\SelectEditorWindowView.xaml.cs">
       <DependentUpon>SelectEditorWindowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SelectHandlerWindowView.xaml.cs">
+      <DependentUpon>SelectHandlerWindowView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WindowHeaderView.xaml.cs">
       <DependentUpon>WindowHeaderView.xaml</DependentUpon>
@@ -166,6 +171,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SelectEditorWindowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SelectHandlerWindowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
