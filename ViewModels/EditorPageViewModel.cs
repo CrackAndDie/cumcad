@@ -12,7 +12,7 @@ namespace cumcad.ViewModels
 {
     internal class EditorPageViewModel : BindableBase
     {
-        readonly EditorModel editorModel = new EditorModel();
+        readonly EditorModel editorModel;
 
         private EditorItem selectedBranch;
         public EditorItem SelectedBranch
@@ -21,11 +21,14 @@ namespace cumcad.ViewModels
             set { SetProperty(ref selectedBranch, value); }
         }
 
+        internal event EventHandler<EventArgs> RemoveFromInside;
+
         public ObservableCollection<EditorItem> TreeViewItems => editorModel.EditorItems;
 
         internal EditorPageViewModel(SelectEditorResult parameter)
         {
-            editorModel.Test();
+            editorModel = new EditorModel(parameter);
+            editorModel.OnRemove += (s, a) => { OnRemove(); RemoveFromInside?.Invoke(this, a); };
         }
 
         internal void OnRemove()

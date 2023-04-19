@@ -147,7 +147,9 @@ namespace cumcad.ViewModels
             if ((bool)result.IsSelected)
             {
                 mainTabsModel.AddNewItem(result.IconColor).OnRemove += OnItemRemove;
-                GoToPage(EditorsHelper.AddNewEditorPage(result));
+                var editor = EditorsHelper.AddNewEditorPage(result);
+                (editor.DataContext as EditorPageViewModel).RemoveFromInside += OnItemRemoveFromInside;
+                GoToPage(editor);
                 SelectedTabIndex = EditorsHelper.GetListCount();
             }
         }
@@ -158,7 +160,19 @@ namespace cumcad.ViewModels
             item.OnRemove -= OnItemRemove;
             int ind = mainTabsModel.IndexOf(item);
             mainTabsModel.RemoveItem(ind);
+            (EditorsHelper.GetPageView(ind - 1).DataContext as EditorPageViewModel).RemoveFromInside -= OnItemRemoveFromInside;
             EditorsHelper.RemoveAt(ind - 1);
+        }
+
+        private void OnItemRemoveFromInside(object sender, EventArgs args)
+        {
+            var item = sender as EditorPageViewModel;
+            int ind = EditorsHelper.IndexOf(item);
+            var tabItem = mainTabsModel.TabItems[ind + 1];
+            tabItem.OnRemove -= OnItemRemove;
+            mainTabsModel.RemoveItem(ind + 1);
+            (EditorsHelper.GetPageView(ind).DataContext as EditorPageViewModel).RemoveFromInside -= OnItemRemoveFromInside;
+            EditorsHelper.RemoveAt(ind);
         }
 
         private void OnActionChanged(bool done)

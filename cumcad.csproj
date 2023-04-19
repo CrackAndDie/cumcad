@@ -97,6 +97,7 @@
     <Compile Include="Models\Classes\EditorItem.cs" />
     <Compile Include="Models\EditorModel.cs" />
     <Compile Include="Models\Factories\ColorPickerFactory.cs" />
+    <Compile Include="Models\Factories\MessageBoxFactory.cs" />
     <Compile Include="Models\Factories\SelectEditorFactory.cs" />
     <Compile Include="Models\Helpers\EditorsHelper.cs" />
     <Compile Include="Models\Helpers\WaiterHelper.cs" />
@@ -104,9 +105,12 @@
     <Compile Include="Models\Other\DelegateCommand.cs" />
     <Compile Include="Models\Other\MyEventArgs\WindowStateChangedEventArgs.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
+    <Compile Include="ViewModels\Base\IHandler.cs" />
     <Compile Include="ViewModels\ColorPickerWindowViewModel.cs" />
     <Compile Include="ViewModels\EditorPageViewModel.cs" />
+    <Compile Include="ViewModels\Handlers\MainHandlerViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\MyMessageBoxViewModel.cs" />
     <Compile Include="ViewModels\SelectEditorWindowViewModel.cs" />
     <Compile Include="Views\ColorPickerWindowView.xaml.cs">
       <DependentUpon>ColorPickerWindowView.xaml</DependentUpon>
@@ -116,6 +120,12 @@
     </Compile>
     <Compile Include="Views\Handlers\InRangeView.xaml.cs">
       <DependentUpon>InRangeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Handlers\MainHandlerView.xaml.cs">
+      <DependentUpon>MainHandlerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MyMessageBoxView.xaml.cs">
+      <DependentUpon>MyMessageBoxView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SelectEditorWindowView.xaml.cs">
       <DependentUpon>SelectEditorWindowView.xaml</DependentUpon>
@@ -144,6 +154,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Handlers\InRangeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Handlers\MainHandlerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MyMessageBoxView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -191,6 +209,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\color_palette.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\alert.png" />
+    <Resource Include="Resources\info.png" />
+    <Resource Include="Resources\question.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -17,6 +17,11 @@ namespace cumcad.Models.Helpers
             return editorPageViews.Count;
         }
 
+        internal static int IndexOf(EditorPageViewModel vm)
+        {
+            return editorPageViews.Select(x => x.DataContext as EditorPageViewModel).ToList().IndexOf(vm);
+        }
+
         internal static void RemoveAt(int index)
         {
             var editor = editorPageViews[index];
