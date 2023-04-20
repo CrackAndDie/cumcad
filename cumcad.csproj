@@ -129,6 +129,7 @@
     <Compile Include="Views\MyMessageBoxView.xaml.cs">
       <DependentUpon>MyMessageBoxView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Other\RangeSlider.cs" />
     <Compile Include="Views\SelectEditorWindowView.xaml.cs">
       <DependentUpon>SelectEditorWindowView.xaml</DependentUpon>
     </Compile>
@@ -167,6 +168,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MyMessageBoxView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Other\RangeSlider.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

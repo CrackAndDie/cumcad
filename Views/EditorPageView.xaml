@@ -26,6 +26,8 @@
             <TreeView.Resources>
                 <Style TargetType="TreeViewItem"
                        BasedOn="{StaticResource MaterialDesignTreeViewItem}">
+                    <Setter Property="materialDesign:TreeViewAssist.ShowSelection"
+                            Value="False" />
                 </Style>
                 <HierarchicalDataTemplate DataType="{x:Type classes:EditorItem}"
                                           ItemsSource="{Binding Controls, UpdateSourceTrigger=PropertyChanged}">
