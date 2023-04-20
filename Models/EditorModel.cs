@@ -1,6 +1,7 @@
 ﻿using cumcad.Models.Classes;
 using cumcad.Models.Factories;
 using cumcad.ViewModels;
+using cumcad.ViewModels.Base;
 using cumcad.ViewModels.Handlers;
 using cumcad.Views.Handlers;
 using Prism.Mvvm;
@@ -32,6 +33,21 @@ namespace cumcad.Models
                 Name = editorResult.SelectedType.ToString(),
             };
             EditorItems.Add(mainHandler);
+        }
+
+        internal static IHandler GetIHandler(EditorItem item)
+        {
+            return item.Controls[0].SettingsContent.DataContext as IHandler;
+        }
+
+        internal int IndexOf(EditorItem item)
+        {
+            return EditorItems.IndexOf(item);
+        }
+
+        internal IHandler Get(int ind)
+        {
+            return EditorItems[ind].Controls[0].SettingsContent.DataContext as IHandler;
         }
 
         internal void Add(UserControl item, string name)

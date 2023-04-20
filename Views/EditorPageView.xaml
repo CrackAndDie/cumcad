@@ -18,6 +18,16 @@
             <ColumnDefinition Width="260"/>
         </Grid.ColumnDefinitions>
 
+        <ListBox ItemsSource="{Binding ViewedImages}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.CanContentScroll="False" ScrollViewer.PanningMode="Both" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <Image Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant" Source="{Binding}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
         <TreeView Grid.Column="1"
                   SelectedItemChanged="TreeView_SelectedItemChanged"
                   ItemsSource="{Binding TreeViewItems}"

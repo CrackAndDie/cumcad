@@ -16,47 +16,55 @@ namespace cumcad.ViewModels.Handlers
         public int RedLowerValue
         {
             get { return redLowerValue; }
-            set { SetProperty(ref redLowerValue, value); }
+            set { SetProperty(ref redLowerValue, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
         }
 
         private int redHigherValue;
         public int RedHigherValue
         {
             get { return redHigherValue; }
-            set { SetProperty(ref redHigherValue, value); }
+            set { SetProperty(ref redHigherValue, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
         }
 
         private int greenLowerValue;
         public int GreenLowerValue
         {
             get { return greenLowerValue; }
-            set { SetProperty(ref greenLowerValue, value); }
+            set { SetProperty(ref greenLowerValue, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
         }
 
         private int greenHigherValue;
         public int GreenHigherValue
         {
             get { return greenHigherValue; }
-            set { SetProperty(ref greenHigherValue, value); }
+            set { SetProperty(ref greenHigherValue, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
         }
 
         private int blueLowerValue;
         public int BlueLowerValue
         {
             get { return blueLowerValue; }
-            set { SetProperty(ref blueLowerValue, value); }
+            set { SetProperty(ref blueLowerValue, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
         }
 
         private int blueHigherValue;
         public int BlueHigherValue
         {
             get { return blueHigherValue; }
-            set { SetProperty(ref blueHigherValue, value); }
+            set { SetProperty(ref blueHigherValue, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
         }
+
+        public event EventHandler<EventArgs> PropertiesChanged;
 
         public List<Mat> GetResult(List<Mat> images)
         {
-            throw new NotImplementedException();
+            var mats = new List<Mat>();
+            foreach (var image in images)
+            {
+                mats.Add(image.InRange(InputArray.Create(new int[] { RedLowerValue, GreenLowerValue, BlueLowerValue }), 
+                    InputArray.Create(new int[] { RedHigherValue, GreenHigherValue, BlueHigherValue })));
+            }
+            return mats;
         }
     }
 }

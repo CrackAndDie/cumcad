@@ -22,7 +22,7 @@ namespace cumcad.ViewModels.Handlers
         }
 
         // this is for camera or shufflecad
-        internal event EventHandler<EventArgs> ImageUpdate;
+        public event EventHandler<EventArgs> PropertiesChanged;
         // if there is a problem, we should close the page and remove it
         internal event EventHandler<EventArgs> ShouldBeKilled;
 
@@ -34,18 +34,33 @@ namespace cumcad.ViewModels.Handlers
         {
             Name = editorData.SelectedType.ToString();
             this.editorData = editorData;
-
-            SetUp();
         }
 
-        async private void SetUp()
+        //async private void SetUp()
+        //{
+        //    // cringe :)
+        //    // this done because we should wait parents to be subscribed to our ShouldBeKilled event
+        //    await Task.Run(() =>
+        //    {
+        //        while (ShouldBeKilled == null) ;
+        //    });
+        //    if (editorData.SelectedType == EditorType.Image)
+        //    {
+        //        try
+        //        {
+        //            image = new Mat(editorData.ImagePath, ImreadModes.Color);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            MessageBoxFactory.Show("F*ck your image, this is a shite. The next MessageBox is going to show you the error", MessageBoxFactory.WARN_LOGO);
+        //            MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
+        //            ShouldBeKilled?.Invoke(this, EventArgs.Empty);
+        //        }
+        //    }
+        //}
+
+        public List<Mat> GetResult(List<Mat> images)
         {
-            // cringe :)
-            // this done because we should wait parents to be subscribed to our ShouldBeKilled event
-            await Task.Run(() =>
-            {
-                while (ShouldBeKilled == null) ;
-            });
             if (editorData.SelectedType == EditorType.Image)
             {
                 try
@@ -58,13 +73,6 @@ namespace cumcad.ViewModels.Handlers
                     MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
                     ShouldBeKilled?.Invoke(this, EventArgs.Empty);
                 }
-            }
-        }
-
-        public List<Mat> GetResult(List<Mat> images)
-        {
-            if (editorData.SelectedType == EditorType.Image)
-            {
                 return new List<Mat> { image };
             }
             return new List<Mat>();

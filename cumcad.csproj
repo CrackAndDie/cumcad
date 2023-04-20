@@ -100,6 +100,7 @@
     <Compile Include="Models\Factories\MessageBoxFactory.cs" />
     <Compile Include="Models\Factories\SelectorsFactory.cs" />
     <Compile Include="Models\Helpers\EditorsHelper.cs" />
+    <Compile Include="Models\Helpers\Funcad.cs" />
     <Compile Include="Models\Helpers\WaiterHelper.cs" />
     <Compile Include="Models\MainTabsModel.cs" />
     <Compile Include="Models\Other\DelegateCommand.cs" />
