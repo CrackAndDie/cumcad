@@ -28,11 +28,25 @@ namespace cumcad.ViewModels
         }
 
         private List<Mat> beforeImages;
-        private List<BitmapImage> viewedImages;
-        public List<BitmapImage> ViewedImages
+        private ObservableCollection<BitmapImage> viewedImages;
+        public ObservableCollection<BitmapImage> ViewedImages
         {
             get { return viewedImages; }
             set { SetProperty(ref viewedImages, value); }
+        }
+
+        private int ugRows;
+        public int UGRows
+        {
+            get { return ugRows; }
+            set { SetProperty(ref ugRows, value); }
+        }
+
+        private int ugColumns;
+        public int UGColumns
+        {
+            get { return ugColumns; }
+            set { SetProperty(ref ugColumns, value); }
         }
 
         internal event EventHandler<EventArgs> RemoveFromInside;
@@ -100,6 +114,7 @@ namespace cumcad.ViewModels
             {
                 ViewedImages.Clear();
             }
+            ReCalcUG(mats.Count);
             ViewedImages = Funcad.FromMatToBitmap(mats);
             Funcad.ReleaseMats(mats);
             lastSelectedItem = item;
@@ -112,8 +127,18 @@ namespace cumcad.ViewModels
             {
                 ViewedImages.Clear();
             }
+            ReCalcUG(mats.Count);
             ViewedImages = Funcad.FromMatToBitmap(mats);
             Funcad.ReleaseMats(mats);
+        }
+
+        private void ReCalcUG(int amount)
+        {
+            double sqrt = Math.Sqrt(amount);
+            int ceiled = (int)Math.Ceiling(sqrt);
+
+            UGColumns = ceiled;
+            UGRows = (int)Math.Ceiling(amount / (float)ceiled);
         }
 
         // inside method that is called when the page is going to be removed

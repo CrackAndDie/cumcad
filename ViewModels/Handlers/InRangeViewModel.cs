@@ -63,6 +63,10 @@ namespace cumcad.ViewModels.Handlers
             {
                 mats.Add(image.InRange(InputArray.Create(new int[] { RedLowerValue, GreenLowerValue, BlueLowerValue }), 
                     InputArray.Create(new int[] { RedHigherValue, GreenHigherValue, BlueHigherValue })));
+                mats.Add(image.InRange(InputArray.Create(new int[] { RedLowerValue, GreenLowerValue, BlueLowerValue }),
+                    InputArray.Create(new int[] { RedHigherValue, GreenHigherValue, BlueHigherValue })));
+                mats.Add(image.InRange(InputArray.Create(new int[] { RedLowerValue, GreenLowerValue, BlueLowerValue }),
+                    InputArray.Create(new int[] { RedHigherValue, GreenHigherValue, BlueHigherValue })));
             }
             return mats;
         }

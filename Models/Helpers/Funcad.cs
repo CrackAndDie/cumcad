@@ -1,6 +1,7 @@
 ﻿using OpenCvSharp;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,9 +11,9 @@ namespace cumcad.Models.Helpers
 {
     internal class Funcad
     {
-        public static List<BitmapImage> FromMatToBitmap(List<Mat> mats)
+        public static ObservableCollection<BitmapImage> FromMatToBitmap(List<Mat> mats)
         {
-            var bitmaps = new List<BitmapImage>();
+            var bitmaps = new ObservableCollection<BitmapImage>();
             foreach (var mat in mats)
             {
                 using (var ms = mat.ToMemoryStream())
