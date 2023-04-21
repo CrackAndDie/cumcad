@@ -18,76 +18,15 @@
             <ColumnDefinition Width="260"/>
         </Grid.ColumnDefinitions>
 
-        <!--<ListBox ItemsSource="{Binding ViewedImages}" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel Width="Auto"
-                               ItemWidth="{Binding (ListView.View).ItemWidth, RelativeSource={RelativeSource AncestorType=ListView}}"
-                               ItemHeight="{Binding (ListView.View).ItemHeight, RelativeSource={RelativeSource AncestorType=ListView}}" />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        <Image Stretch="Uniform" RenderOptions.BitmapScalingMode="Fant" Source="{Binding}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>-->
-
-        <!--<ItemsControl ItemsSource="{Binding ViewedImages}" 
-                      HorizontalAlignment="Center" 
-                      VerticalAlignment="Center"
-                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                      ScrollViewer.VerticalScrollBarVisibility="Disabled">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel  />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border BorderThickness="1"
-                            BorderBrush="Black"
-                            Margin="5">
-                        <Image Source="{Binding}"
-                               Stretch="Uniform"
-                               RenderOptions.BitmapScalingMode="Fant" />
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>-->
-
-        <!--<ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  Margin="10"
-                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                  ItemContainerStyle="{StaticResource ForListViewItems}"
-                  ItemsSource="{Binding ViewedImages}"
-                  HorizontalContentAlignment="Stretch"
-                  VerticalContentAlignment="Stretch">
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel HorizontalAlignment="Center"
-                               Orientation="Vertical" ></WrapPanel>
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Image Source="{Binding}"
-                               Stretch="Uniform"
-                               RenderOptions.BitmapScalingMode="Fant" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>-->
-
         <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 ItemContainerStyle="{StaticResource ForListViewItems}"
                 ItemsSource="{Binding ViewedImages}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <!--<WrapPanel />-->
-                    <UniformGrid HorizontalAlignment="Center" Columns="{Binding UGColumns}" Rows="{Binding UGRows}" />
+                    <UniformGrid HorizontalAlignment="Center" 
+                                 Columns="{Binding UGColumns}" 
+                                 Rows="{Binding UGRows}" />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
