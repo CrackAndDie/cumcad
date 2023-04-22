@@ -1,4 +1,5 @@
 ﻿using cumcad.Models.Classes;
+using cumcad.Models.Factories;
 using cumcad.ViewModels.Base;
 using OpenCvSharp;
 using Prism.Mvvm;
@@ -16,42 +17,42 @@ namespace cumcad.ViewModels.Handlers
         public int RedLowerValue
         {
             get { return redLowerValue; }
-            set { SetProperty(ref redLowerValue, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
+            set { SetProperty(ref redLowerValue, value); NotSmartEventCalled(); }
         }
 
         private int redHigherValue;
         public int RedHigherValue
         {
             get { return redHigherValue; }
-            set { SetProperty(ref redHigherValue, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
+            set { SetProperty(ref redHigherValue, value); NotSmartEventCalled(); }
         }
 
         private int greenLowerValue;
         public int GreenLowerValue
         {
             get { return greenLowerValue; }
-            set { SetProperty(ref greenLowerValue, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
+            set { SetProperty(ref greenLowerValue, value); NotSmartEventCalled(); }
         }
 
         private int greenHigherValue;
         public int GreenHigherValue
         {
             get { return greenHigherValue; }
-            set { SetProperty(ref greenHigherValue, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
+            set { SetProperty(ref greenHigherValue, value); NotSmartEventCalled(); }
         }
 
         private int blueLowerValue;
         public int BlueLowerValue
         {
             get { return blueLowerValue; }
-            set { SetProperty(ref blueLowerValue, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
+            set { SetProperty(ref blueLowerValue, value); NotSmartEventCalled(); }
         }
 
         private int blueHigherValue;
         public int BlueHigherValue
         {
             get { return blueHigherValue; }
-            set { SetProperty(ref blueHigherValue, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
+            set { SetProperty(ref blueHigherValue, value); NotSmartEventCalled(); }
         }
 
         public event EventHandler<EventArgs> PropertiesChanged;
@@ -61,10 +62,33 @@ namespace cumcad.ViewModels.Handlers
             var mats = new List<Mat>();
             foreach (var image in images)
             {
-                mats.Add(image.InRange(InputArray.Create(new int[] { RedLowerValue, GreenLowerValue, BlueLowerValue }), 
-                    InputArray.Create(new int[] { RedHigherValue, GreenHigherValue, BlueHigherValue })));
+                try
+                {
+                    mats.Add(image.InRange(InputArray.Create(new int[] { RedLowerValue, GreenLowerValue, BlueLowerValue }),
+                        InputArray.Create(new int[] { RedHigherValue, GreenHigherValue, BlueHigherValue })));
+                }
+                catch (Exception ex)
+                {
+                    MessageBoxFactory.Show("Something went wrong, check out the next message", MessageBoxFactory.WARN_LOGO);
+                    MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
+                }
             }
             return mats;
+        }
+
+        public void OnRemove()
+        {
+
+        }
+
+        private DateTime lastCallTime = DateTime.Now;
+        private void NotSmartEventCalled()
+        {
+            if ((DateTime.Now - lastCallTime).TotalMilliseconds > 100)
+            {
+                lastCallTime = DateTime.Now;
+                PropertiesChanged?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 }

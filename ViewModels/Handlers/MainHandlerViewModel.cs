@@ -1,5 +1,7 @@
-﻿using cumcad.Models.Classes;
+﻿using cumcad.Models;
+using cumcad.Models.Classes;
 using cumcad.Models.Factories;
+using cumcad.Models.Helpers;
 using cumcad.ViewModels.Base;
 using OpenCvSharp;
 using Prism.Mvvm;
@@ -21,12 +23,12 @@ namespace cumcad.ViewModels.Handlers
             set { SetProperty(ref name, value); }
         }
 
-        // this is for camera or shufflecad
+        // this is for camera, fromEditor or shufflecad
         public event EventHandler<EventArgs> PropertiesChanged;
         // if there is a problem, we should close the page and remove it
         internal event EventHandler<EventArgs> ShouldBeKilled;
 
-        private SelectEditorResult editorData;
+        private readonly SelectEditorResult editorData;
 
         private Mat image;
 
@@ -34,30 +36,13 @@ namespace cumcad.ViewModels.Handlers
         {
             Name = editorData.SelectedType.ToString();
             this.editorData = editorData;
-        }
 
-        //async private void SetUp()
-        //{
-        //    // cringe :)
-        //    // this done because we should wait parents to be subscribed to our ShouldBeKilled event
-        //    await Task.Run(() =>
-        //    {
-        //        while (ShouldBeKilled == null) ;
-        //    });
-        //    if (editorData.SelectedType == EditorType.Image)
-        //    {
-        //        try
-        //        {
-        //            image = new Mat(editorData.ImagePath, ImreadModes.Color);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            MessageBoxFactory.Show("F*ck your image, this is a shite. The next MessageBox is going to show you the error", MessageBoxFactory.WARN_LOGO);
-        //            MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
-        //            ShouldBeKilled?.Invoke(this, EventArgs.Empty);
-        //        }
-        //    }
-        //}
+            if (editorData.SelectedType == EditorType.FromEditor)
+            {
+                var handler = EditorModel.GetIHandler(editorData.ParentEditorItem);
+                handler.PropertiesChanged += OnParentPropertiesChanged;
+            }
+        }
 
         public List<Mat> GetResult(List<Mat> images)
         {
@@ -75,7 +60,44 @@ namespace cumcad.ViewModels.Handlers
                 }
                 return new List<Mat> { image };
             }
+            else if (editorData.SelectedType == EditorType.FromEditor)
+            {
+                int index = editorData.ParentEditorModel.IndexOf(editorData.ParentEditorItem);
+                if (index >= 0)
+                {
+                    // getting the first images
+                    var beforeImages = editorData.ParentEditorModel.Get(0).GetResult(images);
+                    for (int i = 1; i < index; i++)
+                    {
+                        var result = editorData.ParentEditorModel.Get(i).GetResult(beforeImages);
+                        Funcad.ReleaseMats(beforeImages);
+                        beforeImages = result;
+                    }
+                    var mats = editorData.ParentEditorModel.Get(index).GetResult(beforeImages);
+                    Funcad.ReleaseMats(beforeImages);
+                    return mats;
+                }
+                else
+                {
+                    MessageBoxFactory.Show("F*ck your image, this is a shite, you're a dickhead", MessageBoxFactory.WARN_LOGO);
+                    ShouldBeKilled?.Invoke(this, EventArgs.Empty);
+                }
+            }
             return new List<Mat>();
+        }
+
+        public void OnRemove()
+        {
+            if (editorData.SelectedType == EditorType.FromEditor)
+            {
+                EditorModel.GetIHandler(editorData.ParentEditorItem).PropertiesChanged -= OnParentPropertiesChanged;
+            }
+        }
+
+        // for FROMEDITOR
+        private void OnParentPropertiesChanged(object sender, EventArgs args)
+        {
+            PropertiesChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

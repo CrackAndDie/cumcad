@@ -11,6 +11,7 @@ namespace cumcad.ViewModels.Base
     internal interface IHandler
     {
         List<Mat> GetResult(List<Mat> images);
+        void OnRemove();
         event EventHandler<EventArgs> PropertiesChanged;
     }
 }

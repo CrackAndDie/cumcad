@@ -3,6 +3,9 @@ using cumcad.Models.Classes;
 using cumcad.Models.Factories;
 using cumcad.Models.Helpers;
 using cumcad.Models.Other;
+using cumcad.Models.Other.MyEventArgs;
+using cumcad.ViewModels.Handlers;
+using cumcad.Views.Handlers;
 using OpenCvSharp;
 using OpenCvSharp.Flann;
 using Prism.Mvvm;
@@ -50,18 +53,17 @@ namespace cumcad.ViewModels
         }
 
         internal event EventHandler<EventArgs> RemoveFromInside;
+        internal event EventHandler<EditorItemEventArgs> CreateFromEditorItem;
 
         public ObservableCollection<EditorItem> TreeViewItems => editorModel.EditorItems;
 
         #region Commands
         public ICommand AddCommand { get; set; }
-        public ICommand RemoveCommand { get; set; }
         #endregion
 
         internal EditorPageViewModel(SelectEditorResult parameter)
         {
             AddCommand = new DelegateCommand(OnAddCommand);
-            RemoveCommand = new DelegateCommand(OnRemoveCommand);
 
             editorModel = new EditorModel(parameter);
             editorModel.OnRemove += (s, a) => { OnRemove(); RemoveFromInside?.Invoke(this, a); };
@@ -75,16 +77,26 @@ namespace cumcad.ViewModels
                 var uc = HandlerFactory.GetHandler(HandlerFactory.StringItems[(int)selectedIndex]);
                 if (uc != null)
                 {
-                    editorModel.Add(uc, HandlerFactory.StringItems[(int)selectedIndex]);
+                    var item = editorModel.Add(uc, HandlerFactory.StringItems[(int)selectedIndex]);
+                    item.WantsToBeRemoved += OnItemWantsToBeRemoved;
+                    item.CreateFromThis += OnWantsToBeCreatedFromEditorItem;
                 }
             }
         }
 
-        private void OnRemoveCommand(object parameter)
+        private void OnWantsToBeCreatedFromEditorItem(object sender, EventArgs args)
         {
-            if (SelectedBranch != null)
+            CreateFromEditorItem?.Invoke(editorModel, new EditorItemEventArgs(sender as EditorItem));
+        }
+
+        private void OnItemWantsToBeRemoved(object sender, EventArgs args)
+        {
+            var item = sender as EditorItem;
+            if (item != null)
             {
-                editorModel.Remove(SelectedBranch);
+                item.WantsToBeRemoved -= OnItemWantsToBeRemoved;
+                item.CreateFromThis -= OnWantsToBeCreatedFromEditorItem;
+                editorModel.Remove(item);
             }
         }
 
@@ -102,22 +114,28 @@ namespace cumcad.ViewModels
             handler.PropertiesChanged += OnHandlerPropertiesChanged;
             int index = editorModel.IndexOf(item);
             // getting the first images
-            beforeImages = editorModel.Get(0).GetResult(null);
-            for (int i = 1; i < index; i++)
+            if (editorModel.GetDataContext(0) is MainHandlerViewModel)
             {
-                var result = editorModel.Get(i).GetResult(beforeImages);
-                Funcad.ReleaseMats(beforeImages);
-                beforeImages = result;            
+                beforeImages = editorModel.Get(0).GetResult(null);
+                if (beforeImages != null && beforeImages.Count > 0)
+                {
+                    for (int i = 1; i < index; i++)
+                    {
+                        var result = editorModel.Get(i).GetResult(beforeImages);
+                        Funcad.ReleaseMats(beforeImages);
+                        beforeImages = result;
+                    }
+                    var mats = editorModel.Get(index).GetResult(beforeImages);
+                    if (ViewedImages != null)
+                    {
+                        ViewedImages.Clear();
+                    }
+                    ReCalcUG(mats.Count);
+                    ViewedImages = Funcad.FromMatToBitmap(mats);
+                    Funcad.ReleaseMats(mats);
+                    lastSelectedItem = item;
+                }
             }
-            var mats = editorModel.Get(index).GetResult(beforeImages);
-            if (ViewedImages != null)
-            {
-                ViewedImages.Clear();
-            }
-            ReCalcUG(mats.Count);
-            ViewedImages = Funcad.FromMatToBitmap(mats);
-            Funcad.ReleaseMats(mats);
-            lastSelectedItem = item;
         }
 
         private void OnHandlerPropertiesChanged(object sender, EventArgs args)
@@ -144,6 +162,7 @@ namespace cumcad.ViewModels
         // inside method that is called when the page is going to be removed
         internal void OnRemove()
         {
+            editorModel.RemoveAll();
             if (beforeImages != null)
             {
                 Funcad.ReleaseMats(beforeImages);

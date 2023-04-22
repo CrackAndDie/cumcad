@@ -40,7 +40,7 @@
                                          Grid.Column="0"
                                          Grid.ColumnSpan="4"
                                          LogoImage="/Resources/logo_cc.png"
-                                         ProductName="Уведомление"
+                                         ProductName="Notification"
                                          CloseWindowCommand="{Binding CloseWindowCommand}"
                                          WindowParameter="{Binding ElementName=ThisWindow}"
                                          MinimizeButtonVisibility="Collapsed"

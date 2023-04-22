@@ -104,6 +104,7 @@
     <Compile Include="Models\Helpers\WaiterHelper.cs" />
     <Compile Include="Models\MainTabsModel.cs" />
     <Compile Include="Models\Other\DelegateCommand.cs" />
+    <Compile Include="Models\Other\MyEventArgs\EditorItemEventArgs.cs" />
     <Compile Include="Models\Other\MyEventArgs\WindowStateChangedEventArgs.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\Base\IHandler.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="ViewModels\EditorPageViewModel.cs" />
     <Compile Include="ViewModels\Handlers\InRangeViewModel.cs" />
     <Compile Include="ViewModels\Handlers\MainHandlerViewModel.cs" />
+    <Compile Include="ViewModels\Handlers\ResizeViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\MyMessageBoxViewModel.cs" />
     <Compile Include="ViewModels\SelectEditorWindowViewModel.cs" />
@@ -126,6 +128,9 @@
     </Compile>
     <Compile Include="Views\Handlers\MainHandlerView.xaml.cs">
       <DependentUpon>MainHandlerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Handlers\ResizeView.xaml.cs">
+      <DependentUpon>ResizeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MyMessageBoxView.xaml.cs">
       <DependentUpon>MyMessageBoxView.xaml</DependentUpon>
@@ -165,6 +170,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Handlers\MainHandlerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Handlers\ResizeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

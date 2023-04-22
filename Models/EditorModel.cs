@@ -47,16 +47,22 @@ namespace cumcad.Models
 
         internal IHandler Get(int ind)
         {
-            return EditorItems[ind].Controls[0].SettingsContent.DataContext as IHandler;
+            return GetIHandler(EditorItems[ind]);
         }
 
-        internal void Add(UserControl item, string name)
+        internal object GetDataContext(int ind)
+        {
+            return EditorItems[ind].Controls[0].SettingsContent.DataContext;
+        }
+
+        internal EditorItem Add(UserControl item, string name)
         {
             var handler = new EditorItem(item)
             {
                 Name = name,
             };
             EditorItems.Add(handler);
+            return handler;
         }
 
         internal void Remove(EditorItem item)
@@ -64,11 +70,21 @@ namespace cumcad.Models
             var ind = EditorItems.IndexOf(item);
             if (ind != 0)
             {
+                GetIHandler(item).OnRemove();
                 EditorItems.Remove(item);
             }
             else
             {
                 MessageBoxFactory.Show("Remove youself, you're a mess", MessageBoxFactory.INFO_LOGO);
+            }
+        }
+
+        internal void RemoveAll()
+        {
+            while (EditorItems.Count > 0)
+            {
+                GetIHandler(EditorItems[0]).OnRemove();
+                EditorItems.RemoveAt(0);
             }
         }
     }

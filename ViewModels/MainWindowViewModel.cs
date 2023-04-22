@@ -14,6 +14,7 @@ using cumcad.Models;
 using Prism.Mvvm;
 using System.Threading;
 using cumcad.Models.Factories;
+using cumcad.Models.Other.MyEventArgs;
 
 namespace cumcad.ViewModels
 {
@@ -146,12 +147,32 @@ namespace cumcad.ViewModels
             var result = await SelectorsFactory.OpenSelectEditorWindow();
             if ((bool)result.IsSelected)
             {
-                mainTabsModel.AddNewItem(result.IconColor).OnRemove += OnItemRemove;
-                var editor = EditorsHelper.AddNewEditorPage(result);
-                (editor.DataContext as EditorPageViewModel).RemoveFromInside += OnItemRemoveFromInside;
-                GoToPage(editor);
-                SelectedTabIndex = EditorsHelper.GetListCount();
+                AddEditor(result);
             }
+        }
+
+        private void OnCreateFromEditorItem(object sender, EditorItemEventArgs args)
+        {
+            var editorModel = sender as EditorModel;
+            var item = args.Parameter;
+            AddEditor(new SelectEditorResult()
+            {
+                IsSelected = true,
+                IconColor = Funcad.PickRandomBrush(),
+                SelectedType = EditorType.FromEditor,
+                ParentEditorItem = item,
+                ParentEditorModel = editorModel
+            });
+        }
+
+        private void AddEditor(SelectEditorResult result)
+        {
+            mainTabsModel.AddNewItem(result.IconColor).OnRemove += OnItemRemove;
+            var editor = EditorsHelper.AddNewEditorPage(result);
+            (editor.DataContext as EditorPageViewModel).RemoveFromInside += OnItemRemoveFromInside;
+            (editor.DataContext as EditorPageViewModel).CreateFromEditorItem += OnCreateFromEditorItem;
+            GoToPage(editor);
+            SelectedTabIndex = EditorsHelper.GetListCount();
         }
 
         private void OnItemRemove(object sender, EventArgs args)
@@ -161,6 +182,7 @@ namespace cumcad.ViewModels
             int ind = mainTabsModel.IndexOf(item);
             mainTabsModel.RemoveItem(ind);
             (EditorsHelper.GetPageView(ind - 1).DataContext as EditorPageViewModel).RemoveFromInside -= OnItemRemoveFromInside;
+            (EditorsHelper.GetPageView(ind - 1).DataContext as EditorPageViewModel).CreateFromEditorItem -= OnCreateFromEditorItem;
             EditorsHelper.RemoveAt(ind - 1);
         }
 
@@ -172,6 +194,7 @@ namespace cumcad.ViewModels
             tabItem.OnRemove -= OnItemRemove;
             mainTabsModel.RemoveItem(ind + 1);
             (EditorsHelper.GetPageView(ind).DataContext as EditorPageViewModel).RemoveFromInside -= OnItemRemoveFromInside;
+            (EditorsHelper.GetPageView(ind).DataContext as EditorPageViewModel).CreateFromEditorItem -= OnCreateFromEditorItem;
             EditorsHelper.RemoveAt(ind);
         }
 

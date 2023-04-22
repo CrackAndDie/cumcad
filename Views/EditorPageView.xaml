@@ -53,7 +53,16 @@
                 </Style>
                 <HierarchicalDataTemplate DataType="{x:Type classes:EditorItem}"
                                           ItemsSource="{Binding Controls, UpdateSourceTrigger=PropertyChanged}">
-                    <TextBlock Text="{Binding Name}" />
+                    <TextBlock Text="{Binding Name}">
+                        <TextBlock.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Editor from this"
+                                          Command="{Binding EditorFromThisCommand}" />
+                                <MenuItem Header="Remove"
+                                            Command="{Binding DeleteCommand}" />
+                            </ContextMenu>
+                        </TextBlock.ContextMenu>
+                    </TextBlock>
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type classes:EditorInsideItem}">
                     <Frame Content="{Binding SettingsContent}" NavigationUIVisibility="Hidden"/>
@@ -80,7 +89,7 @@
                                          Width="28"
                                          Foreground="AliceBlue" />
             </Button>
-            <Button Style="{StaticResource MaterialDesignOutlinedLightButton}"
+            <!--<Button Style="{StaticResource MaterialDesignOutlinedLightButton}"
                     ToolTip="RemoveHandler"
                     Width="38"
                     Height="38"
@@ -93,7 +102,7 @@
                                          Height="26"
                                          Width="26"
                                          Foreground="AliceBlue" />
-            </Button>
+            </Button>-->
         </StackPanel>
     </Grid>
 </Page>

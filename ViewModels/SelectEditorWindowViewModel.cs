@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using cumcad.Models.Classes;
 
 namespace cumcad.ViewModels
 {
@@ -19,15 +20,20 @@ namespace cumcad.ViewModels
     {
         Image,
         CameraStream,
-        Shufflecad
+        Shufflecad,
+        FromEditor
     }
 
     class SelectEditorResult
     {
         internal bool? IsSelected { get; set; }
         internal EditorType SelectedType { get; set; }
-        internal string ImagePath { get; set; }
         internal SolidColorBrush IconColor { get; set; }
+        // for IMAGE type
+        internal string ImagePath { get; set; }
+        // for FROMEDITOR type
+        internal EditorModel ParentEditorModel { get; set; }
+        internal EditorItem ParentEditorItem { get; set; }
     }
 
     internal class SelectEditorWindowViewModel : BindableBase
