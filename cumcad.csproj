@@ -110,6 +110,7 @@
     <Compile Include="ViewModels\Base\IHandler.cs" />
     <Compile Include="ViewModels\ColorPickerWindowViewModel.cs" />
     <Compile Include="ViewModels\EditorPageViewModel.cs" />
+    <Compile Include="ViewModels\Handlers\CountNonZeroViewModel.cs" />
     <Compile Include="ViewModels\Handlers\InRangeViewModel.cs" />
     <Compile Include="ViewModels\Handlers\MainHandlerViewModel.cs" />
     <Compile Include="ViewModels\Handlers\ResizeViewModel.cs" />
@@ -122,6 +123,9 @@
     </Compile>
     <Compile Include="Views\EditorPageView.xaml.cs">
       <DependentUpon>EditorPageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Handlers\CountNonZeroView.xaml.cs">
+      <DependentUpon>CountNonZeroView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Handlers\InRangeView.xaml.cs">
       <DependentUpon>InRangeView.xaml</DependentUpon>
@@ -162,6 +166,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EditorPageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Handlers\CountNonZeroView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

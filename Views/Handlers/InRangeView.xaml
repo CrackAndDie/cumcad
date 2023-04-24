@@ -11,11 +11,11 @@
     <UserControl.Resources>
         <ResourceDictionary Source="/Views/Other/RangeSlider.xaml" />
     </UserControl.Resources>
-    <Grid Width="175" Height="210">
+    <Grid Width="165" Height="210">
         <Border Background="#22000000" CornerRadius="3" BorderThickness="1" BorderBrush="AliceBlue">
             <StackPanel HorizontalAlignment="Stretch"
                         VerticalAlignment="Center">
-                <other:RangeSlider Width="170"
+                <other:RangeSlider Width="160"
                                    Margin="0, 0, 0, 10"
                                    HorizontalAlignment="Center"
                                    MinRange="8"
@@ -63,7 +63,7 @@
                              Padding="0"
                              AcceptsReturn="False" />
                 </Grid>
-                <other:RangeSlider Width="170"
+                <other:RangeSlider Width="160"
                                    Margin="0, 10"
                                    HorizontalAlignment="Center"
                                    MinRange="8"
@@ -111,7 +111,7 @@
                              Padding="0"
                              AcceptsReturn="False" />
                 </Grid>
-                <other:RangeSlider Width="170"
+                <other:RangeSlider Width="160"
                                    Margin="0, 10"
                                    HorizontalAlignment="Center"
                                    MinRange="8"

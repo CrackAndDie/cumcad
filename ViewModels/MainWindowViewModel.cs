@@ -151,14 +151,14 @@ namespace cumcad.ViewModels
             }
         }
 
-        private void OnCreateFromEditorItem(object sender, EditorItemEventArgs args)
+        async private void OnCreateFromEditorItem(object sender, EditorItemEventArgs args)
         {
             var editorModel = sender as EditorModel;
             var item = args.Parameter;
             AddEditor(new SelectEditorResult()
             {
                 IsSelected = true,
-                IconColor = Funcad.PickRandomBrush(),
+                IconColor = await SelectorsFactory.OpenColorPickerWindow(),
                 SelectedType = EditorType.FromEditor,
                 ParentEditorItem = item,
                 ParentEditorModel = editorModel

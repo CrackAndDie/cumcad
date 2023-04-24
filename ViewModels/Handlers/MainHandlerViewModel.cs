@@ -39,7 +39,7 @@ namespace cumcad.ViewModels.Handlers
 
             if (editorData.SelectedType == EditorType.FromEditor)
             {
-                var handler = EditorModel.GetIHandler(editorData.ParentEditorItem);
+                var handler = editorData.ParentEditorModel.Get(0);
                 handler.PropertiesChanged += OnParentPropertiesChanged;
             }
         }
@@ -90,7 +90,7 @@ namespace cumcad.ViewModels.Handlers
         {
             if (editorData.SelectedType == EditorType.FromEditor)
             {
-                EditorModel.GetIHandler(editorData.ParentEditorItem).PropertiesChanged -= OnParentPropertiesChanged;
+                editorData.ParentEditorModel.Get(0).PropertiesChanged -= OnParentPropertiesChanged;
             }
         }
 

@@ -14,7 +14,7 @@ namespace cumcad.Models.Factories
 {
     internal class HandlerFactory
     {
-        internal static List<string> StringItems = new List<string>() { "InRange", "Resize", "Anime" };
+        internal static List<string> StringItems = new List<string>() { "InRange", "Resize", "CountNonZero", "Anime" };
 
         internal static UserControl GetHandler(string name)
         {
@@ -47,6 +47,14 @@ namespace cumcad.Models.Factories
         {
             var view = new ResizeView();
             var vm = new ResizeViewModel();
+            view.DataContext = vm;
+            return view;
+        }
+
+        private static UserControl GetCountNonZero()
+        {
+            var view = new CountNonZeroView();
+            var vm = new CountNonZeroViewModel();
             view.DataContext = vm;
             return view;
         }
