@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="cumcad.Views.Handlers.InRangeGrayView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:cumcad.Views.Handlers"
+             xmlns:other="clr-namespace:cumcad.Views.Other"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary Source="/Views/Other/RangeSlider.xaml" />
+    </UserControl.Resources>
+    <Grid Width="165"
+          Height="85">
+        <Border Background="#22000000"
+                CornerRadius="3"
+                BorderThickness="1"
+                BorderBrush="AliceBlue">
+            <StackPanel HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center">
+                <other:RangeSlider Width="160"
+                                   Margin="0, 0, 0, 10"
+                                   HorizontalAlignment="Center"
+                                   MinRange="8"
+                                   RangeStart="0"
+                                   RangeStartSelected="{Binding GrayLowerValue, Mode=OneWayToSource}"
+                                   RangeStop="255"
+                                   RangeStopSelected="{Binding GrayHigherValue, Mode=OneWayToSource}" />
+                <Grid>
+                    <TextBox Width="55"
+                             Height="20"
+                             IsTabStop="False"
+                             IsReadOnly="True"
+                             Text="{Binding GrayLowerValue, UpdateSourceTrigger=PropertyChanged}"
+                             TextWrapping="NoWrap"
+                             FontSize="12"
+                             HorizontalAlignment="Left"
+                             Margin="10, 0, 10, 10"
+                             TextAlignment="Center"
+                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                             materialDesign:HintAssist.Hint="Min ch1"
+                             materialDesign:HintAssist.Foreground="AliceBlue"
+                             materialDesign:HintAssist.FloatingOffset="2, 20"
+                             materialDesign:HintAssist.FloatingScale="1"
+                             materialDesign:HintAssist.Background="Transparent"
+                             Foreground="AliceBlue"
+                             Padding="0"
+                             AcceptsReturn="False" />
+                    <TextBox Width="55"
+                             Height="20"
+                             IsTabStop="False"
+                             IsReadOnly="True"
+                             Text="{Binding GrayHigherValue, UpdateSourceTrigger=PropertyChanged}"
+                             TextWrapping="NoWrap"
+                             FontSize="12"
+                             HorizontalAlignment="Right"
+                             Margin="10, 0, 10, 10"
+                             TextAlignment="Center"
+                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                             materialDesign:HintAssist.Hint="Max ch1"
+                             materialDesign:HintAssist.Foreground="AliceBlue"
+                             materialDesign:HintAssist.FloatingOffset="2, 20"
+                             materialDesign:HintAssist.FloatingScale="1"
+                             materialDesign:HintAssist.Background="Transparent"
+                             Foreground="AliceBlue"
+                             Padding="0"
+                             AcceptsReturn="False" />
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

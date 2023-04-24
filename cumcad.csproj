@@ -111,6 +111,8 @@
     <Compile Include="ViewModels\ColorPickerWindowViewModel.cs" />
     <Compile Include="ViewModels\EditorPageViewModel.cs" />
     <Compile Include="ViewModels\Handlers\CountNonZeroViewModel.cs" />
+    <Compile Include="ViewModels\Handlers\CvtColorViewModel.cs" />
+    <Compile Include="ViewModels\Handlers\InRangeGrayViewModel.cs" />
     <Compile Include="ViewModels\Handlers\InRangeViewModel.cs" />
     <Compile Include="ViewModels\Handlers\MainHandlerViewModel.cs" />
     <Compile Include="ViewModels\Handlers\ResizeViewModel.cs" />
@@ -126,6 +128,12 @@
     </Compile>
     <Compile Include="Views\Handlers\CountNonZeroView.xaml.cs">
       <DependentUpon>CountNonZeroView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Handlers\CvtColorView.xaml.cs">
+      <DependentUpon>CvtColorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Handlers\InRangeGrayView.xaml.cs">
+      <DependentUpon>InRangeGrayView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Handlers\InRangeView.xaml.cs">
       <DependentUpon>InRangeView.xaml</DependentUpon>
@@ -170,6 +178,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Handlers\CountNonZeroView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Handlers\CvtColorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Handlers\InRangeGrayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

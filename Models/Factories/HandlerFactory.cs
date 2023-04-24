@@ -14,7 +14,7 @@ namespace cumcad.Models.Factories
 {
     internal class HandlerFactory
     {
-        internal static List<string> StringItems = new List<string>() { "InRange", "Resize", "CountNonZero", "Anime" };
+        internal static List<string> StringItems = new List<string>() { "InRange", "InRangeGray", "Resize", "CvtColor", "CountNonZero", "Anime" };
 
         internal static UserControl GetHandler(string name)
         {
@@ -43,10 +43,26 @@ namespace cumcad.Models.Factories
             return view;
         }
 
+        private static UserControl GetInRangeGray()
+        {
+            var view = new InRangeGrayView();
+            var vm = new InRangeGrayViewModel();
+            view.DataContext = vm;
+            return view;
+        }
+
         private static UserControl GetResize()
         {
             var view = new ResizeView();
             var vm = new ResizeViewModel();
+            view.DataContext = vm;
+            return view;
+        }
+
+        private static UserControl GetCvtColor()
+        {
+            var view = new CvtColorView();
+            var vm = new CvtColorViewModel();
             view.DataContext = vm;
             return view;
         }
