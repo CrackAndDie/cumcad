@@ -14,7 +14,7 @@ namespace cumcad.Models.Factories
 {
     internal class HandlerFactory
     {
-        internal static List<string> StringItems = new List<string>() { "InRange", "InRangeGray", "Resize", "CvtColor", "CountNonZero", "Anime" };
+        internal static List<string> StringItems = new List<string>() { "ExtractImage", "InRange", "InRangeGray", "Resize", "CvtColor", "CountNonZero", "BitwiseNot", "Anime" };
 
         internal static UserControl GetHandler(string name)
         {
@@ -33,6 +33,14 @@ namespace cumcad.Models.Factories
                 Debug.WriteLine(ex);
             }
             return null;
+        }
+
+        private static UserControl GetExtractImage()
+        {
+            var view = new ExtractImageView();
+            var vm = new ExtractImageViewModel();
+            view.DataContext = vm;
+            return view;
         }
 
         private static UserControl GetInRange()
@@ -71,6 +79,14 @@ namespace cumcad.Models.Factories
         {
             var view = new CountNonZeroView();
             var vm = new CountNonZeroViewModel();
+            view.DataContext = vm;
+            return view;
+        }
+
+        private static UserControl GetBitwiseNot()
+        {
+            var view = new BitwiseNotView();
+            var vm = new BitwiseNotViewModel();
             view.DataContext = vm;
             return view;
         }

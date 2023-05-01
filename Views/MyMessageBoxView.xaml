@@ -69,7 +69,7 @@
                         Orientation="Horizontal"
                         HorizontalAlignment="Center">
                 <Button Style="{StaticResource MaterialDesignOutlinedLightButton}"
-                        Content="Ок"
+                        Content="OK"
                         Command="{Binding CloseWindowCommand}"
                         MaxWidth="110"
                         CommandParameter="{Binding ElementName=ThisWindow}"
@@ -83,7 +83,7 @@
                         Orientation="Horizontal"
                         HorizontalAlignment="Center">
                 <Button Style="{StaticResource MaterialDesignOutlinedLightButton}"
-                        Content="Да"
+                        Content="Yes"
                         Command="{Binding AcceptCloseWindowCommand}"
                         MaxWidth="110"
                         Margin="15, 0"
@@ -91,7 +91,7 @@
                         Height="30"
                         IsDefault="True" />
                 <Button Style="{StaticResource MaterialDesignOutlinedLightButton}"
-                        Content="Нет"
+                        Content="No"
                         Command="{Binding CloseWindowCommand}"
                         MaxWidth="110"
                         Margin="15, 0"
