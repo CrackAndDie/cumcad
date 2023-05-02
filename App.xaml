@@ -33,6 +33,37 @@
                 </Setter>
             </Style>
 
+            <Style x:Key="CommonText"
+                   TargetType="{x:Type TextBlock}">
+                <Setter Property="Foreground"
+                        Value="AliceBlue" />
+                <Setter Property="FontSize"
+                        Value="16" />
+                <Setter Property="FontFamily"
+                        Value="Trebuchet MS" />
+                <Setter Property="TextAlignment"
+                        Value="Center" />
+            </Style>
+
+            <Style x:Key="CommonTextBox"
+                   TargetType="{x:Type TextBox}"
+                   BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
+                <Setter Property="Foreground"
+                        Value="AliceBlue" />
+                <Setter Property="FontSize"
+                        Value="16" />
+                <Setter Property="FontFamily"
+                        Value="Trebuchet MS" />
+                <Setter Property="TextAlignment"
+                        Value="Center" />
+                <Setter Property="materialDesign:HintAssist.Foreground"
+                        Value="AliceBlue" />
+                <Setter Property="AcceptsReturn"
+                        Value="False" />
+                <Setter Property="IsTabStop"
+                        Value="False" />
+            </Style>
+
             <!--SCROLL BAR-->
 
             <SolidColorBrush x:Key="StandardBorderBrush" Color="#AAA" />

@@ -15,9 +15,8 @@
                 BorderBrush="AliceBlue">
             <TextBlock Text="Bitwise Not :)" 
                        HorizontalAlignment="Center" 
-                       VerticalAlignment="Center" 
-                       Foreground="AliceBlue"
-                       FontSize="16"/>
+                       VerticalAlignment="Center"
+                       Style="{StaticResource CommonText}" />
         </Border>
     </Grid>
 </UserControl>

@@ -153,9 +153,8 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0"
                            Text="cumcad"
-                           Foreground="AliceBlue"
+                           Style="{StaticResource CommonText}"
                            FontSize="70"
-                           FontFamily="Trebuchet MS"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Bottom" />
                 <Image Grid.Row="1"
@@ -167,9 +166,7 @@
                        Margin="40" />
                 <TextBlock Grid.Row="2"
                            Text="Powered by: OpenCV, MeterialDesignToolkitXAML, funcad"
-                           Foreground="AliceBlue"
-                           FontSize="16"
-                           FontFamily="Trebuchet MS"
+                           Style="{StaticResource CommonText}"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center" />
             </Grid>

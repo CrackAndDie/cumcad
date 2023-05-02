@@ -89,20 +89,6 @@
                                          Width="28"
                                          Foreground="AliceBlue" />
             </Button>
-            <!--<Button Style="{StaticResource MaterialDesignOutlinedLightButton}"
-                    ToolTip="RemoveHandler"
-                    Width="38"
-                    Height="38"
-                    Padding="0"
-                    Grid.Row="1"
-                    materialDesign:ButtonAssist.CornerRadius="6"
-                    Command="{Binding RemoveCommand}"
-                    Margin="10, 0">
-                <materialDesign:PackIcon Kind="Close"
-                                         Height="26"
-                                         Width="26"
-                                         Foreground="AliceBlue" />
-            </Button>-->
         </StackPanel>
     </Grid>
 </Page>

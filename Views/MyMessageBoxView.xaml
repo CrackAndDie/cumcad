@@ -52,9 +52,7 @@
                        Grid.Column="2"
                        Grid.Row="1"
                        TextWrapping="Wrap"
-                       FontSize="16"
-                       TextAlignment="Center"
-                       Foreground="AliceBlue"
+                       Style="{StaticResource CommonText}"
                        VerticalAlignment="Center" />
             <Image Source="{Binding ImageSource}"
                    RenderOptions.BitmapScalingMode="Fant"

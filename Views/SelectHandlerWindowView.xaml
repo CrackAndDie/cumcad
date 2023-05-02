@@ -61,7 +61,6 @@
                         Orientation="Horizontal"
                         HorizontalAlignment="Center">
                 <Button Style="{StaticResource MaterialDesignOutlinedLightButton}"
-                        ToolTip="OpenFile"
                         Width="36"
                         Height="36"
                         Padding="0"

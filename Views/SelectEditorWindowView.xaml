@@ -67,7 +67,7 @@
                                                  Foreground="AliceBlue" />
                         <TextBlock Margin="4 0 0 0"
                                    Text="IMAGE"
-                                   Foreground="AliceBlue" />
+                                   Style="{StaticResource CommonText}" />
                     </StackPanel>
                 </RadioButton>
                 <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
@@ -79,7 +79,7 @@
                                                  Foreground="AliceBlue" />
                         <TextBlock Margin="4 0 0 0"
                                    Text="CAMERA"
-                                   Foreground="AliceBlue" />
+                                   Style="{StaticResource CommonText}" />
                     </StackPanel>
                 </RadioButton>
                 <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
@@ -91,7 +91,7 @@
                                                  Foreground="AliceBlue" />
                         <TextBlock Margin="4 0 0 0"
                                    Text="SHUFFLECAD"
-                                   Foreground="AliceBlue" />
+                                   Style="{StaticResource CommonText}" />
                     </StackPanel>
                 </RadioButton>
             </StackPanel>
@@ -132,18 +132,12 @@
                     </Button>
                     <TextBox MinWidth="250"
                              MaxWidth="400"
-                             IsTabStop="False"
                              Text="{Binding ImageFilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              TextWrapping="Wrap"
-                             FontSize="16"
                              Margin="10, 10, 0, 10"
                              MinHeight="56"
-                             TextAlignment="Center"
-                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                             materialDesign:HintAssist.Hint="Image path"
-                             materialDesign:HintAssist.Foreground="AliceBlue"
-                             Foreground="AliceBlue"
-                             AcceptsReturn="False" />
+                             Style="{StaticResource CommonTextBox}"
+                             materialDesign:HintAssist.Hint="Image path" />
                 </StackPanel>
             </Grid>
             <StackPanel Grid.Row="3" VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Center">
