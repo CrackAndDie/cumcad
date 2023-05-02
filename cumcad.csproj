@@ -112,6 +112,7 @@
     <Compile Include="ViewModels\ColorPickerWindowViewModel.cs" />
     <Compile Include="ViewModels\EditorPageViewModel.cs" />
     <Compile Include="ViewModels\Handlers\BitwiseNotViewModel.cs" />
+    <Compile Include="ViewModels\Handlers\BitwiseOrViewModel.cs" />
     <Compile Include="ViewModels\Handlers\CountNonZeroViewModel.cs" />
     <Compile Include="ViewModels\Handlers\CvtColorViewModel.cs" />
     <Compile Include="ViewModels\Handlers\ExtractImageViewModel.cs" />
@@ -132,6 +133,9 @@
     </Compile>
     <Compile Include="Views\Handlers\BitwiseNotView.xaml.cs">
       <DependentUpon>BitwiseNotView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Handlers\BitwiseOrView.xaml.cs">
+      <DependentUpon>BitwiseOrView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Handlers\CountNonZeroView.xaml.cs">
       <DependentUpon>CountNonZeroView.xaml</DependentUpon>
@@ -191,6 +195,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Handlers\BitwiseNotView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Handlers\BitwiseOrView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

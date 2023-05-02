@@ -13,7 +13,7 @@ namespace cumcad.ViewModels.Handlers
     internal class ResizeViewModel : BindableBase, IHandler
     {
         private bool freezeEvent = false;
-        private bool resizeInited = false;
+        private bool firstCall = true;
 
         private int width;
         public int Width
@@ -47,12 +47,12 @@ namespace cumcad.ViewModels.Handlers
             var mats = new List<Mat>();
             if (images.Count > 0)
             {
-                if (!resizeInited)
+                if (firstCall)
                 {
                     var size = images[0].Size();
                     Width = size.Width;
                     Height = size.Height;
-                    resizeInited = true;
+                    firstCall = false;
                 }
                 
                 foreach (var image in images)

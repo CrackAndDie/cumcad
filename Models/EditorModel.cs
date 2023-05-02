@@ -17,12 +17,14 @@ namespace cumcad.Models
 {
     internal class EditorModel : BindableBase
     {
+        internal SelectEditorResult EditorResult { get; set; }
         public ObservableCollection<EditorItem> EditorItems { get; }
 
         internal event EventHandler<EventArgs> OnRemove;
 
         internal EditorModel(SelectEditorResult editorResult)
         {
+            EditorResult = editorResult;
             EditorItems = new ObservableCollection<EditorItem>();
             var mhView = new MainHandlerView();
             var mhViewModel = new MainHandlerViewModel(editorResult);
@@ -48,6 +50,11 @@ namespace cumcad.Models
         internal IHandler Get(int ind)
         {
             return GetIHandler(EditorItems[ind]);
+        }
+
+        internal ObservableCollection<EditorItem> GetItems()
+        {
+            return EditorItems;
         }
 
         internal object GetDataContext(int ind)

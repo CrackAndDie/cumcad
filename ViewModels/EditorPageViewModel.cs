@@ -20,7 +20,7 @@ namespace cumcad.ViewModels
 {
     internal class EditorPageViewModel : BindableBase
     {
-        readonly EditorModel editorModel;
+        internal readonly EditorModel editorModel;
 
         private EditorItem lastSelectedItem;
         private EditorItem selectedBranch;
