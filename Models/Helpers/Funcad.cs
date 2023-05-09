@@ -1,11 +1,11 @@
-﻿using OpenCvSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -13,7 +13,7 @@ namespace cumcad.Models.Helpers
 {
     internal class Funcad
     {
-        public static ObservableCollection<BitmapImage> FromMatToBitmap(List<Mat> mats)
+        public static ObservableCollection<BitmapImage> FromMatToBitmap(List<OpenCvSharp.Mat> mats)
         {
             var bitmaps = new ObservableCollection<BitmapImage>();
             foreach (var mat in mats)
@@ -32,9 +32,9 @@ namespace cumcad.Models.Helpers
             return bitmaps;
         }
 
-        public static void ReleaseMats(List<Mat> mats)
+        public static void ReleaseMats(List<OpenCvSharp.Mat> mats)
         {
-            foreach (Mat mat in mats)
+            foreach (OpenCvSharp.Mat mat in mats)
             {
                 mat.Release();
                 mat.Dispose();
@@ -57,6 +57,19 @@ namespace cumcad.Models.Helpers
             result = (SolidColorBrush)properties[random].GetValue(null, null);
 
             return result;
+        }
+
+        public static LinearGradientBrush RedStrokeBrush()
+        {
+            LinearGradientBrush myVerticalGradient = new LinearGradientBrush();
+            myVerticalGradient.StartPoint = new Point(0.35, 0);
+            myVerticalGradient.EndPoint = new Point(0.65, 1);
+            myVerticalGradient.GradientStops.Add(new GradientStop(Colors.AliceBlue, 0.0));
+            myVerticalGradient.GradientStops.Add(new GradientStop(Colors.AliceBlue, 0.42));
+            myVerticalGradient.GradientStops.Add(new GradientStop(Colors.Red, 0.5));
+            myVerticalGradient.GradientStops.Add(new GradientStop(Colors.AliceBlue, 0.58));
+            myVerticalGradient.GradientStops.Add(new GradientStop(Colors.AliceBlue, 1.0));
+            return myVerticalGradient;
         }
     }
 }

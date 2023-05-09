@@ -90,5 +90,15 @@ namespace cumcad.ViewModels.Handlers
                 PropertiesChanged?.Invoke(this, EventArgs.Empty);
             }
         }
+
+        public void Selected()
+        {
+            
+        }
+
+        public void UnSelected()
+        {
+            
+        }
     }
 }

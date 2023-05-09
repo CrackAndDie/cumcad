@@ -43,7 +43,7 @@ namespace cumcad.ViewModels.Handlers
 
         public event EventHandler<EventArgs> PropertiesChanged;
 
-        internal RejectBordersViewModel()
+        public RejectBordersViewModel()
         {
             IsTopChecked = true;
             IsRightChecked = true;
@@ -70,6 +70,16 @@ namespace cumcad.ViewModels.Handlers
         }
 
         public void OnRemove()
+        {
+            
+        }
+
+        public void Selected()
+        {
+            
+        }
+
+        public void UnSelected()
         {
             
         }

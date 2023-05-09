@@ -30,7 +30,6 @@ namespace cumcad.ViewModels
             set { SetProperty(ref selectedBranch, value); OnSelectChanged(selectedBranch); }
         }
 
-        private List<Mat> beforeImages;
         private ObservableCollection<BitmapImage> viewedImages;
         public ObservableCollection<BitmapImage> ViewedImages
         {
@@ -105,27 +104,22 @@ namespace cumcad.ViewModels
             if (lastSelectedItem != null)
             {
                 EditorModel.GetIHandler(lastSelectedItem).PropertiesChanged -= OnHandlerPropertiesChanged;
+                EditorModel.GetIHandler(lastSelectedItem).UnSelected();
             }
-            if (beforeImages != null)
+            if (editorModel.BeforeImages != null)
             {
-                Funcad.ReleaseMats(beforeImages);
+                Funcad.ReleaseMats(editorModel.BeforeImages);
             }
             var handler = EditorModel.GetIHandler(item);
             handler.PropertiesChanged += OnHandlerPropertiesChanged;
+            handler.Selected();
             int index = editorModel.IndexOf(item);
             // getting the first images
             if (editorModel.GetDataContext(0) is MainHandlerViewModel)
             {
-                beforeImages = editorModel.Get(0).GetResult(null);
-                if (beforeImages != null && beforeImages.Count > 0)
+                var mats = editorModel.GetUpTo(item);
+                if (mats != null)
                 {
-                    for (int i = 1; i < index; i++)
-                    {
-                        var result = editorModel.Get(i).GetResult(beforeImages);
-                        Funcad.ReleaseMats(beforeImages);
-                        beforeImages = result;
-                    }
-                    var mats = editorModel.Get(index).GetResult(beforeImages);
                     if (ViewedImages != null)
                     {
                         ViewedImages.Clear();
@@ -140,7 +134,7 @@ namespace cumcad.ViewModels
 
         private void OnHandlerPropertiesChanged(object sender, EventArgs args)
         {
-            var mats = EditorModel.GetIHandler(lastSelectedItem).GetResult(beforeImages);
+            var mats = EditorModel.GetIHandler(lastSelectedItem).GetResult(editorModel.BeforeImages);
             if (ViewedImages != null)
             {
                 ViewedImages.Clear();
@@ -163,9 +157,9 @@ namespace cumcad.ViewModels
         internal void OnRemove()
         {
             editorModel.RemoveAll();
-            if (beforeImages != null)
+            if (editorModel.BeforeImages != null)
             {
-                Funcad.ReleaseMats(beforeImages);
+                Funcad.ReleaseMats(editorModel.BeforeImages);
             }
         }
     }

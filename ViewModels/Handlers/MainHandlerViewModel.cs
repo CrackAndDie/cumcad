@@ -32,7 +32,7 @@ namespace cumcad.ViewModels.Handlers
 
         private Mat image;
 
-        internal MainHandlerViewModel(SelectEditorResult editorData)
+        public MainHandlerViewModel(SelectEditorResult editorData)
         {
             Name = editorData.SelectedType.ToString();
             this.editorData = editorData;
@@ -65,16 +65,7 @@ namespace cumcad.ViewModels.Handlers
                 int index = editorData.ParentEditorModel.IndexOf(editorData.ParentEditorItem);
                 if (index >= 0)
                 {
-                    // getting the first images
-                    var beforeImages = editorData.ParentEditorModel.Get(0).GetResult(images);
-                    for (int i = 1; i < index; i++)
-                    {
-                        var result = editorData.ParentEditorModel.Get(i).GetResult(beforeImages);
-                        Funcad.ReleaseMats(beforeImages);
-                        beforeImages = result;
-                    }
-                    var mats = editorData.ParentEditorModel.Get(index).GetResult(beforeImages);
-                    Funcad.ReleaseMats(beforeImages);
+                    var mats = editorData.ParentEditorModel.GetUpToQuiet(editorData.ParentEditorItem);
                     return mats;
                 }
                 else
@@ -98,6 +89,16 @@ namespace cumcad.ViewModels.Handlers
         private void OnParentPropertiesChanged(object sender, EventArgs args)
         {
             PropertiesChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void Selected()
+        {
+            
+        }
+
+        public void UnSelected()
+        {
+            
         }
     }
 }

@@ -74,8 +74,6 @@ namespace cumcad.ViewModels.Handlers
                     catch (Exception)
                     {
                         // this error appears when the image is initialized, so there is no need to show the problem
-                        //MessageBoxFactory.Show("Something went wrong, check out the next message", MessageBoxFactory.WARN_LOGO);
-                        //MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
                     }
                 }
             }
@@ -95,6 +93,16 @@ namespace cumcad.ViewModels.Handlers
                 lastCallTime = DateTime.Now;
                 PropertiesChanged?.Invoke(this, EventArgs.Empty);
             }
+        }
+
+        public void Selected()
+        {
+            
+        }
+
+        public void UnSelected()
+        {
+            
         }
     }
 }

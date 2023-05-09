@@ -1,6 +1,8 @@
-﻿using cumcad.Models.Helpers;
+﻿using cumcad.Models.Factories;
+using cumcad.Models.Helpers;
 using cumcad.ViewModels.Base;
 using OpenCvSharp;
+using OpenCvSharp.Flann;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -15,8 +17,8 @@ namespace cumcad.ViewModels.Handlers
 {
     internal class BitwiseOrViewModel : BindableBase, IHandler
     {
-        private List<SolidColorBrush> img2EditorBrushes;
-        public List<SolidColorBrush> Img2EditorBrushes
+        private List<Brush> img2EditorBrushes;
+        public List<Brush> Img2EditorBrushes
         {
             get { return img2EditorBrushes; }
             set { SetProperty(ref img2EditorBrushes, value); }
@@ -43,17 +45,72 @@ namespace cumcad.ViewModels.Handlers
             set { SetProperty(ref selectedImg2Handler, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
         }
 
+        private List<Brush> maskEditorBrushes;
+        public List<Brush> MaskEditorBrushes
+        {
+            get { return maskEditorBrushes; }
+            set { SetProperty(ref maskEditorBrushes, value); }
+        }
+
+        private int selectedMaskEditor;
+        public int SelectedMaskEditor
+        {
+            get { return selectedMaskEditor; }
+            set { SetProperty(ref selectedMaskEditor, value); MaskSelectionChanged(selectedMaskEditor); }
+        }
+
+        private List<string> maskEditorHandlers;
+        public List<string> MaskEditorHandlers
+        {
+            get { return maskEditorHandlers; }
+            set { SetProperty(ref maskEditorHandlers, value); }
+        }
+
+        private int selectedMaskHandler;
+        public int SelectedMaskHandler
+        {
+            get { return selectedMaskHandler; }
+            set { SetProperty(ref selectedMaskHandler, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
+        }
+
         public event EventHandler<EventArgs> PropertiesChanged;
 
-        internal BitwiseOrViewModel()
+        public BitwiseOrViewModel()
         {
-            Img2EditorBrushes = EditorsHelper.GetEditors().Select(x => (x.DataContext as EditorPageViewModel).editorModel.EditorResult.IconColor).ToList();
+            Img2EditorBrushes = GetImg2Brushes();
+            MaskEditorBrushes = GetMaskBrushes();
             SelectedImg2Editor = 0;
+            SelectedMaskEditor = 0;
         }
 
         public List<Mat> GetResult(List<Mat> images)
         {
-            return new List<Mat>();
+            var mats = new List<Mat>();
+            foreach (var image in images)
+            {
+                try
+                {
+                    Mat mat = new Mat();
+                    Mat mask = null;
+                    if (SelectedMaskEditor > 0)
+                    {
+                        var maskEditorModel = (EditorsHelper.GetPageView(SelectedMaskEditor - 1).DataContext as EditorPageViewModel).editorModel;
+                        mask = maskEditorModel.GetUpToQuiet(maskEditorModel.GetItems()[SelectedMaskHandler])[0];
+                    }
+
+                    var img2EditorModel = (EditorsHelper.GetPageView(SelectedImg2Editor).DataContext as EditorPageViewModel).editorModel;
+                    Mat img2 = img2EditorModel.GetUpToQuiet(img2EditorModel.GetItems()[SelectedImg2Handler])[0];
+
+                    Cv2.BitwiseOr(image, img2, mat, mask);
+                    mats.Add(mat);
+                }
+                catch (Exception ex)
+                {
+                    MessageBoxFactory.Show("Something went wrong, check out the next message", MessageBoxFactory.WARN_LOGO);
+                    MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
+                }
+            }
+            return mats;
         }
 
         public void OnRemove()
@@ -64,6 +121,38 @@ namespace cumcad.ViewModels.Handlers
         private void Img2SelectionChanged(int index)
         {
             Img2EditorHandlers = (EditorsHelper.GetPageView(index).DataContext as EditorPageViewModel).editorModel.GetItems().Select(x => x.Name).ToList();
+        }
+
+        private void MaskSelectionChanged(int index)
+        {
+            index -= 1;
+            if (index >= 0)
+                MaskEditorHandlers = (EditorsHelper.GetPageView(index).DataContext as EditorPageViewModel).editorModel.GetItems().Select(x => x.Name).ToList();
+            else
+                MaskEditorHandlers = null;
+        }
+
+        private List<Brush> GetImg2Brushes()
+        {
+            return EditorsHelper.GetEditors().Select(x => (x.DataContext as EditorPageViewModel).editorModel.EditorResult.IconColor as Brush).ToList();
+        }
+
+        private List<Brush> GetMaskBrushes()
+        {
+            var lst = GetImg2Brushes();
+            lst.Insert(0, Funcad.RedStrokeBrush());
+            return lst;
+        }
+
+        public void Selected()
+        {
+            Img2EditorBrushes = GetImg2Brushes();
+            MaskEditorBrushes = GetMaskBrushes();
+        }
+
+        public void UnSelected()
+        {
+            
         }
     }
 }

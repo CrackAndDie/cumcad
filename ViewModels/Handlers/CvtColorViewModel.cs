@@ -28,7 +28,7 @@ namespace cumcad.ViewModels.Handlers
 
         public event EventHandler<EventArgs> PropertiesChanged;
 
-        internal CvtColorViewModel()
+        public CvtColorViewModel()
         {
             TypeItems = Enum.GetValues(typeof(ColorConversionCodes)).Cast<ColorConversionCodes>().OrderBy(x => x.ToString()).ToList();
         }
@@ -52,6 +52,16 @@ namespace cumcad.ViewModels.Handlers
         }
 
         public void OnRemove()
+        {
+            
+        }
+
+        public void Selected()
+        {
+            
+        }
+
+        public void UnSelected()
         {
             
         }

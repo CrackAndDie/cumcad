@@ -1,9 +1,12 @@
 ﻿using cumcad.Models.Classes;
 using cumcad.Models.Factories;
+using cumcad.Models.Helpers;
 using cumcad.ViewModels;
 using cumcad.ViewModels.Base;
 using cumcad.ViewModels.Handlers;
 using cumcad.Views.Handlers;
+using OpenCvSharp;
+using OpenCvSharp.Flann;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -12,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace cumcad.Models
 {
@@ -19,6 +23,8 @@ namespace cumcad.Models
     {
         internal SelectEditorResult EditorResult { get; set; }
         public ObservableCollection<EditorItem> EditorItems { get; }
+
+        internal List<Mat> BeforeImages;
 
         internal event EventHandler<EventArgs> OnRemove;
 
@@ -35,6 +41,41 @@ namespace cumcad.Models
                 Name = editorResult.SelectedType.ToString(),
             };
             EditorItems.Add(mainHandler);
+        }
+
+        internal List<Mat> GetUpTo(EditorItem item)
+        {
+            int index = IndexOf(item);
+            BeforeImages = Get(0).GetResult(null);
+            if (BeforeImages != null)
+            {
+                for (int i = 1; i < index; i++)
+                {
+                    var result = Get(i).GetResult(BeforeImages);
+                    Funcad.ReleaseMats(BeforeImages);
+                    BeforeImages = result;
+                }
+                var mats = Get(index).GetResult(BeforeImages);
+                return mats;
+            }
+            return null;
+        }
+
+        internal List<Mat> GetUpToQuiet(EditorItem item)
+        {
+            int index = IndexOf(item);
+            var images = Get(0).GetResult(null);
+            if (images != null)
+            {
+                for (int i = 1; i <= index; i++)
+                {
+                    var result = Get(i).GetResult(images);
+                    Funcad.ReleaseMats(images);
+                    images = result;
+                }
+                return images;
+            }
+            return null;
         }
 
         internal static IHandler GetIHandler(EditorItem item)

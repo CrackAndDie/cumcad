@@ -104,6 +104,7 @@
     <Compile Include="Models\Helpers\Viscad.cs" />
     <Compile Include="Models\Helpers\WaiterHelper.cs" />
     <Compile Include="Models\MainTabsModel.cs" />
+    <Compile Include="Models\MainWindowModel.cs" />
     <Compile Include="Models\Other\DelegateCommand.cs" />
     <Compile Include="Models\Other\MyEventArgs\EditorItemEventArgs.cs" />
     <Compile Include="Models\Other\MyEventArgs\WindowStateChangedEventArgs.cs" />

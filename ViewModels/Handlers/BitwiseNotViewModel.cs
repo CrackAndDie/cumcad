@@ -38,5 +38,15 @@ namespace cumcad.ViewModels.Handlers
         {
             
         }
+
+        public void Selected()
+        {
+
+        }
+
+        public void UnSelected()
+        {
+
+        }
     }
 }

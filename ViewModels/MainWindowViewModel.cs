@@ -20,7 +20,7 @@ namespace cumcad.ViewModels
 {
     internal class MainWindowViewModel : BindableBase
     {
-        internal MainTabsModel mainTabsModel = new MainTabsModel();
+        public MainWindowModel mainWindowModel = new MainWindowModel();
 
         private WindowState currentWindowState;
         public WindowState CurrentWindowState
@@ -29,49 +29,23 @@ namespace cumcad.ViewModels
             set { SetProperty(ref currentWindowState, value); OnStateChanged(currentWindowState); }
         }
 
-        private Visibility maximizeButtonVisibility;
-        public Visibility MaximizeButtonVisibility
-        {
-            get { return maximizeButtonVisibility; }
-            set { SetProperty(ref maximizeButtonVisibility, value); }
-        }
-
-        private Visibility restoreButtonVisibility;
-        public Visibility RestoreButtonVisibility
-        {
-            get { return restoreButtonVisibility; }
-            set { SetProperty(ref restoreButtonVisibility, value); }
-        }
-
-        private Visibility progressBarVisibility;
-        public Visibility ProgressBarVisibility
-        {
-            get { return progressBarVisibility; }
-            set { SetProperty(ref progressBarVisibility, value); }
-        }
-
-        private Visibility checkAllDoneVisibility;
-        public Visibility CheckAllDoneVisibility
-        {
-            get { return checkAllDoneVisibility; }
-            set { SetProperty(ref checkAllDoneVisibility, value); }
-        }
-
-        private Page mainFrameSource;
-        public Page MainFrameSource
-        {
-            get { return mainFrameSource; }
-            set { SetProperty(ref mainFrameSource, value); }
-        }
-
-        private int selectedTabIndex;
         public int SelectedTabIndex
         {
-            get { return selectedTabIndex; }
-            set { SetProperty(ref selectedTabIndex, value); TabSelectionChanged(selectedTabIndex); }
+            get { return mainWindowModel.SelectedTabIndex; }
+            set { mainWindowModel.SelectedTabIndex = value; }
         }
 
-        public ReadOnlyObservableCollection<TabItemClass> TabItems => mainTabsModel.TabItems;
+        public Visibility MaximizeButtonVisibility => mainWindowModel.MaximizeButtonVisibility;
+
+        public Visibility RestoreButtonVisibility => mainWindowModel.RestoreButtonVisibility;
+
+        public Visibility ProgressBarVisibility => mainWindowModel.ProgressBarVisibility;
+
+        public Visibility CheckAllDoneVisibility => mainWindowModel.CheckAllDoneVisibility;
+
+        public Page MainFrameSource => mainWindowModel.MainFrameSource;
+
+        public ReadOnlyObservableCollection<TabItemClass> TabItems => mainWindowModel.MainTabsModel.TabItems;
 
         #region Commands
         public ICommand MinimizeWindowCommand { get; set; }
@@ -87,7 +61,7 @@ namespace cumcad.ViewModels
 
         public MainWindowViewModel()
         {
-            mainTabsModel.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
+            mainWindowModel.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
 
             MinimizeWindowCommand = new DelegateCommand(OnMinimizeWindowCommand);
             MaximizeWindowCommand = new DelegateCommand(OnMaximizeWindowCommand);
@@ -98,132 +72,23 @@ namespace cumcad.ViewModels
             SaveFileCommand = new DelegateCommand(OnSaveFileCommand);
 
             AddEditorCommand = new DelegateCommand(OnAddEditorCommand);
-
-            WaiterHelper.CollectionChanged += OnStaticAllDoneChanged;
+            
             WaiterHelper.AddWaiter();
 
-            // OnActionChanged(false);
             OnStateChanged(WindowState.Normal);
-            SelectedTabIndex = 0;
+            mainWindowModel.SelectedTabIndex = 0;
 
             WaiterHelper.RemoveWaiter();
         }
 
-        private void OnStaticAllDoneChanged(object sender, EventArgs e)
+        private void OnAddEditorCommand(object parameter)
         {
-            OnActionChanged(WaiterHelper.GetWaiterStatus());
-        }
-
-        private void GoToPage(Page page)
-        {
-            if (MainFrameSource != page)
-            {
-                MainFrameSource = page;
-            }
-        }
-
-        private void TabSelectionChanged(int index)
-        {
-            if (index == 0)
-            {
-                GoToPage(null);
-            }
-            else
-            {
-                // I don't want to fix that
-                try
-                {
-                    GoToPage(EditorsHelper.GetPageView(index - 1));
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    GoToPage(null);
-                }
-            }
-        }
-
-        async private void OnAddEditorCommand(object parameter)
-        {
-            var result = await SelectorsFactory.OpenSelectEditorWindow();
-            if ((bool)result.IsSelected)
-            {
-                AddEditor(result);
-            }
-        }
-
-        async private void OnCreateFromEditorItem(object sender, EditorItemEventArgs args)
-        {
-            var editorModel = sender as EditorModel;
-            var item = args.Parameter;
-            AddEditor(new SelectEditorResult()
-            {
-                IsSelected = true,
-                IconColor = await SelectorsFactory.OpenColorPickerWindow(),
-                SelectedType = EditorType.FromEditor,
-                ParentEditorItem = item,
-                ParentEditorModel = editorModel
-            });
-        }
-
-        private void AddEditor(SelectEditorResult result)
-        {
-            mainTabsModel.AddNewItem(result.IconColor).OnRemove += OnItemRemove;
-            var editor = EditorsHelper.AddNewEditorPage(result);
-            (editor.DataContext as EditorPageViewModel).RemoveFromInside += OnItemRemoveFromInside;
-            (editor.DataContext as EditorPageViewModel).CreateFromEditorItem += OnCreateFromEditorItem;
-            GoToPage(editor);
-            SelectedTabIndex = EditorsHelper.GetListCount();
-        }
-
-        private void OnItemRemove(object sender, EventArgs args)
-        {
-            var item = sender as TabItemClass;
-            item.OnRemove -= OnItemRemove;
-            int ind = mainTabsModel.IndexOf(item);
-            mainTabsModel.RemoveItem(ind);
-            (EditorsHelper.GetPageView(ind - 1).DataContext as EditorPageViewModel).RemoveFromInside -= OnItemRemoveFromInside;
-            (EditorsHelper.GetPageView(ind - 1).DataContext as EditorPageViewModel).CreateFromEditorItem -= OnCreateFromEditorItem;
-            EditorsHelper.RemoveAt(ind - 1);
-        }
-
-        private void OnItemRemoveFromInside(object sender, EventArgs args)
-        {
-            var item = sender as EditorPageViewModel;
-            int ind = EditorsHelper.IndexOf(item);
-            var tabItem = mainTabsModel.TabItems[ind + 1];
-            tabItem.OnRemove -= OnItemRemove;
-            mainTabsModel.RemoveItem(ind + 1);
-            (EditorsHelper.GetPageView(ind).DataContext as EditorPageViewModel).RemoveFromInside -= OnItemRemoveFromInside;
-            (EditorsHelper.GetPageView(ind).DataContext as EditorPageViewModel).CreateFromEditorItem -= OnCreateFromEditorItem;
-            EditorsHelper.RemoveAt(ind);
-        }
-
-        private void OnActionChanged(bool done)
-        {
-            if (done)
-            {
-                ProgressBarVisibility = Visibility.Collapsed;
-                CheckAllDoneVisibility = Visibility.Visible;
-            }
-            else
-            {
-                ProgressBarVisibility = Visibility.Visible;
-                CheckAllDoneVisibility = Visibility.Collapsed;
-            }
+            mainWindowModel.CreateEditor();
         }
 
         private void OnStateChanged(WindowState state)
         {
-            if (state == WindowState.Maximized)
-            {
-                MaximizeButtonVisibility = Visibility.Collapsed;
-                RestoreButtonVisibility = Visibility.Visible;
-            }
-            else
-            {
-                MaximizeButtonVisibility = Visibility.Visible;
-                RestoreButtonVisibility = Visibility.Collapsed;
-            }
+            mainWindowModel.ChangeWindowIconState(state == WindowState.Maximized);
         }
 
         private void OnSaveFileCommand(object parameter)
