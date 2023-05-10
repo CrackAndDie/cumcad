@@ -39,7 +39,11 @@ namespace cumcad.ViewModels.Handlers
             Name = editorData.SelectedType.ToString();
             this.editorData = editorData;
 
-            if (editorData.SelectedType == EditorType.FromEditor)
+            if (editorData.SelectedType == EditorType.Image)
+            {
+                image = new Mat(editorData.ImagePath, ImreadModes.Color);
+            }
+            else if (editorData.SelectedType == EditorType.FromEditor)
             {
                 var handler = editorData.ParentEditorModel.Get(0);
                 handler.PropertiesChanged += OnParentPropertiesChanged;
@@ -52,7 +56,9 @@ namespace cumcad.ViewModels.Handlers
             {
                 try
                 {
-                    image = new Mat(editorData.ImagePath, ImreadModes.Color);
+                    Mat dst = new Mat();
+                    image.CopyTo(dst);
+                    return new List<Mat> { dst };
                 }
                 catch (Exception ex)
                 {
@@ -60,7 +66,6 @@ namespace cumcad.ViewModels.Handlers
                     MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
                     ShouldBeKilled?.Invoke(this, EventArgs.Empty);
                 }
-                return new List<Mat> { image };
             }
             else if (editorData.SelectedType == EditorType.FromEditor)
             {
@@ -81,7 +86,15 @@ namespace cumcad.ViewModels.Handlers
 
         public void OnRemove()
         {
-            if (editorData.SelectedType == EditorType.FromEditor)
+            if (editorData.SelectedType == EditorType.Image)
+            {
+                if (image != null)
+                {
+                    image.Release();
+                    image.Dispose();
+                }
+            }
+            else if (editorData.SelectedType == EditorType.FromEditor)
             {
                 editorData.ParentEditorModel.Get(0).PropertiesChanged -= OnParentPropertiesChanged;
             }

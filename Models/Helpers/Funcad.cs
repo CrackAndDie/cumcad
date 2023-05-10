@@ -42,7 +42,7 @@ namespace cumcad.Models.Helpers
                 mat.Dispose();
             }
             mats.Clear();
-            GC.Collect();
+            // GC.Collect();
         }
 
         public static IHandler GetIHandler(EditorItem item)

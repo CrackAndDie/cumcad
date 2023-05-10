@@ -80,10 +80,7 @@ namespace cumcad.ViewModels.Handlers
 
         public BitwiseOrViewModel()
         {
-            Img2EditorBrushes = GetImg2Brushes();
-            MaskEditorBrushes = GetMaskBrushes();
-            SelectedImg2Editor = 0;
-            SelectedMaskEditor = 0;
+            
         }
 
         public List<Mat> GetResult(List<Mat> images)
@@ -93,19 +90,23 @@ namespace cumcad.ViewModels.Handlers
             {
                 try
                 {
+                    var independentModels = EditorsHandler.GetIndependentEditorModels(HandlerEditorModel, this);
                     Mat mat = new Mat();
                     Mat mask = null;
                     if (SelectedMaskEditor > 0)
                     {
-                        var maskEditorModel = EditorsHandler.GetIndependentEditorModels(HandlerEditorModel, this)[SelectedMaskEditor];
+                        var maskEditorModel = independentModels[SelectedMaskEditor - 1];
                         mask = maskEditorModel.GetUpToQuiet(maskEditorModel.GetItems()[SelectedMaskHandler])[0];
                     }
 
-                    var img2EditorModel = EditorsHandler.GetIndependentEditorModels(HandlerEditorModel, this)[SelectedImg2Editor];
-                    Mat img2 = img2EditorModel.GetUpToQuiet(img2EditorModel.GetItems()[SelectedImg2Handler])[0];
+                    if (SelectedImg2Editor >= 0 && independentModels.Count > 0)
+                    {
+                        var img2EditorModel = independentModels[SelectedImg2Editor];
+                        Mat img2 = img2EditorModel.GetUpToQuiet(img2EditorModel.GetItems()[SelectedImg2Handler])[0];
 
-                    Cv2.BitwiseOr(image, img2, mat, mask);
-                    mats.Add(mat);
+                        Cv2.BitwiseOr(image, img2, mat, mask);
+                        mats.Add(mat);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -123,16 +124,24 @@ namespace cumcad.ViewModels.Handlers
 
         private void Img2SelectionChanged(int index)
         {
-            Img2EditorHandlers = EditorsHandler.GetIndependentEditorModels(HandlerEditorModel, this)[index].GetItems().Select(x => x.Name).ToList();
+            Img2EditorHandlers = GetHandlerNames(index);
         }
 
         private void MaskSelectionChanged(int index)
         {
             index -= 1;
             if (index >= 0)
-                MaskEditorHandlers = EditorsHandler.GetIndependentEditorModels(HandlerEditorModel, this)[index].GetItems().Select(x => x.Name).ToList();
+                MaskEditorHandlers = GetHandlerNames(index);
             else
                 MaskEditorHandlers = null;
+        }
+
+        private List<string> GetHandlerNames(int index)
+        {
+            var items = EditorsHandler.GetIndependentEditorModels(HandlerEditorModel, this);
+            if (items.Count <= 0)
+                return new List<string>();
+            return items[index].GetItems().Select(x => x.Name).ToList();
         }
 
         private List<Brush> GetImg2Brushes()
@@ -151,6 +160,8 @@ namespace cumcad.ViewModels.Handlers
         {
             Img2EditorBrushes = GetImg2Brushes();
             MaskEditorBrushes = GetMaskBrushes();
+            Img2SelectionChanged(SelectedImg2Editor);
+            MaskSelectionChanged(SelectedMaskEditor);
         }
 
         public void UnSelected()

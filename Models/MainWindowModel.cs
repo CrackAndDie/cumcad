@@ -82,14 +82,18 @@ namespace cumcad.Models
         {
             var editorModel = sender as EditorPageModel;
             var item = args.Parameter;
-            AddEditor(new SelectEditorResult()
+            var color = await SelectorsFactory.OpenColorPickerWindow();
+            if (color != null)
             {
-                IsSelected = true,
-                IconColor = await SelectorsFactory.OpenColorPickerWindow(),
-                SelectedType = EditorType.FromEditor,
-                ParentEditorItem = item,
-                ParentEditorModel = editorModel
-            });
+                AddEditor(new SelectEditorResult()
+                {
+                    IsSelected = true,
+                    IconColor = color,
+                    SelectedType = EditorType.FromEditor,
+                    ParentEditorItem = item,
+                    ParentEditorModel = editorModel
+                });
+            }
         }
 
         private void AddEditor(SelectEditorResult result)
