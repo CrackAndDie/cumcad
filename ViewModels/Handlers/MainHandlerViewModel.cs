@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace cumcad.ViewModels.Handlers
 {
@@ -50,38 +52,49 @@ namespace cumcad.ViewModels.Handlers
             }
         }
 
-        public List<Mat> GetResult(List<Mat> images)
+        public async Task<List<Mat>> GetResult(List<Mat> images)
         {
-            if (editorData.SelectedType == EditorType.Image)
+            List<Mat> result = null;
+            await Task.Run(() =>
             {
-                try
+                if (editorData.SelectedType == EditorType.Image)
                 {
-                    Mat dst = new Mat();
-                    image.CopyTo(dst);
-                    return new List<Mat> { dst };
+                    try
+                    {
+                        Mat dst = new Mat();
+                        image.CopyTo(dst);
+                        result = new List<Mat> { dst };
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBoxFactory.Show("F*ck your image, this is a shite. The next MessageBox is going to show you the error", MessageBoxFactory.WARN_LOGO);
+                        MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
+                        // im not sure that I should do this using Dispatcher Invoke
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            ShouldBeKilled?.Invoke(this, EventArgs.Empty);
+                        });
+                    }
                 }
-                catch (Exception ex)
+                else if (editorData.SelectedType == EditorType.FromEditor)
                 {
-                    MessageBoxFactory.Show("F*ck your image, this is a shite. The next MessageBox is going to show you the error", MessageBoxFactory.WARN_LOGO);
-                    MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
-                    ShouldBeKilled?.Invoke(this, EventArgs.Empty);
+                    int index = editorData.ParentEditorModel.IndexOf(editorData.ParentEditorItem);
+                    if (index >= 0)
+                    {
+                        result = editorData.ParentEditorModel.GetUpToQuiet(editorData.ParentEditorItem).GetAwaiter().GetResult();
+                    }
+                    else
+                    {
+                        MessageBoxFactory.Show("F*ck your image, this is a shite, you're a dickhead", MessageBoxFactory.WARN_LOGO);
+                        // im not sure that I should do this using Dispatcher Invoke
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            ShouldBeKilled?.Invoke(this, EventArgs.Empty);
+                        });
+                    }
                 }
-            }
-            else if (editorData.SelectedType == EditorType.FromEditor)
-            {
-                int index = editorData.ParentEditorModel.IndexOf(editorData.ParentEditorItem);
-                if (index >= 0)
-                {
-                    var mats = editorData.ParentEditorModel.GetUpToQuiet(editorData.ParentEditorItem);
-                    return mats;
-                }
-                else
-                {
-                    MessageBoxFactory.Show("F*ck your image, this is a shite, you're a dickhead", MessageBoxFactory.WARN_LOGO);
-                    ShouldBeKilled?.Invoke(this, EventArgs.Empty);
-                }
-            }
-            return new List<Mat>();
+            });
+            return result ?? new List<Mat>();
         }
 
         public void OnRemove()

@@ -8,6 +8,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace cumcad.ViewModels.Handlers
 {
@@ -27,17 +29,24 @@ namespace cumcad.ViewModels.Handlers
 
         public event EventHandler<EventArgs> PropertiesChanged;
 
-        public List<Mat> GetResult(List<Mat> images)
+        public async  Task<List<Mat>> GetResult(List<Mat> images)
         {
             var mats = new List<Mat>();
             NonZeroPixels.Clear();
-            foreach (var image in images)
+            await Task.Run(() =>
             {
-                Mat newMat = new Mat();
-                image.CopyTo(newMat);
-                mats.Add(newMat);
-                NonZeroPixels.Add(newMat.Channels() == 1 ? newMat.CountNonZero() : 0);
-            }
+                foreach (var image in images)
+                {
+                    Mat newMat = new Mat();
+                    image.CopyTo(newMat);
+                    mats.Add(newMat);
+                    int counted = newMat.Channels() == 1 ? newMat.CountNonZero() : 0;
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        NonZeroPixels.Add(counted);
+                    });
+                }
+            });
             return mats;
         }
 

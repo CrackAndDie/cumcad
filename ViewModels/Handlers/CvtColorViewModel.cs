@@ -36,21 +36,24 @@ namespace cumcad.ViewModels.Handlers
             TypeItems = Enum.GetValues(typeof(ColorConversionCodes)).Cast<ColorConversionCodes>().OrderBy(x => x.ToString()).ToList();
         }
 
-        public List<Mat> GetResult(List<Mat> images)
+        public async Task<List<Mat>> GetResult(List<Mat> images)
         {
             var mats = new List<Mat>();
-            foreach (var image in images)
+            await Task.Run(() =>
             {
-                try
+                foreach (var image in images)
                 {
-                    mats.Add(image.CvtColor(SelectedType));
+                    try
+                    {
+                        mats.Add(image.CvtColor(SelectedType));
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBoxFactory.Show("Something went wrong, check out the next message", MessageBoxFactory.WARN_LOGO);
+                        MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    MessageBoxFactory.Show("Something went wrong, check out the next message", MessageBoxFactory.WARN_LOGO);
-                    MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
-                }
-            }
+            });
             return mats;
         }
 

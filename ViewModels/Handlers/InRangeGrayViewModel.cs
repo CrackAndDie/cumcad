@@ -31,22 +31,25 @@ namespace cumcad.ViewModels.Handlers
 
         public event EventHandler<EventArgs> PropertiesChanged;
 
-        public List<Mat> GetResult(List<Mat> images)
+        public async Task<List<Mat>> GetResult(List<Mat> images)
         {
             var mats = new List<Mat>();
-            foreach (var image in images)
+            await Task.Run(() =>
             {
-                try
+                foreach (var image in images)
                 {
-                    mats.Add(image.InRange(InputArray.Create(new int[] { GrayLowerValue }),
-                        InputArray.Create(new int[] { GrayHigherValue })));
+                    try
+                    {
+                        mats.Add(image.InRange(InputArray.Create(new int[] { GrayLowerValue }),
+                            InputArray.Create(new int[] { GrayHigherValue })));
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBoxFactory.Show("Something went wrong, check out the next message", MessageBoxFactory.WARN_LOGO);
+                        MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    MessageBoxFactory.Show("Something went wrong, check out the next message", MessageBoxFactory.WARN_LOGO);
-                    MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
-                }
-            }
+            });
             return mats;
         }
 

@@ -1,13 +1,6 @@
-﻿using cumcad.ViewModels.Handlers;
-using cumcad.Views.Handlers;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace cumcad.Models.Factories

@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace cumcad.ViewModels.Handlers
 {
@@ -44,33 +46,39 @@ namespace cumcad.ViewModels.Handlers
 
         public event EventHandler<EventArgs> PropertiesChanged;
 
-        public List<Mat> GetResult(List<Mat> images)
+        public async Task<List<Mat>> GetResult(List<Mat> images)
         {
             freezeEvent = true;
             var mats = new List<Mat>();
-            if (images.Count > 0)
+            await Task.Run(() =>
             {
-                if (firstCall)
+                if (images.Count > 0)
                 {
-                    var size = images[0].Size();
-                    Width = size.Width;
-                    Height = size.Height;
-                    firstCall = false;
-                }
-                
-                foreach (var image in images)
-                {
-                    try
+                    if (firstCall)
                     {
-                        mats.Add(image.Resize(new Size(Width, Height)));
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            var size = images[0].Size();
+                            Width = size.Width;
+                            Height = size.Height;
+                        });
+                        firstCall = false;
                     }
-                    catch (Exception ex)
+
+                    foreach (var image in images)
                     {
-                        MessageBoxFactory.Show("Something went wrong, check out the next message", MessageBoxFactory.WARN_LOGO);
-                        MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
+                        try
+                        {
+                            mats.Add(image.Resize(new OpenCvSharp.Size(Width, Height)));
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBoxFactory.Show("Something went wrong, check out the next message", MessageBoxFactory.WARN_LOGO);
+                            MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
+                        }
                     }
                 }
-            }
+            });
             freezeEvent = false;
             return mats;
         }

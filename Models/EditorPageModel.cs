@@ -14,8 +14,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace cumcad.Models
 {
@@ -75,8 +77,9 @@ namespace cumcad.Models
         }
 
         #region HighLevel
-        internal void ChangeImageSelection(EditorItem item)
+        internal async void ChangeImageSelection(EditorItem item)
         {
+            WaiterHelper.AddWaiter();
             if (lastSelectedItem != null)
             {
                 Funcad.GetIHandler(lastSelectedItem).PropertiesChanged -= OnHandlerPropertiesChanged;
@@ -93,31 +96,40 @@ namespace cumcad.Models
             // getting the first images
             if (GetDataContext(0) is MainHandlerViewModel)
             {
-                var mats = GetUpTo(item);
+                var mats = await GetUpTo(item);
                 if (mats != null)
                 {
-                    if (ViewedImages != null)
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
-                        ViewedImages.Clear();
-                    }
-                    ReCalcUG(mats.Count);
-                    ViewedImages = Funcad.FromMatToBitmap(mats);
+                        if (ViewedImages != null)
+                        {
+                            ViewedImages.Clear();
+                        }
+                        ReCalcUG(mats.Count);
+                        ViewedImages = Funcad.FromMatToBitmap(mats);
+                    });
                     Funcad.ReleaseMats(mats);
                     lastSelectedItem = item;
                 }
             }
+            WaiterHelper.RemoveWaiter();
         }
 
-        private void OnHandlerPropertiesChanged(object sender, EventArgs args)
+        private async void OnHandlerPropertiesChanged(object sender, EventArgs args)
         {
-            var mats = Funcad.GetIHandler(lastSelectedItem).GetResult(BeforeImages);
-            if (ViewedImages != null)
+            WaiterHelper.AddWaiter();
+            var mats = await Funcad.GetIHandler(lastSelectedItem).GetResult(BeforeImages);
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                ViewedImages.Clear();
-            }
-            ReCalcUG(mats.Count);
-            ViewedImages = Funcad.FromMatToBitmap(mats);
+                if (ViewedImages != null)
+                {
+                    ViewedImages.Clear();
+                }
+                ReCalcUG(mats.Count);
+                ViewedImages = Funcad.FromMatToBitmap(mats);
+            });
             Funcad.ReleaseMats(mats);
+            WaiterHelper.RemoveWaiter();
         }
 
         private void ReCalcUG(int amount)
@@ -129,38 +141,44 @@ namespace cumcad.Models
             UGRows = (int)Math.Ceiling(amount / (float)ceiled);
         }
 
-        internal List<Mat> GetUpTo(EditorItem item)
+        internal async Task<List<Mat>> GetUpTo(EditorItem item)
         {
+            WaiterHelper.AddWaiter();
             int index = IndexOf(item);
-            BeforeImages = Get(0).GetResult(null);
+            BeforeImages = await Get(0).GetResult(null);
             if (BeforeImages != null)
             {
                 for (int i = 1; i < index; i++)
                 {
-                    var result = Get(i).GetResult(BeforeImages);
+                    var result = await Get(i).GetResult(BeforeImages);
                     Funcad.ReleaseMats(BeforeImages);
                     BeforeImages = result;
                 }
-                var mats = Get(index).GetResult(BeforeImages);
+                var mats = await Get(index).GetResult(BeforeImages);
+                WaiterHelper.RemoveWaiter();
                 return mats;
             }
+            WaiterHelper.RemoveWaiter();
             return null;
         }
 
-        internal List<Mat> GetUpToQuiet(EditorItem item)
+        internal async Task<List<Mat>> GetUpToQuiet(EditorItem item)
         {
+            WaiterHelper.AddWaiter();
             int index = IndexOf(item);
-            var images = Get(0).GetResult(null);
+            var images = await Get(0).GetResult(null);
             if (images != null)
             {
                 for (int i = 1; i <= index; i++)
                 {
-                    var result = Get(i).GetResult(images);
+                    var result = await Get(i).GetResult(images);
                     Funcad.ReleaseMats(images);
                     images = result;
                 }
+                WaiterHelper.RemoveWaiter();
                 return images;
             }
+            WaiterHelper.RemoveWaiter();
             return null;
         }
         #endregion
