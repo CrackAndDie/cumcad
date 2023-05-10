@@ -32,7 +32,7 @@ namespace cumcad.ViewModels
         // for IMAGE type
         internal string ImagePath { get; set; }
         // for FROMEDITOR type
-        internal EditorModel ParentEditorModel { get; set; }
+        internal EditorPageModel ParentEditorModel { get; set; }
         internal EditorItem ParentEditorItem { get; set; }
     }
 

@@ -95,11 +95,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\Classes\EditorItem.cs" />
-    <Compile Include="Models\EditorModel.cs" />
+    <Compile Include="Models\Classes\TabItemClass.cs" />
+    <Compile Include="Models\EditorPageModel.cs" />
     <Compile Include="Models\Factories\HandlerFactory.cs" />
     <Compile Include="Models\Factories\MessageBoxFactory.cs" />
     <Compile Include="Models\Factories\SelectorsFactory.cs" />
-    <Compile Include="Models\Helpers\EditorsHelper.cs" />
+    <Compile Include="Models\EditorsHandler.cs" />
     <Compile Include="Models\Helpers\Funcad.cs" />
     <Compile Include="Models\Helpers\Viscad.cs" />
     <Compile Include="Models\Helpers\WaiterHelper.cs" />

@@ -94,11 +94,11 @@ namespace cumcad.ViewModels.Handlers
                     Mat mask = null;
                     if (SelectedMaskEditor > 0)
                     {
-                        var maskEditorModel = (EditorsHelper.GetPageView(SelectedMaskEditor - 1).DataContext as EditorPageViewModel).editorModel;
+                        var maskEditorModel = (EditorsHandler.GetPageView(SelectedMaskEditor - 1).DataContext as EditorPageViewModel).editorModel;
                         mask = maskEditorModel.GetUpToQuiet(maskEditorModel.GetItems()[SelectedMaskHandler])[0];
                     }
 
-                    var img2EditorModel = (EditorsHelper.GetPageView(SelectedImg2Editor).DataContext as EditorPageViewModel).editorModel;
+                    var img2EditorModel = (EditorsHandler.GetPageView(SelectedImg2Editor).DataContext as EditorPageViewModel).editorModel;
                     Mat img2 = img2EditorModel.GetUpToQuiet(img2EditorModel.GetItems()[SelectedImg2Handler])[0];
 
                     Cv2.BitwiseOr(image, img2, mat, mask);
@@ -120,21 +120,21 @@ namespace cumcad.ViewModels.Handlers
 
         private void Img2SelectionChanged(int index)
         {
-            Img2EditorHandlers = (EditorsHelper.GetPageView(index).DataContext as EditorPageViewModel).editorModel.GetItems().Select(x => x.Name).ToList();
+            Img2EditorHandlers = (EditorsHandler.GetPageView(index).DataContext as EditorPageViewModel).editorModel.GetItems().Select(x => x.Name).ToList();
         }
 
         private void MaskSelectionChanged(int index)
         {
             index -= 1;
             if (index >= 0)
-                MaskEditorHandlers = (EditorsHelper.GetPageView(index).DataContext as EditorPageViewModel).editorModel.GetItems().Select(x => x.Name).ToList();
+                MaskEditorHandlers = (EditorsHandler.GetPageView(index).DataContext as EditorPageViewModel).editorModel.GetItems().Select(x => x.Name).ToList();
             else
                 MaskEditorHandlers = null;
         }
 
         private List<Brush> GetImg2Brushes()
         {
-            return EditorsHelper.GetEditors().Select(x => (x.DataContext as EditorPageViewModel).editorModel.EditorResult.IconColor as Brush).ToList();
+            return EditorsHandler.GetEditorModels().Select(x => x.EditorResult.IconColor as Brush).ToList();
         }
 
         private List<Brush> GetMaskBrushes()

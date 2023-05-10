@@ -1,39 +1,11 @@
-﻿using cumcad.Models.Other;
+﻿using cumcad.Models.Classes;
 using MaterialDesignThemes.Wpf;
 using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 
 namespace cumcad.Models
 {
-    internal class TabItemClass
-    {
-        public PackIconKind IconKind { get; set; }
-        public SolidColorBrush IconColor { get; set; }
-        public ICommand DeleteCommand { get; set; }
-
-        internal event EventHandler<EventArgs> OnRemove;
-
-        internal TabItemClass()
-        {
-            DeleteCommand = new DelegateCommand(OnDeleteCommand);
-        }
-
-        private void OnDeleteCommand(object parameter)
-        {
-            // Debug.WriteLine("Should be deleted");
-            OnRemove?.Invoke(this, EventArgs.Empty);
-        }
-    }
-
     internal class MainTabsModel : BindableBase
     {
         private readonly ObservableCollection<TabItemClass> tabItems = new ObservableCollection<TabItemClass>();

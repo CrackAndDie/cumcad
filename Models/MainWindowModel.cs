@@ -1,4 +1,5 @@
-﻿using cumcad.Models.Factories;
+﻿using cumcad.Models.Classes;
+using cumcad.Models.Factories;
 using cumcad.Models.Helpers;
 using cumcad.Models.Other.MyEventArgs;
 using cumcad.ViewModels;
@@ -79,7 +80,7 @@ namespace cumcad.Models
 
         async internal void CreateEditorFromAnother(object sender, EditorItemEventArgs args)
         {
-            var editorModel = sender as EditorModel;
+            var editorModel = sender as EditorPageModel;
             var item = args.Parameter;
             AddEditor(new SelectEditorResult()
             {
@@ -94,11 +95,11 @@ namespace cumcad.Models
         private void AddEditor(SelectEditorResult result)
         {
             MainTabsModel.AddNewItem(result.IconColor).OnRemove += OnItemRemove;
-            var editor = EditorsHelper.AddNewEditorPage(result);
+            var editor = EditorsHandler.AddNewEditorPage(result);
             (editor.DataContext as EditorPageViewModel).RemoveFromInside += OnItemRemoveFromInside;
             (editor.DataContext as EditorPageViewModel).CreateFromEditorItem += CreateEditorFromAnother;
             GoToPage(editor);
-            SelectedTabIndex = EditorsHelper.GetListCount();
+            SelectedTabIndex = EditorsHandler.GetListCount();
         }
 
         private void OnItemRemove(object sender, EventArgs args)
@@ -111,7 +112,7 @@ namespace cumcad.Models
 
         private void OnItemRemoveFromInside(object sender, EventArgs args)
         {
-            int ind = EditorsHelper.IndexOf(sender as EditorPageViewModel);
+            int ind = EditorsHandler.IndexOf(sender as EditorPageViewModel);
             var tabItem = MainTabsModel.TabItems[ind + 1];
             tabItem.OnRemove -= OnItemRemove;
             RemoveEditor(ind);
@@ -120,9 +121,9 @@ namespace cumcad.Models
         private void RemoveEditor(int ind)
         {
             MainTabsModel.RemoveItem(ind + 1);
-            (EditorsHelper.GetPageView(ind).DataContext as EditorPageViewModel).RemoveFromInside -= OnItemRemoveFromInside;
-            (EditorsHelper.GetPageView(ind).DataContext as EditorPageViewModel).CreateFromEditorItem -= CreateEditorFromAnother;
-            EditorsHelper.RemoveAt(ind);
+            (EditorsHandler.GetPageView(ind).DataContext as EditorPageViewModel).RemoveFromInside -= OnItemRemoveFromInside;
+            (EditorsHandler.GetPageView(ind).DataContext as EditorPageViewModel).CreateFromEditorItem -= CreateEditorFromAnother;
+            EditorsHandler.RemoveAt(ind);
         }
         #endregion
 
@@ -150,7 +151,7 @@ namespace cumcad.Models
                 // I don't want to fix that
                 try
                 {
-                    GoToPage(EditorsHelper.GetPageView(index - 1));
+                    GoToPage(EditorsHandler.GetPageView(index - 1));
                 }
                 catch (ArgumentOutOfRangeException)
                 {

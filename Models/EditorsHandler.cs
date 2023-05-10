@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace cumcad.Models.Helpers
 {
-    internal class EditorsHelper
+    internal class EditorsHandler
     {
         private static List<EditorPageView> editorPageViews = new List<EditorPageView>();
 
@@ -17,9 +17,9 @@ namespace cumcad.Models.Helpers
             return editorPageViews.Count;
         }
 
-        internal static List<EditorPageView> GetEditors()
+        internal static List<EditorPageModel> GetEditorModels()
         {
-            return editorPageViews;
+            return editorPageViews.Select(x => (x.DataContext as EditorPageViewModel).editorModel).ToList();
         }
 
         internal static int IndexOf(EditorPageViewModel vm)

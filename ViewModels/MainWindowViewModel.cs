@@ -15,6 +15,7 @@ using Prism.Mvvm;
 using System.Threading;
 using cumcad.Models.Factories;
 using cumcad.Models.Other.MyEventArgs;
+using cumcad.Models.Classes;
 
 namespace cumcad.ViewModels
 {

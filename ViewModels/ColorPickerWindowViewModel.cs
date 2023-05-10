@@ -57,15 +57,17 @@ namespace cumcad.ViewModels
         private void OnMouseUpCommand(object parameter)
         {
             var p = parameter as MouseEventArgs;
+            var pos = p.GetPosition(p.Source as IInputElement);
             mouseDowned = false;
-            BorderColor = new SolidColorBrush(GetPixelColor(PickerImage, (int)p.GetPosition(p.Source as IInputElement).X, (int)p.GetPosition(p.Source as IInputElement).Y));
+            BorderColor = new SolidColorBrush(GetPixelColor(PickerImage, (int)pos.X, (int)pos.Y));
         }
 
         private void OnMouseDownCommand(object parameter)
         {
             var p = parameter as MouseEventArgs;
+            var pos = p.GetPosition(p.Source as IInputElement);
             mouseDowned = true;
-            BorderColor = new SolidColorBrush(GetPixelColor(PickerImage, (int)p.GetPosition(p.Source as IInputElement).X, (int)p.GetPosition(p.Source as IInputElement).Y));
+            BorderColor = new SolidColorBrush(GetPixelColor(PickerImage, (int)pos.X, (int)pos.Y));
         }
 
         private void OnMouseMoveCommand(object parameter)
@@ -73,7 +75,8 @@ namespace cumcad.ViewModels
             if (mouseDowned)
             {
                 var p = parameter as MouseEventArgs;
-                BorderColor = new SolidColorBrush(GetPixelColor(PickerImage, (int)p.GetPosition(p.Source as IInputElement).X, (int)p.GetPosition(p.Source as IInputElement).Y));
+                var pos = p.GetPosition(p.Source as IInputElement);
+                BorderColor = new SolidColorBrush(GetPixelColor(PickerImage, (int)pos.X, (int)pos.Y));
             }
         }
 

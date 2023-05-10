@@ -1,4 +1,6 @@
-﻿using System;
+﻿using cumcad.Models.Classes;
+using cumcad.ViewModels.Base;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -41,6 +43,11 @@ namespace cumcad.Models.Helpers
             }
             mats.Clear();
             GC.Collect();
+        }
+
+        public static IHandler GetIHandler(EditorItem item)
+        {
+            return item.Controls[0].SettingsContent.DataContext as IHandler;
         }
 
         public static SolidColorBrush PickRandomBrush()
