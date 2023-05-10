@@ -16,6 +16,8 @@ namespace cumcad.ViewModels.Handlers
 {
     internal class MainHandlerViewModel : BindableBase, IHandler
     {
+        public EditorPageModel HandlerEditorModel { get; set; }
+
         private string name;
         public string Name
         {

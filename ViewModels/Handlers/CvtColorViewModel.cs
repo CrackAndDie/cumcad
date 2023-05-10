@@ -1,4 +1,5 @@
-﻿using cumcad.Models.Factories;
+﻿using cumcad.Models;
+using cumcad.Models.Factories;
 using cumcad.ViewModels.Base;
 using OpenCvSharp;
 using Prism.Mvvm;
@@ -12,6 +13,8 @@ namespace cumcad.ViewModels.Handlers
 {
     internal class CvtColorViewModel : BindableBase, IHandler
     {
+        public EditorPageModel HandlerEditorModel { get; set; }
+
         private List<ColorConversionCodes> typeItems;
         public List<ColorConversionCodes> TypeItems
         {

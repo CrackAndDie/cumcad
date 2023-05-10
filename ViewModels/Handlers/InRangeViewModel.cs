@@ -1,4 +1,5 @@
-﻿using cumcad.Models.Classes;
+﻿using cumcad.Models;
+using cumcad.Models.Classes;
 using cumcad.Models.Factories;
 using cumcad.ViewModels.Base;
 using OpenCvSharp;
@@ -13,6 +14,8 @@ namespace cumcad.ViewModels.Handlers
 {
     internal class InRangeViewModel : BindableBase, IHandler
     {
+        public EditorPageModel HandlerEditorModel { get; set; }
+
         private int redLowerValue;
         public int RedLowerValue
         {

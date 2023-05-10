@@ -1,4 +1,5 @@
-﻿using cumcad.Models.Factories;
+﻿using cumcad.Models;
+using cumcad.Models.Factories;
 using cumcad.Models.Helpers;
 using cumcad.ViewModels.Base;
 using OpenCvSharp;
@@ -17,6 +18,8 @@ namespace cumcad.ViewModels.Handlers
 {
     internal class BitwiseOrViewModel : BindableBase, IHandler
     {
+        public EditorPageModel HandlerEditorModel { get; set; }
+
         private List<Brush> img2EditorBrushes;
         public List<Brush> Img2EditorBrushes
         {
@@ -94,11 +97,11 @@ namespace cumcad.ViewModels.Handlers
                     Mat mask = null;
                     if (SelectedMaskEditor > 0)
                     {
-                        var maskEditorModel = (EditorsHandler.GetPageView(SelectedMaskEditor - 1).DataContext as EditorPageViewModel).editorModel;
+                        var maskEditorModel = EditorsHandler.GetIndependentEditorModels(HandlerEditorModel, this)[SelectedMaskEditor];
                         mask = maskEditorModel.GetUpToQuiet(maskEditorModel.GetItems()[SelectedMaskHandler])[0];
                     }
 
-                    var img2EditorModel = (EditorsHandler.GetPageView(SelectedImg2Editor).DataContext as EditorPageViewModel).editorModel;
+                    var img2EditorModel = EditorsHandler.GetIndependentEditorModels(HandlerEditorModel, this)[SelectedImg2Editor];
                     Mat img2 = img2EditorModel.GetUpToQuiet(img2EditorModel.GetItems()[SelectedImg2Handler])[0];
 
                     Cv2.BitwiseOr(image, img2, mat, mask);
@@ -120,21 +123,21 @@ namespace cumcad.ViewModels.Handlers
 
         private void Img2SelectionChanged(int index)
         {
-            Img2EditorHandlers = (EditorsHandler.GetPageView(index).DataContext as EditorPageViewModel).editorModel.GetItems().Select(x => x.Name).ToList();
+            Img2EditorHandlers = EditorsHandler.GetIndependentEditorModels(HandlerEditorModel, this)[index].GetItems().Select(x => x.Name).ToList();
         }
 
         private void MaskSelectionChanged(int index)
         {
             index -= 1;
             if (index >= 0)
-                MaskEditorHandlers = (EditorsHandler.GetPageView(index).DataContext as EditorPageViewModel).editorModel.GetItems().Select(x => x.Name).ToList();
+                MaskEditorHandlers = EditorsHandler.GetIndependentEditorModels(HandlerEditorModel, this)[index].GetItems().Select(x => x.Name).ToList();
             else
                 MaskEditorHandlers = null;
         }
 
         private List<Brush> GetImg2Brushes()
         {
-            return EditorsHandler.GetEditorModels().Select(x => x.EditorResult.IconColor as Brush).ToList();
+            return EditorsHandler.GetIndependentEditorModels(HandlerEditorModel, this).Select(x => x.EditorResult.IconColor as Brush).ToList();
         }
 
         private List<Brush> GetMaskBrushes()

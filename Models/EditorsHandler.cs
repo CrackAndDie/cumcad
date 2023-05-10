@@ -1,4 +1,5 @@
 ﻿using cumcad.ViewModels;
+using cumcad.ViewModels.Base;
 using cumcad.Views;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,40 @@ namespace cumcad.Models.Helpers
         internal static List<EditorPageModel> GetEditorModels()
         {
             return editorPageViews.Select(x => (x.DataContext as EditorPageViewModel).editorModel).ToList();
+        }
+
+        internal static List<EditorPageModel> GetIndependentEditorModels(EditorPageModel currentEditor, IHandler element)
+        {
+            List<EditorPageModel> result = new List<EditorPageModel>();
+            foreach (var model in GetEditorModels())
+            {
+                if (model == currentEditor)
+                    continue;
+                if (IsIndependentParent(model, currentEditor, element))
+                {
+                    result.Add(model);
+                }
+            }
+            return result;
+        }
+
+        private static bool IsIndependentParent(EditorPageModel check, EditorPageModel current, IHandler element)
+        {
+            var parent = check.ParentEditorModel;
+            var lastEditor = check;
+            while (parent != null)
+            {
+                if (parent == current)
+                {
+                    int indexCurrent = current.IndexOf(element);
+                    int indexCheck = current.IndexOf(lastEditor.EditorResult.ParentEditorItem);
+                    return indexCheck < indexCurrent; // check if the 'element' is upper than 'parentEditorItem'
+
+                }
+                lastEditor = parent;
+                parent = parent.ParentEditorModel;
+            }
+            return true;
         }
 
         internal static int IndexOf(EditorPageViewModel vm)

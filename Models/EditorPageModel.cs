@@ -170,6 +170,11 @@ namespace cumcad.Models
             return EditorItems.IndexOf(item);
         }
 
+        internal int IndexOf(IHandler item)
+        {
+            return EditorItems.Select(x => x.Controls[0].SettingsContent.DataContext as IHandler).ToList().IndexOf(item);
+        }
+
         internal IHandler Get(int ind)
         {
             return Funcad.GetIHandler(EditorItems[ind]);
@@ -191,6 +196,7 @@ namespace cumcad.Models
             var item = HandlerFactory.GetHandler(name);
             if (item == null)
                 return null;
+            (item.DataContext as IHandler).HandlerEditorModel = this;
             var handler = new EditorItem(item)
             {
                 Name = name,
@@ -201,6 +207,7 @@ namespace cumcad.Models
 
         internal EditorItem Add(UserControl item, string name)
         {
+            (item.DataContext as IHandler).HandlerEditorModel = this;
             var handler = new EditorItem(item)
             {
                 Name = name,

@@ -1,4 +1,5 @@
-﻿using cumcad.Models.Factories;
+﻿using cumcad.Models;
+using cumcad.Models.Factories;
 using cumcad.ViewModels.Base;
 using OpenCvSharp;
 using Prism.Mvvm;
@@ -12,6 +13,8 @@ namespace cumcad.ViewModels.Handlers
 {
     internal class BitwiseNotViewModel : BindableBase, IHandler
     {
+        public EditorPageModel HandlerEditorModel { get; set; }
+
         public event EventHandler<EventArgs> PropertiesChanged;
 
         public List<Mat> GetResult(List<Mat> images)

@@ -1,4 +1,5 @@
-﻿using cumcad.Models.Factories;
+﻿using cumcad.Models;
+using cumcad.Models.Factories;
 using cumcad.Models.Helpers;
 using cumcad.ViewModels.Base;
 using OpenCvSharp;
@@ -13,6 +14,8 @@ namespace cumcad.ViewModels.Handlers
 {
     internal class RejectBordersViewModel : BindableBase, IHandler
     {
+        public EditorPageModel HandlerEditorModel { get; set; }
+
         private bool isTopChecked;
         public bool IsTopChecked
         {

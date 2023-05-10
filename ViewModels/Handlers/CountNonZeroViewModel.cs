@@ -1,4 +1,5 @@
-﻿using cumcad.ViewModels.Base;
+﻿using cumcad.Models;
+using cumcad.ViewModels.Base;
 using OpenCvSharp;
 using Prism.Mvvm;
 using System;
@@ -12,6 +13,8 @@ namespace cumcad.ViewModels.Handlers
 {
     internal class CountNonZeroViewModel : BindableBase, IHandler
     {
+        public EditorPageModel HandlerEditorModel { get; set; }
+
         private ObservableCollection<int> nonZeroPixels = new ObservableCollection<int>();
         public ObservableCollection<int> NonZeroPixels
         {
