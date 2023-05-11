@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace cumcad.Models.Helpers
 {
@@ -26,15 +27,18 @@ namespace cumcad.Models.Helpers
         internal static List<EditorPageModel> GetIndependentEditorModels(EditorPageModel currentEditor, IHandler element)
         {
             List<EditorPageModel> result = new List<EditorPageModel>();
-            foreach (var model in GetEditorModels())
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                if (model == currentEditor)
-                    continue;
-                if (IsIndependentParent(model, currentEditor, element))
+                foreach (var model in GetEditorModels())
                 {
-                    result.Add(model);
+                    if (model == currentEditor)
+                        continue;
+                    if (IsIndependentParent(model, currentEditor, element))
+                    {
+                        result.Add(model);
+                    }
                 }
-            }
+            });
             return result;
         }
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace cumcad.Models.Factories
 {
@@ -29,22 +30,28 @@ namespace cumcad.Models.Factories
 
         internal static void Show(string msg, string image, int buttonsType)
         {
-            MyMessageBoxView mb = new MyMessageBoxView();
-            // not mvvm way
-            mb.Owner = System.Windows.Application.Current.MainWindow;
-            var vm = new MyMessageBoxViewModel(msg, image, buttonsType);
-            mb.DataContext = vm;
-            mb.ShowDialog();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                MyMessageBoxView mb = new MyMessageBoxView();
+                // not mvvm way
+                mb.Owner = System.Windows.Application.Current.MainWindow;
+                var vm = new MyMessageBoxViewModel(msg, image, buttonsType);
+                mb.DataContext = vm;
+                mb.ShowDialog();
+            });
         }
 
         async internal static Task<bool> ShowAsync(string msg, string image, int buttonsType)
         {
-            MyMessageBoxView mb = new MyMessageBoxView();
-            // not mvvm way
-            mb.Owner = System.Windows.Application.Current.MainWindow;
             var vm = new MyMessageBoxViewModel(msg, image, buttonsType);
-            mb.DataContext = vm;
-            mb.ShowDialog();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                MyMessageBoxView mb = new MyMessageBoxView();
+                // not mvvm way
+                mb.Owner = System.Windows.Application.Current.MainWindow;
+                mb.DataContext = vm;
+                mb.ShowDialog();
+            });
             return await vm.GetResult();
         }
     }

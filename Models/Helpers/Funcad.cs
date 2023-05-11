@@ -47,7 +47,12 @@ namespace cumcad.Models.Helpers
 
         public static IHandler GetIHandler(EditorItem item)
         {
-            return item.Controls[0].SettingsContent.DataContext as IHandler;
+            IHandler handler = null;
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                handler = item.Controls[0].SettingsContent.DataContext as IHandler;
+            });
+            return handler;
         }
 
         public static SolidColorBrush PickRandomBrush()

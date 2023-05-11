@@ -8,9 +8,9 @@ namespace cumcad.Models.Factories
     internal class HandlerFactory
     {
         // viewed list
-        internal static List<string> StringItems = new List<string>() { "ExtractImage", "InRange", "InRangeGray", "Resize", "RejectBorders", "CvtColor", "CountNonZero", "BitwiseNot", "BitwiseOr" };
+        internal static List<string> StringItems = new List<string>() { "ExtractImage", "InRange", "InRangeGray", "Resize", "RejectBorders", "CvtColor", "CountNonZero", "BitwiseNot", "BitwiseOr/And" };
         // real names
-        internal static List<string> StringItemsRealNames = new List<string>() { "ExtractImage", "InRange", "InRangeGray", "Resize", "RejectBorders", "CvtColor", "CountNonZero", "BitwiseNot", "BitwiseOr" };
+        internal static List<string> StringItemsRealNames = new List<string>() { "ExtractImage", "InRange", "InRangeGray", "Resize", "RejectBorders", "CvtColor", "CountNonZero", "BitwiseNot", "BitwiseOrAnd" };
 
         internal static UserControl GetHandler(string name)
         {

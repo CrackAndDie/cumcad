@@ -3,22 +3,25 @@ using cumcad.Models.Factories;
 using cumcad.Models.Helpers;
 using cumcad.ViewModels.Base;
 using OpenCvSharp;
-using OpenCvSharp.Flann;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace cumcad.ViewModels.Handlers
 {
-    internal class BitwiseOrViewModel : BindableBase, IHandler
+    internal class BitwiseOrAndViewModel : BindableBase, IHandler
     {
         public EditorPageModel HandlerEditorModel { get; set; }
+
+        private bool isOrChecked;
+        public bool IsOrChecked
+        {
+            get { return isOrChecked; }
+            set { SetProperty(ref isOrChecked, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
+        }
 
         private List<Brush> img2EditorBrushes;
         public List<Brush> Img2EditorBrushes
@@ -78,9 +81,9 @@ namespace cumcad.ViewModels.Handlers
 
         public event EventHandler<EventArgs> PropertiesChanged;
 
-        public BitwiseOrViewModel()
+        public BitwiseOrAndViewModel()
         {
-            
+            IsOrChecked = true;
         }
 
         public async Task<List<Mat>> GetResult(List<Mat> images)
@@ -93,7 +96,7 @@ namespace cumcad.ViewModels.Handlers
                     try
                     {
                         var independentModels = EditorsHandler.GetIndependentEditorModels(HandlerEditorModel, this);
-                        Mat mat = new Mat();
+                        Mat dst = new Mat();
                         Mat mask = null;
                         if (SelectedMaskEditor > 0)
                         {
@@ -106,8 +109,15 @@ namespace cumcad.ViewModels.Handlers
                             var img2EditorModel = independentModels[SelectedImg2Editor];
                             Mat img2 = img2EditorModel.GetUpToQuiet(img2EditorModel.GetItems()[SelectedImg2Handler]).GetAwaiter().GetResult()[0];
 
-                            Cv2.BitwiseOr(image, img2, mat, mask);
-                            mats.Add(mat);
+                            if (IsOrChecked)
+                            {
+                                Cv2.BitwiseOr(image, img2, dst, mask);
+                            }
+                            else
+                            {
+                                Cv2.BitwiseAnd(image, img2, dst, mask);
+                            }
+                            mats.Add(dst);
                         }
                     }
                     catch (Exception ex)
