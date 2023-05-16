@@ -37,5 +37,25 @@ namespace cumcad.Models.Helpers
             }
             return outImage;
         }
+
+        internal static Mat RotateImage(Mat src, int angle)
+        {
+            int h = src.Rows;
+            int w = src.Cols;
+            int cx = w / 2;
+            int cy = h / 2;
+            var m = Cv2.GetRotationMatrix2D(new Point2f(cx, cy), angle, 1.0);
+            var cos = Math.Abs(m.Get<double>(0, 0));
+            var sin = Math.Abs(m.Get<double>(0, 1));
+            int nw = (int)(h * sin + w * cos);
+            int nh = (int)(h * cos + w * sin);
+            m.Set<double>(0, 2, (nw / 2.0 - cx) + m.Get<double>(0, 2));
+            m.Set<double>(1, 2, (nh / 2.0 - cy) + m.Get<double>(1, 2));
+            Mat dst = new Mat();
+            Cv2.WarpAffine(src, dst, m, new Size(nw, nh));
+            m.Release();
+            m.Dispose();
+            return dst;
+        }
     }
 }

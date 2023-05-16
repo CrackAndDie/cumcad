@@ -51,6 +51,7 @@ namespace cumcad.Models
         }
 
         private EditorItem lastSelectedItem;
+        private bool canBeAffected = true;
 
         // editor remove because of some problems in mainhandler
         internal event EventHandler<EventArgs> OnRemove;
@@ -79,32 +80,62 @@ namespace cumcad.Models
         #region HighLevel
         internal async void ChangeImageSelection(EditorItem item)
         {
-            WaiterHelper.AddWaiter();
-            if (lastSelectedItem != null)
+            if (canBeAffected)
             {
-                Funcad.GetIHandler(lastSelectedItem).PropertiesChanged -= OnHandlerPropertiesChanged;
+                canBeAffected = false;
+                WaiterHelper.AddWaiter();
+                if (lastSelectedItem != null)
+                {
+                    Funcad.GetIHandler(lastSelectedItem).PropertiesChanged -= OnHandlerPropertiesChanged;
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        Funcad.GetIHandler(lastSelectedItem).UnSelected();
+                    });
+                }
+                if (BeforeImages != null)
+                {
+                    Funcad.ReleaseMats(BeforeImages);
+                }
+                var handler = Funcad.GetIHandler(item);
+                lastSelectedItem = item;
+                handler.PropertiesChanged += OnHandlerPropertiesChanged;
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    Funcad.GetIHandler(lastSelectedItem).UnSelected();
+                    handler.Selected();
                 });
-            }
-            if (BeforeImages != null)
-            {
-                Funcad.ReleaseMats(BeforeImages);
-            }
-            var handler = Funcad.GetIHandler(item);
-            handler.PropertiesChanged += OnHandlerPropertiesChanged;
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                handler.Selected();
-            });
-            int index = IndexOf(item);
-            // getting the first images
-            if (GetDataContext(0) is MainHandlerViewModel)
-            {
-                var mats = await GetUpTo(item);
-                if (mats != null)
+                int index = IndexOf(item);
+                // getting the first images
+                if (GetDataContext(0) is MainHandlerViewModel)
                 {
+                    var mats = await GetUpTo(item);
+                    if (mats != null)
+                    {
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            if (ViewedImages != null)
+                            {
+                                ViewedImages.Clear();
+                            }
+                            ReCalcUG(mats.Count);
+                            ViewedImages = Funcad.FromMatToBitmap(mats);
+                        });
+                        Funcad.ReleaseMats(mats);
+                    }
+                }
+                WaiterHelper.RemoveWaiter();
+                canBeAffected = true;
+            }
+        }
+
+        private async void OnHandlerPropertiesChanged(object sender, EventArgs args)
+        {
+            if (canBeAffected)
+            {
+                canBeAffected = false;
+                if (lastSelectedItem != null)
+                {
+                    WaiterHelper.AddWaiter();
+                    var mats = await Funcad.GetIHandler(lastSelectedItem).GetResult(BeforeImages);
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         if (ViewedImages != null)
@@ -115,27 +146,10 @@ namespace cumcad.Models
                         ViewedImages = Funcad.FromMatToBitmap(mats);
                     });
                     Funcad.ReleaseMats(mats);
-                    lastSelectedItem = item;
+                    WaiterHelper.RemoveWaiter();
                 }
+                canBeAffected = true;
             }
-            WaiterHelper.RemoveWaiter();
-        }
-
-        private async void OnHandlerPropertiesChanged(object sender, EventArgs args)
-        {
-            WaiterHelper.AddWaiter();
-            var mats = await Funcad.GetIHandler(lastSelectedItem).GetResult(BeforeImages);
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                if (ViewedImages != null)
-                {
-                    ViewedImages.Clear();
-                }
-                ReCalcUG(mats.Count);
-                ViewedImages = Funcad.FromMatToBitmap(mats);
-            });
-            Funcad.ReleaseMats(mats);
-            WaiterHelper.RemoveWaiter();
         }
 
         private void ReCalcUG(int amount)
@@ -162,9 +176,11 @@ namespace cumcad.Models
                 }
                 var mats = await Get(index).GetResult(BeforeImages);
                 WaiterHelper.RemoveWaiter();
+                GC.Collect();
                 return mats;
             }
             WaiterHelper.RemoveWaiter();
+            GC.Collect();
             return null;
         }
 
@@ -182,9 +198,11 @@ namespace cumcad.Models
                     images = result;
                 }
                 WaiterHelper.RemoveWaiter();
+                GC.Collect();
                 return images;
             }
             WaiterHelper.RemoveWaiter();
+            GC.Collect();
             return null;
         }
         #endregion
