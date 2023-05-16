@@ -83,7 +83,10 @@ namespace cumcad.Models
             if (lastSelectedItem != null)
             {
                 Funcad.GetIHandler(lastSelectedItem).PropertiesChanged -= OnHandlerPropertiesChanged;
-                Funcad.GetIHandler(lastSelectedItem).UnSelected();
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Funcad.GetIHandler(lastSelectedItem).UnSelected();
+                });
             }
             if (BeforeImages != null)
             {
@@ -91,7 +94,10 @@ namespace cumcad.Models
             }
             var handler = Funcad.GetIHandler(item);
             handler.PropertiesChanged += OnHandlerPropertiesChanged;
-            handler.Selected();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                handler.Selected();
+            });
             int index = IndexOf(item);
             // getting the first images
             if (GetDataContext(0) is MainHandlerViewModel)

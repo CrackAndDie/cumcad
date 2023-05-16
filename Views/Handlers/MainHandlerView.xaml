@@ -5,12 +5,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:cumcad.Views.Handlers"
              mc:Ignorable="d" >
-    <Grid Width="175"
-          Height="24">
-        <TextBlock Style="{StaticResource CommonText}"
-                   Text="{Binding Name}"
-                   FontSize="14"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"/>
+    <Grid Width="165"
+          Height="30">
+        <Border Background="#22000000"
+                CornerRadius="3"
+                BorderThickness="1"
+                BorderBrush="AliceBlue">
+            <TextBlock Style="{StaticResource CommonText}"
+                       Text="{Binding Name}"
+                       FontSize="14"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center" />
+        </Border>
     </Grid>
 </UserControl>

@@ -48,7 +48,7 @@ namespace cumcad.ViewModels.Handlers
 
         public async Task<List<Mat>> GetResult(List<Mat> images)
         {
-            freezeEvent = true;
+            Application.Current.Dispatcher.Invoke(() => { freezeEvent = true; });
             var mats = new List<Mat>();
             await Task.Run(() =>
             {
@@ -79,7 +79,7 @@ namespace cumcad.ViewModels.Handlers
                     }
                 }
             });
-            freezeEvent = false;
+            Application.Current.Dispatcher.Invoke(() => { freezeEvent = false; });
             return mats;
         }
 

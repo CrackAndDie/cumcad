@@ -50,7 +50,7 @@ namespace cumcad.ViewModels
 
             editorModel = new EditorPageModel(parameter);
             editorModel.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
-            editorModel.OnRemove += (s, a) => { OnRemove(); RemoveFromInside?.Invoke(this, a); };
+            editorModel.OnRemove += (s, a) => { RemoveFromInside?.Invoke(this, a); };
         }
 
         async private void OnAddCommand(object parameter)

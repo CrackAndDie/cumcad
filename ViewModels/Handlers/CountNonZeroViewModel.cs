@@ -29,10 +29,13 @@ namespace cumcad.ViewModels.Handlers
 
         public event EventHandler<EventArgs> PropertiesChanged;
 
-        public async  Task<List<Mat>> GetResult(List<Mat> images)
+        public async Task<List<Mat>> GetResult(List<Mat> images)
         {
             var mats = new List<Mat>();
-            NonZeroPixels.Clear();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                NonZeroPixels.Clear();
+            });
             await Task.Run(() =>
             {
                 foreach (var image in images)

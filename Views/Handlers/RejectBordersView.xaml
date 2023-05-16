@@ -1,39 +1,60 @@
 ﻿<UserControl x:Class="cumcad.Views.Handlers.RejectBordersView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:cumcad.Views.Handlers"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             xmlns:other="clr-namespace:cumcad.Views.Other"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
     <Grid Width="165"
-          Height="125">
+          Height="115">
         <Border Background="#22000000"
                 CornerRadius="3"
                 BorderThickness="1"
                 BorderBrush="AliceBlue">
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <CheckBox Content="Top"
-                          Style="{StaticResource MaterialDesignCheckBox}" 
-                          Margin="5"
-                          Foreground="AliceBlue"
-                          IsChecked="{Binding IsTopChecked}"/>
-                <CheckBox Content="Right"
-                          Style="{StaticResource MaterialDesignCheckBox}"
-                          Margin="5"
-                          Foreground="AliceBlue"
-                          IsChecked="{Binding IsRightChecked}" />
-                <CheckBox Content="Bottom"
-                          Style="{StaticResource MaterialDesignCheckBox}"
-                          Margin="5"
-                          Foreground="AliceBlue"
-                          IsChecked="{Binding IsBottomChecked}" />
-                <CheckBox Content="Left"
-                          Style="{StaticResource MaterialDesignCheckBox}"
-                          Margin="5"
-                          Foreground="AliceBlue"
-                          IsChecked="{Binding IsLeftChecked}" />
+            <StackPanel VerticalAlignment="Center">
+                <StackPanel VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Orientation="Horizontal">
+                    <StackPanel>
+                        <CheckBox Content="Top"
+                                  Style="{StaticResource MaterialDesignCheckBox}"
+                                  Margin="5"
+                                  Foreground="AliceBlue"
+                                  IsChecked="{Binding IsTopChecked}" />
+                        <CheckBox Content="Right"
+                                  Style="{StaticResource MaterialDesignCheckBox}"
+                                  Margin="5"
+                                  Foreground="AliceBlue"
+                                  IsChecked="{Binding IsRightChecked}" />
+                    </StackPanel>
+                    <StackPanel>
+                        <CheckBox Content="Bottom"
+                                  Style="{StaticResource MaterialDesignCheckBox}"
+                                  Margin="5"
+                                  Foreground="AliceBlue"
+                                  IsChecked="{Binding IsBottomChecked}" />
+                        <CheckBox Content="Left"
+                                  Style="{StaticResource MaterialDesignCheckBox}"
+                                  Margin="5"
+                                  Foreground="AliceBlue"
+                                  IsChecked="{Binding IsLeftChecked}" />
+                    </StackPanel>
+                </StackPanel>
+                <TextBlock Foreground="AliceBlue"
+                           TextAlignment="Center"
+                           FontSize="12"
+                           Text="Step" />
+                <Slider Value="{Binding CurrentFastStep, Mode=OneWayToSource}"
+                        Minimum="1"
+                        Width="150"
+                        Maximum="10"
+                        Style="{StaticResource MySliderStyle}"
+                        TickFrequency="1"
+                        TickPlacement="BottomRight" />
             </StackPanel>
         </Border>
     </Grid>

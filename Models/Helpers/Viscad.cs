@@ -9,11 +9,11 @@ namespace cumcad.Models.Helpers
 {
     internal class Viscad
     {
-        internal static Mat RejectBorders(Mat src, bool[] sides)
+        internal static Mat RejectBorders(Mat src, bool[] sides, int step = 1)
         {
             Mat outImage = new Mat();
             src.CopyTo(outImage);
-            for (int i = 0; i < src.Rows; i++)
+            for (int i = 0; i < src.Rows; i += step)
             {
                 if (sides[3] && src.Get<Vec3b>(i, 0).Item0 == 255)
                 {
@@ -24,7 +24,7 @@ namespace cumcad.Models.Helpers
                     Cv2.FloodFill(outImage, new Point(src.Cols - 1, i), 0);
                 }
             }
-            for (int i = 0; i < src.Cols; i++)
+            for (int i = 0; i < src.Cols; i += step)
             {
                 if (sides[0] && src.Get<Vec3b>(0, i).Item0 == 255)
                 {

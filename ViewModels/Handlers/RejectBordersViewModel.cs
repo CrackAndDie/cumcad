@@ -44,6 +44,13 @@ namespace cumcad.ViewModels.Handlers
             set { SetProperty(ref isLeftChecked, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
         }
 
+        private int currentFastStep;
+        public int CurrentFastStep
+        {
+            get { return currentFastStep; }
+            set { SetProperty(ref currentFastStep, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
+        }
+
         public event EventHandler<EventArgs> PropertiesChanged;
 
         public RejectBordersViewModel()
@@ -63,7 +70,9 @@ namespace cumcad.ViewModels.Handlers
                 {
                     try
                     {
-                        mats.Add(Viscad.RejectBorders(image, new bool[] { IsTopChecked, IsRightChecked, IsBottomChecked, IsLeftChecked }));
+                        mats.Add(Viscad.RejectBorders(image, 
+                            new bool[] { IsTopChecked, IsRightChecked, IsBottomChecked, IsLeftChecked }, 
+                            CurrentFastStep >= 1 ? CurrentFastStep : 1));
                     }
                     catch (Exception ex)
                     {
