@@ -23,6 +23,13 @@ namespace cumcad.ViewModels.Handlers
             set { SetProperty(ref currentAngle, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
         }
 
+        private bool isSaveShapeChecked;
+        public bool IsSaveShapeChecked
+        {
+            get { return isSaveShapeChecked; }
+            set { SetProperty(ref isSaveShapeChecked, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
+        }
+
         public event EventHandler<EventArgs> PropertiesChanged;
 
         public async Task<List<Mat>> GetResult(List<Mat> images)
@@ -34,7 +41,7 @@ namespace cumcad.ViewModels.Handlers
                 {
                     try
                     {
-                        mats.Add(Viscad.RotateImage(image, CurrentAngle));
+                        mats.Add(IsSaveShapeChecked ? Viscad.RotateImageSaveShape(image, CurrentAngle) : Viscad.RotateImage(image, CurrentAngle));
                     }
                     catch (Exception ex)
                     {

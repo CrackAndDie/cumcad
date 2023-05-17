@@ -38,6 +38,20 @@ namespace cumcad.Models.Helpers
             return outImage;
         }
 
+        internal static Mat RotateImageSaveShape(Mat src, int angle)
+        {
+            int h = src.Rows;
+            int w = src.Cols;
+            int cx = w / 2;
+            int cy = h / 2;
+            var m = Cv2.GetRotationMatrix2D(new Point2f(cx, cy), angle, 1.0);
+            Mat dst = new Mat();
+            Cv2.WarpAffine(src, dst, m, new Size(w, h));
+            m.Release();
+            m.Dispose();
+            return dst;
+        }
+
         internal static Mat RotateImage(Mat src, int angle)
         {
             int h = src.Rows;

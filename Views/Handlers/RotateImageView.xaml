@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Width="165"
-          Height="55">
+          Height="75">
         <Border Background="#22000000"
                 CornerRadius="3"
                 BorderThickness="1"
@@ -24,6 +24,13 @@
                         Style="{StaticResource MySliderStyle}"
                         TickFrequency="15"
                         TickPlacement="BottomRight" />
+                <CheckBox Content="? Save Shape"
+                          Style="{StaticResource MaterialDesignCheckBox}"
+                          Margin="5"
+                          FontSize="10"
+                          HorizontalAlignment="Center"
+                          Foreground="AliceBlue"
+                          IsChecked="{Binding IsSaveShapeChecked}" />
             </StackPanel>
         </Border>
     </Grid>
