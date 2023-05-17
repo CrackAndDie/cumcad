@@ -15,7 +15,7 @@ namespace cumcad.ViewModels.Base
 
         void Selected();
         void UnSelected();
-        Task<List<Mat>> GetResult(List<Mat> images);
+        Task<Mat> GetResult(Mat image);
         void OnRemove();
         event EventHandler<EventArgs> PropertiesChanged;
     }

@@ -1,5 +1,6 @@
 ﻿using cumcad.Models;
 using cumcad.Models.Factories;
+using cumcad.Models.Helpers;
 using cumcad.ViewModels.Base;
 using OpenCvSharp;
 using Prism.Mvvm;
@@ -61,33 +62,29 @@ namespace cumcad.ViewModels.Handlers
 
         public event EventHandler<EventArgs> PropertiesChanged;
 
-        public async Task<List<Mat>> GetResult(List<Mat> images)
+        public async Task<Mat> GetResult(Mat image)
         {
-            var mats = new List<Mat>();
+            var mat = new Mat();
             await Task.Run(() =>
             {
-                if (images.Count > 0)
+                Application.Current.Dispatcher.Invoke(() =>
                 {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        ImageWidth = images[0].Width;
-                        ImageHeight = images[0].Height;
-                    });
-                    
-                    foreach (var image in images)
-                    {
-                        try
-                        {
-                            mats.Add(image.SubMat(YStartValue, YStopValue - 1, XStartValue, XStopValue - 1));
-                        }
-                        catch (Exception)
-                        {
-                            // this error appears when the image is initialized, so there is no need to show the problem
-                        }
-                    }
+                    ImageWidth = image.Width;
+                    ImageHeight = image.Height;
+                });
+
+                try
+                {
+                    Mat m = image.SubMat(YStartValue, YStopValue - 1, XStartValue, XStopValue - 1);
+                    Funcad.ReleaseMat(mat);
+                    mat = m;
+                }
+                catch (Exception)
+                {
+                    // this error appears when the image is initialized, so there is no need to show the problem
                 }
             });
-            return mats;
+            return mat;
         }
 
         public void OnRemove()

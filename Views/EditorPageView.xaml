@@ -18,27 +18,11 @@
             <ColumnDefinition Width="260"/>
         </Grid.ColumnDefinitions>
 
-        <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                ItemContainerStyle="{StaticResource ForListViewItems}"
-                ItemsSource="{Binding ViewedImages}">
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid HorizontalAlignment="Center" 
-                                 Columns="{Binding UGColumns}" 
-                                 Rows="{Binding UGRows}" />
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Image Source="{Binding}"
-                            Stretch="Uniform"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            RenderOptions.BitmapScalingMode="Fant" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <Image Stretch="Uniform"
+               HorizontalAlignment="Stretch"
+               VerticalAlignment="Stretch"
+               RenderOptions.BitmapScalingMode="Fant"
+               Source="{Binding ViewedImage}"/>
 
         <TreeView Grid.Column="1"
                   SelectedItemChanged="TreeView_SelectedItemChanged"

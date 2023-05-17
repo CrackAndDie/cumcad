@@ -29,28 +29,23 @@ namespace cumcad.ViewModels.Handlers
 
         public event EventHandler<EventArgs> PropertiesChanged;
 
-        public async Task<List<Mat>> GetResult(List<Mat> images)
+        public async Task<Mat> GetResult(Mat image)
         {
-            var mats = new List<Mat>();
+            var mat = new Mat();
             Application.Current.Dispatcher.Invoke(() =>
             {
                 NonZeroPixels.Clear();
             });
             await Task.Run(() =>
             {
-                foreach (var image in images)
+                image.CopyTo(mat);
+                int counted = mat.Channels() == 1 ? mat.CountNonZero() : 0;
+                Application.Current.Dispatcher.Invoke(() =>
                 {
-                    Mat newMat = new Mat();
-                    image.CopyTo(newMat);
-                    mats.Add(newMat);
-                    int counted = newMat.Channels() == 1 ? newMat.CountNonZero() : 0;
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        NonZeroPixels.Add(counted);
-                    });
-                }
+                    NonZeroPixels.Add(counted);
+                });
             });
-            return mats;
+            return mat;
         }
 
         public void OnRemove()

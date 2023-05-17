@@ -1,5 +1,8 @@
 ﻿using cumcad.Models.Classes;
 using cumcad.ViewModels.Base;
+using OpenCvSharp.Internal.Vectors;
+using OpenCvSharp.Internal;
+using OpenCvSharp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,45 +13,72 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.IO;
 
 namespace cumcad.Models.Helpers
 {
     internal class Funcad
     {
-        public static ObservableCollection<BitmapImage> FromMatToBitmap(List<OpenCvSharp.Mat> mats)
+        public static BitmapImage FromMatToBitmap(Mat mat)
         {
-            var bitmaps = new ObservableCollection<BitmapImage>();
-            foreach (var mat in mats)
+            if (mat.Cols == 0 || mat.Rows == 0)
             {
-                using (var ms = mat.ToMemoryStream())
-                {
-                    var bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-                    bitmap.StreamSource = ms;
-                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmap.EndInit();
-                    bitmap.Freeze();
-                    bitmaps.Add(bitmap);
-                }
+                return null;
             }
-            return bitmaps;
+            var bitmap = new BitmapImage();
+            using (var ms = ToMemoryStream(mat))
+            {
+                bitmap.BeginInit();
+                bitmap.StreamSource = ms;
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.EndInit();
+                bitmap.Freeze();
+            }
+            return bitmap;
         }
 
-        public static void ReleaseMats(List<OpenCvSharp.Mat> mats)
+        public static void ReleaseMat(Mat mat)
         {
-            foreach (OpenCvSharp.Mat mat in mats)
+            mat.Release();
+            mat.Dispose();
+        }
+
+        public static bool ImEncode(string ext, InputArray img, out byte[] buf, int[] prms = null)
+        {
+            if (string.IsNullOrEmpty(ext))
             {
-                mat.Release();
-                mat.Dispose();
+                throw new ArgumentNullException("ext");
             }
-            mats.Clear();
-            // GC.Collect();
+
+            if (img == null)
+            {
+                throw new ArgumentNullException("img");
+            }
+
+            if (prms == null)
+            {
+                prms = Array.Empty<int>();
+            }
+
+            img.ThrowIfDisposed();
+            VectorOfByte vectorOfByte = new VectorOfByte();
+            NativeMethods.HandleException(NativeMethods.imgcodecs_imencode_vector(ext, img.CvPtr, vectorOfByte.CvPtr, prms, 0, out var returnValue));
+            GC.KeepAlive(img);
+            buf = vectorOfByte.ToArray();
+            vectorOfByte.Dispose();
+            return returnValue != 0;
+        }
+
+        public static MemoryStream ToMemoryStream(Mat mat)
+        {
+            ImEncode(".png", mat, out var buf);
+            return new MemoryStream(buf);
         }
 
         public static IHandler GetIHandler(EditorItem item)
         {
             IHandler handler = null;
-            Application.Current.Dispatcher.Invoke(() =>
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
             {
                 handler = item.Controls[0].SettingsContent.DataContext as IHandler;
             });
@@ -74,8 +104,8 @@ namespace cumcad.Models.Helpers
         public static LinearGradientBrush RedStrokeBrush()
         {
             LinearGradientBrush myVerticalGradient = new LinearGradientBrush();
-            myVerticalGradient.StartPoint = new Point(0.35, 0);
-            myVerticalGradient.EndPoint = new Point(0.65, 1);
+            myVerticalGradient.StartPoint = new System.Windows.Point(0.35, 0);
+            myVerticalGradient.EndPoint = new System.Windows.Point(0.65, 1);
             myVerticalGradient.GradientStops.Add(new GradientStop(Colors.AliceBlue, 0.0));
             myVerticalGradient.GradientStops.Add(new GradientStop(Colors.AliceBlue, 0.42));
             myVerticalGradient.GradientStops.Add(new GradientStop(Colors.Red, 0.5));

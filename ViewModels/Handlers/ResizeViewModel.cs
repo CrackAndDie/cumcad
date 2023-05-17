@@ -1,5 +1,6 @@
 ﻿using cumcad.Models;
 using cumcad.Models.Factories;
+using cumcad.Models.Helpers;
 using cumcad.ViewModels.Base;
 using OpenCvSharp;
 using Prism.Mvvm;
@@ -46,41 +47,36 @@ namespace cumcad.ViewModels.Handlers
 
         public event EventHandler<EventArgs> PropertiesChanged;
 
-        public async Task<List<Mat>> GetResult(List<Mat> images)
+        public async Task<Mat> GetResult(Mat image)
         {
             Application.Current.Dispatcher.Invoke(() => { freezeEvent = true; });
-            var mats = new List<Mat>();
+            var mat = new Mat();
             await Task.Run(() =>
             {
-                if (images.Count > 0)
+                if (firstCall)
                 {
-                    if (firstCall)
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            var size = images[0].Size();
-                            Width = size.Width;
-                            Height = size.Height;
-                        });
-                        firstCall = false;
-                    }
+                        Width = image.Width;
+                        Height = image.Height;
+                    });
+                    firstCall = false;
+                }
 
-                    foreach (var image in images)
-                    {
-                        try
-                        {
-                            mats.Add(image.Resize(new OpenCvSharp.Size(Width, Height)));
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBoxFactory.Show("Something went wrong, check out the next message", MessageBoxFactory.WARN_LOGO);
-                            MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
-                        }
-                    }
+                try
+                {
+                    Mat m = image.Resize(new OpenCvSharp.Size(Width, Height));
+                    Funcad.ReleaseMat(mat);
+                    mat = m;
+                }
+                catch (Exception ex)
+                {
+                    MessageBoxFactory.Show("Something went wrong, check out the next message", MessageBoxFactory.WARN_LOGO);
+                    MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
                 }
             });
             Application.Current.Dispatcher.Invoke(() => { freezeEvent = false; });
-            return mats;
+            return mat;
         }
 
         public void OnRemove()

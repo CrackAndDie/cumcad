@@ -86,48 +86,43 @@ namespace cumcad.ViewModels.Handlers
             IsOrChecked = true;
         }
 
-        public async Task<List<Mat>> GetResult(List<Mat> images)
+        public async Task<Mat> GetResult(Mat image)
         {
-            var mats = new List<Mat>();
+            var mat = new Mat();
             await Task.Run(() =>
             {
-                foreach (var image in images)
+                try
                 {
-                    try
+                    var independentModels = EditorsHandler.GetIndependentEditorModels(HandlerEditorModel, this);
+                    Mat mask = null;
+                    if (SelectedMaskEditor > 0)
                     {
-                        var independentModels = EditorsHandler.GetIndependentEditorModels(HandlerEditorModel, this);
-                        Mat dst = new Mat();
-                        Mat mask = null;
-                        if (SelectedMaskEditor > 0)
-                        {
-                            var maskEditorModel = independentModels[SelectedMaskEditor - 1];
-                            mask = maskEditorModel.GetUpToQuiet(maskEditorModel.GetItems()[SelectedMaskHandler]).GetAwaiter().GetResult()[0];
-                        }
-
-                        if (SelectedImg2Editor >= 0 && independentModels.Count > 0)
-                        {
-                            var img2EditorModel = independentModels[SelectedImg2Editor];
-                            Mat img2 = img2EditorModel.GetUpToQuiet(img2EditorModel.GetItems()[SelectedImg2Handler]).GetAwaiter().GetResult()[0];
-
-                            if (IsOrChecked)
-                            {
-                                Cv2.BitwiseOr(image, img2, dst, mask);
-                            }
-                            else
-                            {
-                                Cv2.BitwiseAnd(image, img2, dst, mask);
-                            }
-                            mats.Add(dst);
-                        }
+                        var maskEditorModel = independentModels[SelectedMaskEditor - 1];
+                        mask = maskEditorModel.GetUpToQuiet(maskEditorModel.GetItems()[SelectedMaskHandler]).GetAwaiter().GetResult();
                     }
-                    catch (Exception ex)
+
+                    if (SelectedImg2Editor >= 0 && independentModels.Count > 0)
                     {
-                        MessageBoxFactory.Show("Something went wrong, check out the next message", MessageBoxFactory.WARN_LOGO);
-                        MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
+                        var img2EditorModel = independentModels[SelectedImg2Editor];
+                        Mat img2 = img2EditorModel.GetUpToQuiet(img2EditorModel.GetItems()[SelectedImg2Handler]).GetAwaiter().GetResult();
+
+                        if (IsOrChecked)
+                        {
+                            Cv2.BitwiseOr(image, img2, mat, mask);
+                        }
+                        else
+                        {
+                            Cv2.BitwiseAnd(image, img2, mat, mask);
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    MessageBoxFactory.Show("Something went wrong, check out the next message", MessageBoxFactory.WARN_LOGO);
+                    MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
+                }
             });
-            return mats;
+            return mat;
         }
 
         public void OnRemove()

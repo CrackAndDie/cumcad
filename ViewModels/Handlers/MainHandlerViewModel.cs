@@ -34,7 +34,7 @@ namespace cumcad.ViewModels.Handlers
 
         private readonly SelectEditorResult editorData;
 
-        private Mat image;
+        private Mat imageFromFile;
 
         public MainHandlerViewModel(SelectEditorResult editorData)
         {
@@ -43,7 +43,7 @@ namespace cumcad.ViewModels.Handlers
 
             if (editorData.SelectedType == EditorType.Image)
             {
-                image = new Mat(editorData.ImagePath, ImreadModes.Color);
+                imageFromFile = new Mat(editorData.ImagePath, ImreadModes.Color);
             }
             else if (editorData.SelectedType == EditorType.FromEditor)
             {
@@ -52,9 +52,9 @@ namespace cumcad.ViewModels.Handlers
             }
         }
 
-        public async Task<List<Mat>> GetResult(List<Mat> images)
+        public async Task<Mat> GetResult(Mat image)
         {
-            List<Mat> result = null;
+            Mat result = null;
             await Task.Run(() =>
             {
                 if (editorData.SelectedType == EditorType.Image)
@@ -62,8 +62,8 @@ namespace cumcad.ViewModels.Handlers
                     try
                     {
                         Mat dst = new Mat();
-                        image.CopyTo(dst);
-                        result = new List<Mat> { dst };
+                        imageFromFile.CopyTo(dst);
+                        result = dst;
                     }
                     catch (Exception ex)
                     {
@@ -94,17 +94,17 @@ namespace cumcad.ViewModels.Handlers
                     }
                 }
             });
-            return result ?? new List<Mat>();
+            return result ?? new Mat();
         }
 
         public void OnRemove()
         {
             if (editorData.SelectedType == EditorType.Image)
             {
-                if (image != null)
+                if (imageFromFile != null)
                 {
-                    image.Release();
-                    image.Dispose();
+                    imageFromFile.Release();
+                    imageFromFile.Dispose();
                 }
             }
             else if (editorData.SelectedType == EditorType.FromEditor)

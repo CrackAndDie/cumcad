@@ -29,11 +29,7 @@ namespace cumcad.ViewModels
             set { SetProperty(ref selectedBranch, value); OnSelectChanged(selectedBranch); }
         }
 
-        public ObservableCollection<BitmapImage> ViewedImages => editorModel.ViewedImages;
-
-        public int UGRows => editorModel.UGRows;
-
-        public int UGColumns => editorModel.UGColumns;
+        public BitmapImage ViewedImage => editorModel.ViewedImage;
 
         public ObservableCollection<EditorItem> TreeViewItems => editorModel.EditorItems;
 
@@ -92,9 +88,9 @@ namespace cumcad.ViewModels
         internal void OnRemove()
         {
             editorModel.RemoveAll();
-            if (editorModel.BeforeImages != null)
+            if (editorModel.BeforeImage != null)
             {
-                Funcad.ReleaseMats(editorModel.BeforeImages);
+                Funcad.ReleaseMat(editorModel.BeforeImage);
             }
         }
     }

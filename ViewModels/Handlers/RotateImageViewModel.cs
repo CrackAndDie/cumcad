@@ -32,25 +32,24 @@ namespace cumcad.ViewModels.Handlers
 
         public event EventHandler<EventArgs> PropertiesChanged;
 
-        public async Task<List<Mat>> GetResult(List<Mat> images)
+        public async Task<Mat> GetResult(Mat image)
         {
-            var mats = new List<Mat>();
+            var mat = new Mat();
             await Task.Run(() =>
             {
-                foreach (var image in images)
+                try
                 {
-                    try
-                    {
-                        mats.Add(IsSaveShapeChecked ? Viscad.RotateImageSaveShape(image, CurrentAngle) : Viscad.RotateImage(image, CurrentAngle));
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBoxFactory.Show("Something went wrong, check out the next message", MessageBoxFactory.WARN_LOGO);
-                        MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
-                    }
+                    Mat m = IsSaveShapeChecked ? Viscad.RotateImageSaveShape(image, CurrentAngle) : Viscad.RotateImage(image, CurrentAngle);
+                    Funcad.ReleaseMat(mat);
+                    mat = m;
+                }
+                catch (Exception ex)
+                {
+                    MessageBoxFactory.Show("Something went wrong, check out the next message", MessageBoxFactory.WARN_LOGO);
+                    MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
                 }
             });
-            return mats;
+            return mat;
         }
 
         public void OnRemove()

@@ -1,6 +1,7 @@
 ﻿using cumcad.Models;
 using cumcad.Models.Classes;
 using cumcad.Models.Factories;
+using cumcad.Models.Helpers;
 using cumcad.ViewModels.Base;
 using OpenCvSharp;
 using Prism.Mvvm;
@@ -60,26 +61,25 @@ namespace cumcad.ViewModels.Handlers
 
         public event EventHandler<EventArgs> PropertiesChanged;
 
-        public async Task<List<Mat>> GetResult(List<Mat> images)
+        public async Task<Mat> GetResult(Mat image)
         {
-            var mats = new List<Mat>();
+            var mat = new Mat();
             await Task.Run(() =>
             {
-                foreach (var image in images)
+                try
                 {
-                    try
-                    {
-                        mats.Add(image.InRange(InputArray.Create(new int[] { RedLowerValue, GreenLowerValue, BlueLowerValue }),
-                            InputArray.Create(new int[] { RedHigherValue, GreenHigherValue, BlueHigherValue })));
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBoxFactory.Show("Something went wrong, check out the next message", MessageBoxFactory.WARN_LOGO);
-                        MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
-                    }
+                    Mat m = image.InRange(InputArray.Create(new int[] { RedLowerValue, GreenLowerValue, BlueLowerValue }),
+                        InputArray.Create(new int[] { RedHigherValue, GreenHigherValue, BlueHigherValue }));
+                    Funcad.ReleaseMat(mat);
+                    mat = m;
+                }
+                catch (Exception ex)
+                {
+                    MessageBoxFactory.Show("Something went wrong, check out the next message", MessageBoxFactory.WARN_LOGO);
+                    MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
                 }
             });
-            return mats;
+            return mat;
         }
 
         public void OnRemove()
