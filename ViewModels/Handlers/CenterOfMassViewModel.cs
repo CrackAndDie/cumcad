@@ -1,0 +1,73 @@
+﻿using cumcad.Models;
+using cumcad.Models.Factories;
+using cumcad.Models.Helpers;
+using cumcad.ViewModels.Base;
+using OpenCvSharp;
+using Prism.Mvvm;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Media.Media3D;
+
+namespace cumcad.ViewModels.Handlers
+{
+    internal class CenterOfMassViewModel : BindableBase, IHandler
+    {
+        public EditorPageModel HandlerEditorModel { get; set; }
+
+        private int centX;
+        public int CentX
+        {
+            get { return centX; }
+            set { SetProperty(ref centX, value); }
+        }
+
+        private int centY;
+        public int CentY
+        {
+            get { return centY; }
+            set { SetProperty(ref centY, value); }
+        }
+
+        public event EventHandler<EventArgs> PropertiesChanged;
+
+        public async Task<Mat> GetResult(Mat image)
+        {
+            var mat = new Mat();
+            await Task.Run(() =>
+            {
+                try
+                {
+                    var p = Viscad.CenterOfMass(image);
+                    CentX = p.X;
+                    CentY = p.Y;
+                    image.CopyTo(mat);
+                }
+                catch (Exception ex)
+                {
+                    MessageBoxFactory.Show("Something went wrong, check out the next message", MessageBoxFactory.WARN_LOGO);
+                    MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
+                }
+            });
+            return mat;
+        }
+    
+
+        public void OnRemove()
+        {
+            
+        }
+
+        public void Selected()
+        {
+            
+        }
+
+        public void UnSelected()
+        {
+            
+        }
+    }
+}

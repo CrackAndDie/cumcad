@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="cumcad.Views.Handlers.CenterOfMassView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:cumcad.Views.Handlers"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Width="165"
+          Height="60">
+        <Border Background="#22000000"
+                CornerRadius="3"
+                BorderThickness="1"
+                BorderBrush="AliceBlue">
+            <StackPanel HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center">
+                <Grid>
+                    <TextBox Width="55"
+                             Height="20"
+                             IsTabStop="False"
+                             IsReadOnly="True"
+                             Text="{Binding CentX, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                             TextWrapping="NoWrap"
+                             FontSize="12"
+                             HorizontalAlignment="Left"
+                             Margin="18, 0, 10, 10"
+                             TextAlignment="Center"
+                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                             materialDesign:HintAssist.Hint="Cent. X"
+                             materialDesign:HintAssist.Foreground="AliceBlue"
+                             materialDesign:HintAssist.FloatingOffset="2, 20"
+                             materialDesign:HintAssist.FloatingScale="1"
+                             materialDesign:HintAssist.Background="Transparent"
+                             Foreground="AliceBlue"
+                             Padding="0"
+                             AcceptsReturn="False" />
+                    <TextBox Width="55"
+                             Height="20"
+                             IsTabStop="False"
+                             IsReadOnly="True"
+                             Text="{Binding CentY, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                             TextWrapping="NoWrap"
+                             FontSize="12"
+                             HorizontalAlignment="Right"
+                             Margin="10, 0, 18, 10"
+                             TextAlignment="Center"
+                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                             materialDesign:HintAssist.Hint="Cent. Y"
+                             materialDesign:HintAssist.Foreground="AliceBlue"
+                             materialDesign:HintAssist.FloatingOffset="2, 20"
+                             materialDesign:HintAssist.FloatingScale="1"
+                             materialDesign:HintAssist.Background="Transparent"
+                             Foreground="AliceBlue"
+                             Padding="0"
+                             AcceptsReturn="False" />
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
+using System.Windows.Media;
 
 namespace cumcad.Models.Helpers
 {
@@ -70,6 +72,23 @@ namespace cumcad.Models.Helpers
             m.Release();
             m.Dispose();
             return dst;
+        }
+
+        internal static Mat FillHoles(Mat src)
+        {
+            Mat dst = new Mat(src.Rows, src.Cols, src.Type(), new Scalar(0));
+            Cv2.FindContours(src, out Point[][] countours, out HierarchyIndex[] _, RetrievalModes.CComp, ContourApproximationModes.ApproxSimple);
+            for (int i = 0; i < countours.Length; ++i)
+            {
+                Cv2.DrawContours(dst, countours, i, new Scalar(255), Cv2.FILLED);
+            }
+            return dst;
+        }
+
+        internal static Point CenterOfMass(Mat src)
+        {
+            var m = Cv2.Moments(src, true);
+            return new Point(m.M10/m.M00, m.M01/m.M00);
         }
     }
 }
