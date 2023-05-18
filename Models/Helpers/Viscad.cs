@@ -90,5 +90,27 @@ namespace cumcad.Models.Helpers
             var m = Cv2.Moments(src, true);
             return new Point(m.M10/m.M00, m.M01/m.M00);
         }
+
+        internal static Mat ParticleFilter(Mat src, int power)
+        {
+            Mat dst = new Mat(src.Rows, src.Cols, src.Type());
+            Mat labels = new Mat(), stats = new Mat(), centroids = new Mat();
+            int num = Cv2.ConnectedComponentsWithStats(src, labels, stats, centroids, PixelConnectivity.Connectivity8);
+
+            for (int i = 1; i < num; ++i)
+            {
+                if (stats.Get<int>(i, 4) >= power)
+                {
+                    // genius thing, I will forget how it works. But the reason is CV_32SC1 type of dst
+                    Mat bin = labels.InRange(new Scalar(i), new Scalar(i));
+                    Cv2.BitwiseOr(bin, dst, dst);
+                    Funcad.ReleaseMat(bin);
+                }
+            }
+            Funcad.ReleaseMat(labels);
+            Funcad.ReleaseMat(stats);
+            Funcad.ReleaseMat(centroids);
+            return dst;
+        }
     }
 }

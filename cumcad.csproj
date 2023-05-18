@@ -123,6 +123,7 @@
     <Compile Include="ViewModels\Handlers\InRangeGrayViewModel.cs" />
     <Compile Include="ViewModels\Handlers\InRangeViewModel.cs" />
     <Compile Include="ViewModels\Handlers\MainHandlerViewModel.cs" />
+    <Compile Include="ViewModels\Handlers\ParticleFilterViewModel.cs" />
     <Compile Include="ViewModels\Handlers\RejectBordersViewModel.cs" />
     <Compile Include="ViewModels\Handlers\ResizeViewModel.cs" />
     <Compile Include="ViewModels\Handlers\RotateImageViewModel.cs" />
@@ -165,6 +166,9 @@
     </Compile>
     <Compile Include="Views\Handlers\MainHandlerView.xaml.cs">
       <DependentUpon>MainHandlerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Handlers\ParticleFilterView.xaml.cs">
+      <DependentUpon>ParticleFilterView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Handlers\RejectBordersView.xaml.cs">
       <DependentUpon>RejectBordersView.xaml</DependentUpon>
@@ -245,6 +249,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Handlers\MainHandlerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Handlers\ParticleFilterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
