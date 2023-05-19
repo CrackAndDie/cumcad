@@ -1,4 +1,5 @@
 ﻿using cumcad.Models;
+using cumcad.Models.Classes;
 using cumcad.Models.Factories;
 using cumcad.Models.Helpers;
 using cumcad.ViewModels.Base;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace cumcad.ViewModels.Handlers
 {
-    internal class RejectBordersViewModel : BindableBase, IHandler
+    internal class RejectBordersViewModel : BindableBase, IHandler, ISaveable
     {
         public EditorPageModel HandlerEditorModel { get; set; }
 
@@ -96,6 +97,26 @@ namespace cumcad.ViewModels.Handlers
         public void UnSelected()
         {
             
+        }
+
+        public object GetSaveableObject()
+        {
+            return new HandlerSaveableClass()
+            {
+                Name = this.GetType().Name.Substring(0, this.GetType().Name.Length - 9),
+                Params = string.Join(";", new int[] { IsTopChecked ? 1 : 0, IsRightChecked ? 1 : 0, IsBottomChecked ? 1 : 0, IsLeftChecked ? 1 : 0, CurrentFastStep}),
+            };
+        }
+
+        public void SetSaveableObject(object obj)
+        {
+            var hsc = obj as HandlerSaveableClass;
+            string[] items = hsc.Params.Split(';');
+            IsTopChecked = items[0] == "1";
+            IsRightChecked = items[1] == "1";
+            IsBottomChecked = items[2] == "1";
+            IsLeftChecked = items[3] == "1";
+            CurrentFastStep = int.Parse(items[4]);
         }
     }
 }

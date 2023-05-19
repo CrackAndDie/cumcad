@@ -1,4 +1,5 @@
 ﻿using cumcad.Models;
+using cumcad.Models.Classes;
 using cumcad.Models.Factories;
 using cumcad.Models.Helpers;
 using cumcad.ViewModels.Base;
@@ -14,7 +15,7 @@ using System.Windows.Threading;
 
 namespace cumcad.ViewModels.Handlers
 {
-    internal class ExtractImageViewModel : BindableBase, IHandler
+    internal class ExtractImageViewModel : BindableBase, IHandler, ISaveable
     {
         public EditorPageModel HandlerEditorModel { get; set; }
 
@@ -110,6 +111,27 @@ namespace cumcad.ViewModels.Handlers
         public void UnSelected()
         {
             
+        }
+
+        public object GetSaveableObject()
+        {
+            return new HandlerSaveableClass()
+            {
+                Name = this.GetType().Name.Substring(0, this.GetType().Name.Length - 9),
+                Params = string.Join(";", new int[] { XStartValue, XStopValue, YStartValue, YStopValue, ImageWidth, ImageHeight }),
+            };
+        }
+
+        public void SetSaveableObject(object obj)
+        {
+            var hsc = obj as HandlerSaveableClass;
+            string[] items = hsc.Params.Split(';');
+            XStartValue = int.Parse(items[0]);
+            XStopValue = int.Parse(items[1]);
+            YStartValue = int.Parse(items[2]);
+            YStopValue = int.Parse(items[3]);
+            ImageWidth = int.Parse(items[4]);
+            ImageHeight = int.Parse(items[5]);
         }
     }
 }

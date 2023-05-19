@@ -1,4 +1,5 @@
 ﻿using cumcad.Models;
+using cumcad.Models.Classes;
 using cumcad.Models.Factories;
 using cumcad.Models.Helpers;
 using cumcad.ViewModels.Base;
@@ -12,7 +13,7 @@ using System.Windows.Media;
 
 namespace cumcad.ViewModels.Handlers
 {
-    internal class BitwiseOrAndViewModel : BindableBase, IHandler
+    internal class BitwiseOrAndViewModel : BindableBase, IHandler, ISaveable
     {
         public EditorPageModel HandlerEditorModel { get; set; }
 
@@ -175,6 +176,26 @@ namespace cumcad.ViewModels.Handlers
         public void UnSelected()
         {
             
+        }
+
+        public object GetSaveableObject()
+        {
+            return new HandlerSaveableClass()
+            {
+                Name = this.GetType().Name.Substring(0, this.GetType().Name.Length - 9),
+                Params = string.Join(";", new int[] { IsOrChecked ? 1 : 0, SelectedImg2Editor, SelectedImg2Handler, SelectedMaskEditor, SelectedMaskHandler }),
+            };
+        }
+
+        public void SetSaveableObject(object obj)
+        {
+            var hsc = obj as HandlerSaveableClass;
+            string[] items = hsc.Params.Split(';');
+            IsOrChecked = items[0] == "1";
+            SelectedImg2Editor = int.Parse(items[1]);
+            SelectedImg2Handler = int.Parse(items[2]);
+            SelectedMaskEditor = int.Parse(items[3]);
+            SelectedMaskHandler = int.Parse(items[4]);
         }
     }
 }

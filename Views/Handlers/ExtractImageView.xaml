@@ -24,9 +24,9 @@
                                    HorizontalAlignment="Center"
                                    MinRange="8"
                                    RangeStart="0"
-                                   RangeStartSelected="{Binding XStartValue, Mode=OneWayToSource}"
+                                   RangeStartSelected="{Binding XStartValue, Mode=TwoWay}"
                                    RangeStop="{Binding ImageWidth, UpdateSourceTrigger=PropertyChanged}"
-                                   RangeStopSelected="{Binding XStopValue, Mode=OneWayToSource}" />
+                                   RangeStopSelected="{Binding XStopValue, Mode=TwoWay}" />
                 <Grid>
                     <TextBox Width="55"
                              Height="20"
@@ -72,9 +72,9 @@
                                    HorizontalAlignment="Center"
                                    MinRange="8"
                                    RangeStart="0"
-                                   RangeStartSelected="{Binding YStartValue, Mode=OneWayToSource}"
+                                   RangeStartSelected="{Binding YStartValue, Mode=TwoWay}"
                                    RangeStop="{Binding ImageHeight, UpdateSourceTrigger=PropertyChanged}"
-                                   RangeStopSelected="{Binding YStopValue, Mode=OneWayToSource}" />
+                                   RangeStopSelected="{Binding YStopValue, Mode=TwoWay}" />
                 <Grid>
                     <TextBox Width="55"
                              Height="20"

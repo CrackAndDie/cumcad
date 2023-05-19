@@ -23,11 +23,12 @@ using System.Windows.Threading;
 
 namespace cumcad.Models
 {
-    internal class EditorPageModel : BindableBase
+    internal class EditorPageModel : BindableBase, ISaveable
     {
         internal EditorPageModel ParentEditorModel { get; set; }
         internal SelectEditorResult EditorResult { get; set; }
         public ObservableCollection<EditorItem> EditorItems { get; }
+        internal int EditorIndex { get; set; }
 
         internal Mat BeforeImage;
 
@@ -46,6 +47,7 @@ namespace cumcad.Models
 
         internal EditorPageModel(SelectEditorResult editorResult)
         {
+            EditorIndex = Funcad.GetNewEditorIndex();
             EditorResult = editorResult;
             EditorItems = new ObservableCollection<EditorItem>();
             ParentEditorModel = editorResult.ParentEditorModel;
@@ -206,6 +208,11 @@ namespace cumcad.Models
             return EditorItems;
         }
 
+        private List<HandlerSaveableClass> GetHandlerSaveableObjects()
+        {
+            return EditorItems.Select(x => (x.Controls[0].SettingsContent.DataContext as ISaveable).GetSaveableObject() as HandlerSaveableClass).ToList();
+        }
+
         internal EditorItem Add(int index)
         {
             var name = HandlerFactory.StringItems[index];
@@ -273,6 +280,26 @@ namespace cumcad.Models
                 EditorItems[ind + 1] = item;
                 EditorItems[ind] = swapperItem;
             }
+        }
+
+        public object GetSaveableObject()
+        {
+            int parentInd = EditorResult.ParentEditorModel != null ? EditorsHandler.IndexOf(EditorResult.ParentEditorModel) : -1;
+            return new EditorSaveableClass()
+            {
+                HandlerItems = GetHandlerSaveableObjects(),
+                EditorIndex = EditorIndex,
+                IconColor = EditorResult.IconColor,
+                ImagePath = EditorResult.ImagePath,
+                SelectedType = EditorResult.SelectedType,
+                ParentEditorModelIndex = parentInd,
+                ParentEditorItemIndex = parentInd >= 0 ? parentInd : -1,
+            };
+        }
+
+        public void SetSaveableObject(object obj)
+        {
+            // should be done
         }
     }
 }

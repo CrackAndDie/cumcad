@@ -16,24 +16,12 @@ using cumcad.Models.Classes;
 
 namespace cumcad.ViewModels
 {
-    enum EditorType
+    public enum EditorType
     {
         Image,
         CameraStream,
         Shufflecad,
         FromEditor
-    }
-
-    class SelectEditorResult
-    {
-        internal bool? IsSelected { get; set; }
-        internal EditorType SelectedType { get; set; }
-        internal SolidColorBrush IconColor { get; set; }
-        // for IMAGE type
-        internal string ImagePath { get; set; }
-        // for FROMEDITOR type
-        internal EditorPageModel ParentEditorModel { get; set; }
-        internal EditorItem ParentEditorItem { get; set; }
     }
 
     internal class SelectEditorWindowViewModel : BindableBase

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace cumcad.ViewModels.Handlers
 {
-    internal class InRangeViewModel : BindableBase, IHandler
+    internal class InRangeViewModel : BindableBase, IHandler, ISaveable
     {
         public EditorPageModel HandlerEditorModel { get; set; }
 
@@ -105,6 +105,27 @@ namespace cumcad.ViewModels.Handlers
         public void UnSelected()
         {
             
+        }
+
+        public object GetSaveableObject()
+        {
+            return new HandlerSaveableClass()
+            {
+                Name = this.GetType().Name.Substring(0, this.GetType().Name.Length - 9),
+                Params = string.Join(";", new int[] { RedLowerValue, RedHigherValue, GreenLowerValue, GreenHigherValue, BlueLowerValue, BlueHigherValue }),
+            };
+        }
+
+        public void SetSaveableObject(object obj)
+        {
+            var hsc = obj as HandlerSaveableClass;
+            string[] items = hsc.Params.Split(';');
+            RedLowerValue = int.Parse(items[0]);
+            RedHigherValue = int.Parse(items[1]);
+            GreenLowerValue = int.Parse(items[2]);
+            GreenHigherValue = int.Parse(items[3]);
+            BlueLowerValue = int.Parse(items[4]);
+            BlueHigherValue = int.Parse(items[5]);
         }
     }
 }

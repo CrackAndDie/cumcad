@@ -22,7 +22,7 @@
                       HorizontalContentAlignment="Center"
                       FontSize="12"
                       Margin="0, 4, 0, 18"
-                      SelectedItem="{Binding SelectedType}"
+                      SelectedItem="{Binding SelectedType, Mode=TwoWay}"
                       materialDesign:HintAssist.Hint=" Cvt Type"
                       materialDesign:HintAssist.Foreground="AliceBlue"
                       materialDesign:HintAssist.FloatingOffset="2, 26"

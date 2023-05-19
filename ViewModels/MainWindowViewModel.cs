@@ -94,12 +94,12 @@ namespace cumcad.ViewModels
 
         private void OnSaveFileCommand(object parameter)
         {
-
+            mainWindowModel.SaveCumcad();
         }
 
         private void OnOpenFileCommand(object parameter)
         {
-
+            mainWindowModel.LoadCumcad();
         }
 
         private void OnMinimizeWindowCommand(object paramenter)

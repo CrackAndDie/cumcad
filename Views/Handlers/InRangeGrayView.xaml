@@ -24,9 +24,9 @@
                                    HorizontalAlignment="Center"
                                    MinRange="8"
                                    RangeStart="0"
-                                   RangeStartSelected="{Binding GrayLowerValue, Mode=OneWayToSource}"
+                                   RangeStartSelected="{Binding GrayLowerValue, Mode=TwoWay}"
                                    RangeStop="255"
-                                   RangeStopSelected="{Binding GrayHigherValue, Mode=OneWayToSource}" />
+                                   RangeStopSelected="{Binding GrayHigherValue, Mode=TwoWay}" />
                 <Grid>
                     <TextBox Width="55"
                              Height="20"

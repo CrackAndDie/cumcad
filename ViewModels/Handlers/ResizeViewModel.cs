@@ -1,4 +1,5 @@
 ﻿using cumcad.Models;
+using cumcad.Models.Classes;
 using cumcad.Models.Factories;
 using cumcad.Models.Helpers;
 using cumcad.ViewModels.Base;
@@ -14,7 +15,7 @@ using System.Windows.Threading;
 
 namespace cumcad.ViewModels.Handlers
 {
-    internal class ResizeViewModel : BindableBase, IHandler
+    internal class ResizeViewModel : BindableBase, IHandler, ISaveable
     {
         public EditorPageModel HandlerEditorModel { get; set; }
 
@@ -92,6 +93,23 @@ namespace cumcad.ViewModels.Handlers
         public void UnSelected()
         {
             
+        }
+
+        public object GetSaveableObject()
+        {
+            return new HandlerSaveableClass()
+            {
+                Name = this.GetType().Name.Substring(0, this.GetType().Name.Length - 9),
+                Params = string.Join(";", new int[] { Width, Height }),
+            };
+        }
+
+        public void SetSaveableObject(object obj)
+        {
+            var hsc = obj as HandlerSaveableClass;
+            string[] items = hsc.Params.Split(';');
+            Width = int.Parse(items[0]);
+            Height = int.Parse(items[1]);
         }
     }
 }

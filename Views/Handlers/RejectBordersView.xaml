@@ -24,31 +24,31 @@
                                   Style="{StaticResource MaterialDesignCheckBox}"
                                   Margin="5"
                                   Foreground="AliceBlue"
-                                  IsChecked="{Binding IsTopChecked}" />
+                                  IsChecked="{Binding IsTopChecked, Mode=TwoWay}" />
                         <CheckBox Content="Right"
                                   Style="{StaticResource MaterialDesignCheckBox}"
                                   Margin="5"
                                   Foreground="AliceBlue"
-                                  IsChecked="{Binding IsRightChecked}" />
+                                  IsChecked="{Binding IsRightChecked, Mode=TwoWay}" />
                     </StackPanel>
                     <StackPanel>
                         <CheckBox Content="Bottom"
                                   Style="{StaticResource MaterialDesignCheckBox}"
                                   Margin="5"
                                   Foreground="AliceBlue"
-                                  IsChecked="{Binding IsBottomChecked}" />
+                                  IsChecked="{Binding IsBottomChecked, Mode=TwoWay}" />
                         <CheckBox Content="Left"
                                   Style="{StaticResource MaterialDesignCheckBox}"
                                   Margin="5"
                                   Foreground="AliceBlue"
-                                  IsChecked="{Binding IsLeftChecked}" />
+                                  IsChecked="{Binding IsLeftChecked, Mode=TwoWay}" />
                     </StackPanel>
                 </StackPanel>
                 <TextBlock Foreground="AliceBlue"
                            TextAlignment="Center"
                            FontSize="12"
                            Text="Step" />
-                <Slider Value="{Binding CurrentFastStep, Mode=OneWayToSource}"
+                <Slider Value="{Binding CurrentFastStep, Mode=TwoWay}"
                         Minimum="1"
                         Width="150"
                         Maximum="10"

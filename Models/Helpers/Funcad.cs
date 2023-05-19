@@ -19,6 +19,12 @@ namespace cumcad.Models.Helpers
 {
     internal class Funcad
     {
+        private static int editorIndex = 0;
+        internal static int GetNewEditorIndex()
+        {
+            return editorIndex++;
+        }
+
         public static BitmapImage FromMatToBitmap(Mat mat)
         {
             if (mat.Cols == 0 || mat.Rows == 0)

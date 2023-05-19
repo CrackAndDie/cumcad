@@ -20,9 +20,9 @@
                                    HorizontalAlignment="Center"
                                    MinRange="8"
                                    RangeStart="0"
-                                   RangeStartSelected="{Binding RedLowerValue, Mode=OneWayToSource}"
+                                   RangeStartSelected="{Binding RedLowerValue, Mode=TwoWay}"
                                    RangeStop="255"
-                                   RangeStopSelected="{Binding RedHigherValue, Mode=OneWayToSource}" />
+                                   RangeStopSelected="{Binding RedHigherValue, Mode=TwoWay}" />
                 <Grid>
                     <TextBox Width="55"
                              Height="20"
@@ -68,9 +68,9 @@
                                    HorizontalAlignment="Center"
                                    MinRange="8"
                                    RangeStart="0"
-                                   RangeStartSelected="{Binding GreenLowerValue, Mode=OneWayToSource}"
+                                   RangeStartSelected="{Binding GreenLowerValue, Mode=TwoWay}"
                                    RangeStop="255"
-                                   RangeStopSelected="{Binding GreenHigherValue, Mode=OneWayToSource}" />
+                                   RangeStopSelected="{Binding GreenHigherValue, Mode=TwoWay}" />
                 <Grid>
                     <TextBox Width="55"
                              Height="20"
@@ -116,9 +116,9 @@
                                    HorizontalAlignment="Center"
                                    MinRange="8"
                                    RangeStart="0"
-                                   RangeStartSelected="{Binding BlueLowerValue, Mode=OneWayToSource}"
+                                   RangeStartSelected="{Binding BlueLowerValue, Mode=TwoWay}"
                                    RangeStop="255"
-                                   RangeStopSelected="{Binding BlueHigherValue, Mode=OneWayToSource}" />
+                                   RangeStopSelected="{Binding BlueHigherValue, Mode=TwoWay}" />
                 <Grid>
                     <TextBox Width="55"
                              Height="20"

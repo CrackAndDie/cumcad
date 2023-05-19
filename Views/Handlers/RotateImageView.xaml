@@ -17,7 +17,7 @@
                            TextAlignment="Center"
                            FontSize="12"
                            Text="Angle" />
-                <Slider Value="{Binding CurrentAngle, Mode=OneWayToSource}"
+                <Slider Value="{Binding CurrentAngle, Mode=TwoWay}"
                         Minimum="0"
                         Width="150"
                         Maximum="360"
@@ -30,7 +30,7 @@
                           FontSize="10"
                           HorizontalAlignment="Center"
                           Foreground="AliceBlue"
-                          IsChecked="{Binding IsSaveShapeChecked}" />
+                          IsChecked="{Binding IsSaveShapeChecked, Mode=TwoWay}" />
             </StackPanel>
         </Border>
     </Grid>

@@ -49,7 +49,12 @@ namespace cumcad.ViewModels
             editorModel.OnRemove += (s, a) => { RemoveFromInside?.Invoke(this, a); };
         }
 
-        async private void OnAddCommand(object parameter)
+        private void OnAddCommand(object parameter)
+        {
+            AddHandler();
+        }
+
+        async private void AddHandler()
         {
             var selectedIndex = await SelectorsFactory.OpenSelectHandlerWindow();
             if (selectedIndex != null)

@@ -1,4 +1,5 @@
-﻿using cumcad.ViewModels;
+﻿using cumcad.Models.Classes;
+using cumcad.ViewModels;
 using cumcad.Views;
 using System;
 using System.Collections.Generic;

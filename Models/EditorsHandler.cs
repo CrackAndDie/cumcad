@@ -1,4 +1,5 @@
-﻿using cumcad.ViewModels;
+﻿using cumcad.Models.Classes;
+using cumcad.ViewModels;
 using cumcad.ViewModels.Base;
 using cumcad.Views;
 using System;
@@ -22,6 +23,11 @@ namespace cumcad.Models.Helpers
         internal static List<EditorPageModel> GetEditorModels()
         {
             return editorPageViews.Select(x => (x.DataContext as EditorPageViewModel).editorModel).ToList();
+        }
+
+        internal static List<EditorSaveableClass> GetEditorSaveableObjects()
+        {
+            return editorPageViews.Select(x => (x.DataContext as EditorPageViewModel).editorModel.GetSaveableObject() as EditorSaveableClass).ToList();
         }
 
         internal static List<EditorPageModel> GetIndependentEditorModels(EditorPageModel currentEditor, IHandler element)
@@ -64,6 +70,11 @@ namespace cumcad.Models.Helpers
         internal static int IndexOf(EditorPageViewModel vm)
         {
             return editorPageViews.Select(x => x.DataContext as EditorPageViewModel).ToList().IndexOf(vm);
+        }
+
+        internal static int IndexOf(EditorPageModel m)
+        {
+            return editorPageViews.Select(x => (x.DataContext as EditorPageViewModel).editorModel).ToList().IndexOf(m);
         }
 
         internal static void RemoveAt(int index)

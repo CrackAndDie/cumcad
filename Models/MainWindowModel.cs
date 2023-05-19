@@ -3,15 +3,19 @@ using cumcad.Models.Factories;
 using cumcad.Models.Helpers;
 using cumcad.Models.Other.MyEventArgs;
 using cumcad.ViewModels;
+using Microsoft.Win32;
+using Newtonsoft.Json;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup;
 
 namespace cumcad.Models
 {
@@ -183,6 +187,34 @@ namespace cumcad.Models
             bool done = WaiterHelper.GetWaiterStatus();
             ProgressBarVisibility = done ? Visibility.Collapsed : Visibility.Visible;
             CheckAllDoneVisibility = done ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        internal void SaveCumcad()
+        {
+            CumcadSaveableClass csc = new CumcadSaveableClass() { EditorItems = EditorsHandler.GetEditorSaveableObjects() };
+            var dataString = JsonConvert.SerializeObject(csc);
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "JSON file (*.json)|*.json",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                ValidateNames = true,
+                OverwritePrompt = true,
+                AddExtension = true
+            };
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                SaveToComputer(saveFileDialog.FileName, dataString);
+            }
+        }
+
+        private void SaveToComputer(string fileName, string data)
+        {
+            File.WriteAllText(fileName, data);
+        }
+
+        internal void LoadCumcad()
+        {
+            
         }
     }
 }

@@ -17,7 +17,7 @@
                      Height="20"
                      IsTabStop="False"
                      IsReadOnly="False"
-                     Text="{Binding Power, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                     Text="{Binding Power, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      TextWrapping="NoWrap"
                      FontSize="12"
                      HorizontalAlignment="Center"

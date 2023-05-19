@@ -1,4 +1,5 @@
 ﻿using cumcad.Models;
+using cumcad.Models.Classes;
 using cumcad.Models.Factories;
 using cumcad.ViewModels.Base;
 using OpenCvSharp;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace cumcad.ViewModels.Handlers
 {
-    internal class BitwiseNotViewModel : BindableBase, IHandler
+    internal class BitwiseNotViewModel : BindableBase, IHandler, ISaveable
     {
         public EditorPageModel HandlerEditorModel { get; set; }
 
@@ -35,6 +36,8 @@ namespace cumcad.ViewModels.Handlers
             return mat;
         }
 
+        
+
         public void OnRemove()
         {
             
@@ -48,6 +51,20 @@ namespace cumcad.ViewModels.Handlers
         public void UnSelected()
         {
 
+        }
+
+        public object GetSaveableObject()
+        {
+            return new HandlerSaveableClass()
+            {
+                Name = this.GetType().Name.Substring(0, this.GetType().Name.Length - 9),
+                Params = "",
+            };
+        }
+
+        public void SetSaveableObject(object obj)
+        {
+            
         }
     }
 }
