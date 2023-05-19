@@ -120,7 +120,7 @@ namespace cumcad.ViewModels
         async private void OnOpenColorPickerCommand(object paramenter)
         {
             var brush = await SelectorsFactory.OpenColorPickerWindow();
-            if (result != null)
+            if (brush != null)
             {
                 IconColor = brush;
             }

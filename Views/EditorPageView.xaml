@@ -42,6 +42,10 @@
                             <ContextMenu>
                                 <MenuItem Header="Editor from this"
                                           Command="{Binding EditorFromThisCommand}" />
+                                <MenuItem Header="Move up"
+                                          Command="{Binding MoveUpCommand}" />
+                                <MenuItem Header="Move down"
+                                          Command="{Binding MoveDownCommand}" />
                                 <MenuItem Header="Remove"
                                             Command="{Binding DeleteCommand}" />
                             </ContextMenu>

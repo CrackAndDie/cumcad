@@ -1,6 +1,7 @@
 ﻿using cumcad.Models.Classes;
 using cumcad.Models.Factories;
 using cumcad.Models.Helpers;
+using cumcad.Models.Other.MyEventArgs;
 using cumcad.ViewModels;
 using cumcad.ViewModels.Base;
 using cumcad.ViewModels.Handlers;
@@ -12,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -210,13 +212,7 @@ namespace cumcad.Models
             var item = HandlerFactory.GetHandler(name);
             if (item == null)
                 return null;
-            (item.DataContext as IHandler).HandlerEditorModel = this;
-            var handler = new EditorItem(item)
-            {
-                Name = name,
-            };
-            EditorItems.Add(handler);
-            return handler;
+            return Add(item, name);
         }
 
         internal EditorItem Add(UserControl item, string name)
@@ -227,6 +223,7 @@ namespace cumcad.Models
                 Name = name,
             };
             EditorItems.Add(handler);
+            handler.WantsToBeMoved += OnItemWantsToBeMoved;
             return handler;
         }
 
@@ -236,6 +233,7 @@ namespace cumcad.Models
             if (ind != 0)
             {
                 Funcad.GetIHandler(item).OnRemove();
+                item.WantsToBeMoved -= OnItemWantsToBeMoved;
                 EditorItems.Remove(item);
             }
             else
@@ -249,7 +247,31 @@ namespace cumcad.Models
             while (EditorItems.Count > 0)
             {
                 Funcad.GetIHandler(EditorItems[0]).OnRemove();
+                EditorItems[0].WantsToBeMoved -= OnItemWantsToBeMoved;
                 EditorItems.RemoveAt(0);
+            }
+        }
+
+        private void OnItemWantsToBeMoved(object sender, MoveDirectionEventArgs args)
+        {
+            var dir = args.Parameter;
+            var item = sender as EditorItem;
+            var ind = IndexOf(item);
+            if (dir == MoveDirection.Up)
+            {
+                if (ind == 1)
+                    return;
+                var swapperItem = EditorItems[ind - 1];
+                EditorItems[ind - 1] = item;
+                EditorItems[ind] = swapperItem;
+            }
+            else if (dir == MoveDirection.Down)
+            {
+                if (ind == EditorItems.Count - 1)
+                    return;
+                var swapperItem = EditorItems[ind + 1];
+                EditorItems[ind + 1] = item;
+                EditorItems[ind] = swapperItem;
             }
         }
     }

@@ -108,6 +108,7 @@
     <Compile Include="Models\MainWindowModel.cs" />
     <Compile Include="Models\Other\DelegateCommand.cs" />
     <Compile Include="Models\Other\MyEventArgs\EditorItemEventArgs.cs" />
+    <Compile Include="Models\Other\MyEventArgs\MoveDirectionEventArgs.cs" />
     <Compile Include="Models\Other\MyEventArgs\WindowStateChangedEventArgs.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\Base\IHandler.cs" />
