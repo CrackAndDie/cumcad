@@ -98,7 +98,7 @@ namespace cumcad.Models
 
         private void AddEditor(SelectEditorResult result)
         {
-            MainTabsModel.AddNewItem(result.IconColor).OnRemove += OnItemRemove;
+            MainTabsModel.AddNewItem(result).OnRemove += OnItemRemove;
             var editor = EditorsHandler.AddNewEditorPage(result);
             (editor.DataContext as EditorPageViewModel).RemoveFromInside += OnItemRemoveFromInside;
             (editor.DataContext as EditorPageViewModel).CreateFromEditorItem += CreateEditorFromAnother;

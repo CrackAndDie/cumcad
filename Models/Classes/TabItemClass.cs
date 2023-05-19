@@ -10,6 +10,7 @@ namespace cumcad.Models.Classes
     {
         public PackIconKind IconKind { get; set; }
         public SolidColorBrush IconColor { get; set; }
+        public SolidColorBrush ParentIconColor { get; set; }
         public ICommand DeleteCommand { get; set; }
 
         internal event EventHandler<EventArgs> OnRemove;
