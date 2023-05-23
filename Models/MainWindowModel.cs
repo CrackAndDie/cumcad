@@ -95,12 +95,13 @@ namespace cumcad.Models
                     IconColor = color,
                     SelectedType = EditorType.FromEditor,
                     ParentEditorItem = item,
-                    ParentEditorModel = editorModel
+                    ParentEditorModel = editorModel,
+                    EditorIndex = Funcad.GetNewEditorIndex(),
                 });
             }
         }
 
-        private void AddEditor(SelectEditorResult result)
+        private EditorPageModel AddEditor(SelectEditorResult result)
         {
             MainTabsModel.AddNewItem(result).OnRemove += OnItemRemove;
             var editor = EditorsHandler.AddNewEditorPage(result);
@@ -108,6 +109,7 @@ namespace cumcad.Models
             (editor.DataContext as EditorPageViewModel).CreateFromEditorItem += CreateEditorFromAnother;
             GoToPage(editor);
             SelectedTabIndex = EditorsHandler.GetListCount();
+            return (editor.DataContext as EditorPageViewModel).editorModel;
         }
 
         private void OnItemRemove(object sender, EventArgs args)
@@ -214,7 +216,72 @@ namespace cumcad.Models
 
         internal void LoadCumcad()
         {
-            
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Title = "Browse Cumcad File",
+
+                CheckFileExists = true,
+                CheckPathExists = true,
+
+                DefaultExt = "png",
+                Filter = "JSON files (*.json)|*.json",
+                FilterIndex = 2,
+                RestoreDirectory = true,
+
+                ReadOnlyChecked = true,
+                ShowReadOnly = true
+            };
+
+            if ((bool)openFileDialog.ShowDialog())
+            {
+                string selectedFile = openFileDialog.FileName;
+                string text = File.ReadAllText(selectedFile);
+                CumcadSaveableClass csc = JsonConvert.DeserializeObject<CumcadSaveableClass>(text);
+                ApplyCSC(csc);
+            }
+        }
+
+        private void ApplyCSC(CumcadSaveableClass csc)
+        {
+            // Removing current if exist
+            for (int i = 0; i < EditorsHandler.GetListCount(); i++)
+            {
+                var tabItem = MainTabsModel.TabItems[i + 1];
+                tabItem.OnRemove -= OnItemRemove;
+                RemoveEditor(i);
+            }
+
+            // adding editors and handlers
+            foreach (var e in csc.EditorItems)
+            {
+                var parentEditorModel = e.ParentEditorModelIndex != -1 ? EditorsHandler.GetByEditorIndex(e.ParentEditorModelIndex) : null;
+                SelectEditorResult res = new SelectEditorResult()
+                {
+                    IsSelected = true,
+                    IconColor = e.IconColor,
+                    ImagePath = e.ImagePath,
+                    SelectedType = e.SelectedType,
+                    EditorIndex = e.EditorIndex,
+                    ParentEditorModel = parentEditorModel,
+                    ParentEditorItem = parentEditorModel == null ? null : parentEditorModel.GetEditorItem(e.ParentEditorItemIndex),
+                };
+                var editor = AddEditor(res);
+                foreach (var hand in e.HandlerItems)
+                {
+                    editor.Add(hand.Name);
+                }
+            }
+
+            // applying params
+            for (int i = 0; i < csc.EditorItems.Count; i++)
+            {
+                var editor = EditorsHandler.GetByEditorIndex(i);
+                var objs = editor.GetHandlerSaveableInterfaces();
+                for (int j = 0; j < csc.EditorItems[i].HandlerItems.Count; j++)
+                {
+                    objs[j].SetSaveableObject(csc.EditorItems[i].HandlerItems[j]);
+                }
+            }
         }
     }
 }

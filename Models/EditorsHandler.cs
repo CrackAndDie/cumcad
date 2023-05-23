@@ -98,5 +98,10 @@ namespace cumcad.Models.Helpers
         {
             return editorPageViews[index];
         }
+
+        internal static EditorPageModel GetByEditorIndex(int editorIndex)
+        {
+            return editorPageViews.Select(x => (x.DataContext as EditorPageViewModel).editorModel).FirstOrDefault(x => x.EditorIndex == editorIndex);
+        }
     }
 }

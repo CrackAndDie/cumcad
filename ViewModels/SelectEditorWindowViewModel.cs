@@ -76,6 +76,7 @@ namespace cumcad.ViewModels
 
                 }
             });
+            result.EditorIndex = Funcad.GetNewEditorIndex();
             return result;
         }
 

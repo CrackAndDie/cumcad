@@ -10,6 +10,7 @@ namespace cumcad.Models.Classes
 {
     class SelectEditorResult
     {
+        internal int EditorIndex { get; set; }
         internal bool? IsSelected { get; set; }
         internal EditorType SelectedType { get; set; }
         internal SolidColorBrush IconColor { get; set; }

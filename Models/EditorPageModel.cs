@@ -47,7 +47,7 @@ namespace cumcad.Models
 
         internal EditorPageModel(SelectEditorResult editorResult)
         {
-            EditorIndex = Funcad.GetNewEditorIndex();
+            EditorIndex = editorResult.EditorIndex;
             EditorResult = editorResult;
             EditorItems = new ObservableCollection<EditorItem>();
             ParentEditorModel = editorResult.ParentEditorModel;
@@ -198,6 +198,11 @@ namespace cumcad.Models
             return Funcad.GetIHandler(EditorItems[ind]);
         }
 
+        internal EditorItem GetEditorItem(int ind)
+        {
+            return EditorItems[ind];
+        }
+
         internal object GetDataContext(int ind)
         {
             return EditorItems[ind].Controls[0].SettingsContent.DataContext;
@@ -208,14 +213,26 @@ namespace cumcad.Models
             return EditorItems;
         }
 
-        private List<HandlerSaveableClass> GetHandlerSaveableObjects()
+        internal List<HandlerSaveableClass> GetHandlerSaveableObjects()
         {
-            return EditorItems.Select(x => (x.Controls[0].SettingsContent.DataContext as ISaveable).GetSaveableObject() as HandlerSaveableClass).ToList();
+            // except MainHandler so there is a Skip
+            return EditorItems.Select(x => (x.Controls[0].SettingsContent.DataContext as ISaveable).GetSaveableObject() as HandlerSaveableClass).Skip(1).ToList();
+        }
+
+        internal List<ISaveable> GetHandlerSaveableInterfaces()
+        {
+            // except MainHandler so there is a Skip
+            return EditorItems.Select(x => x.Controls[0].SettingsContent.DataContext as ISaveable).Skip(1).ToList();
         }
 
         internal EditorItem Add(int index)
         {
             var name = HandlerFactory.StringItems[index];
+            return Add(name);
+        }
+
+        internal EditorItem Add(string name)
+        {
             var item = HandlerFactory.GetHandler(name);
             if (item == null)
                 return null;
