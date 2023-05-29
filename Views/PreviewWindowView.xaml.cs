@@ -27,7 +27,7 @@ namespace cumcad.Views
                 var hwndTarget = hwndSource.CompositionTarget;
                 hwndTarget.RenderMode = RenderMode.SoftwareOnly;
             }
-            catch (Exception ex)
+            catch 
             {
                 
             }

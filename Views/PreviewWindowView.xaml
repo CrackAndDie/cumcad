@@ -29,5 +29,16 @@
                           Margin="10"
                           Stretch="UniformToFill" />
         </Border>
+        <ProgressBar ToolTip="Запуск приложения"
+                     Style="{StaticResource MaterialDesignCircularProgressBar}"
+                     Value="0"
+                     Width="18"
+                     Height="18"
+                     IsIndeterminate="True"
+                     Margin="30, 26"
+                     HorizontalAlignment="Right"
+                     VerticalAlignment="Bottom"
+                     IsHitTestVisible="False"
+                     Foreground="#D9D9D9" />
     </Grid>
 </Window>
