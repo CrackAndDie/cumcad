@@ -110,6 +110,8 @@ namespace cumcad.ViewModels.Handlers
             string[] items = hsc.Params.Split(';');
             Width = int.Parse(items[0]);
             Height = int.Parse(items[1]);
+
+            firstCall = false;
         }
     }
 }
