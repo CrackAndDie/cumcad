@@ -190,6 +190,9 @@
       <DependentUpon>MyMessageBoxView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Other\RangeSlider.cs" />
+    <Compile Include="Views\PreviewWindowView.xaml.cs">
+      <DependentUpon>PreviewWindowView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SelectEditorWindowView.xaml.cs">
       <DependentUpon>SelectEditorWindowView.xaml</DependentUpon>
     </Compile>
@@ -283,6 +286,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\PreviewWindowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SelectEditorWindowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -336,6 +343,12 @@
     <Resource Include="Resources\alert.png" />
     <Resource Include="Resources\info.png" />
     <Resource Include="Resources\question.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\cad_video.mp4" />
+    <Content Include="Resources\cad_video_2.mp4">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

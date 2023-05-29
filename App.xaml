@@ -5,7 +5,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
              xmlns:converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
-             StartupUri="MainWindow.xaml">
+             StartupUri="Views/PreviewWindowView.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <Style x:Key="WindowMainPanelStyle" TargetType="{x:Type Border}">
