@@ -132,6 +132,7 @@
     <Compile Include="ViewModels\Handlers\ErodeViewModel.cs" />
     <Compile Include="ViewModels\Handlers\ExtractImageViewModel.cs" />
     <Compile Include="ViewModels\Handlers\FillHolesViewModel.cs" />
+    <Compile Include="ViewModels\Handlers\FlipViewModel.cs" />
     <Compile Include="ViewModels\Handlers\GaussianBlurViewModel.cs" />
     <Compile Include="ViewModels\Handlers\InRangeGrayViewModel.cs" />
     <Compile Include="ViewModels\Handlers\InRangeViewModel.cs" />
@@ -185,6 +186,9 @@
     </Compile>
     <Compile Include="Views\Handlers\FillHolesView.xaml.cs">
       <DependentUpon>FillHolesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Handlers\FlipView.xaml.cs">
+      <DependentUpon>FlipView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Handlers\GaussianBlurView.xaml.cs">
       <DependentUpon>GaussianBlurView.xaml</DependentUpon>
@@ -296,6 +300,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Handlers\FillHolesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Handlers\FlipView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

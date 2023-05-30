@@ -33,6 +33,7 @@ namespace cumcad.Models.Factories
             new HandlerType() { Name = "Canny", RealName = "Canny", Icon = PackIconKind.LandslideOutline, },
             new HandlerType() { Name = "Dilate", RealName = "Dilate", Icon = PackIconKind.ArrowExpandHorizontal, },
             new HandlerType() { Name = "Erode", RealName = "Erode", Icon = PackIconKind.FormatHorizontalAlignCenter, },
+            new HandlerType() { Name = "Flip", RealName = "Flip", Icon = PackIconKind.Mirror, },
         };
 
         static HandlerFactory()
