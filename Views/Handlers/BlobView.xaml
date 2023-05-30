@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="cumcad.Views.Handlers.BlobView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:cumcad.Views.Handlers"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Width="165"
+          Height="55">
+        <Border Background="#22000000"
+                CornerRadius="3"
+                BorderThickness="1"
+                BorderBrush="AliceBlue">
+            <StackPanel VerticalAlignment="Center">
+                <Grid>
+                    <TextBlock Foreground="AliceBlue"
+                               TextAlignment="Center"
+                               FontSize="12"
+                               Text="Small" 
+                               HorizontalAlignment="Left"
+                               Margin="15, 0"/>
+                    <TextBlock Foreground="AliceBlue"
+                               TextAlignment="Center"
+                               FontSize="12"
+                               Text="Big" 
+                               HorizontalAlignment="Right"
+                               Margin="15, 0"/>
+                </Grid>
+                <Slider Value="{Binding CurrentBlob, Mode=TwoWay}"
+                        Minimum="1"
+                        Width="150"
+                        Maximum="{Binding BlobAmount}"
+                        Style="{StaticResource MySliderStyle}"
+                        TickFrequency="1"
+                        TickPlacement="BottomRight" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

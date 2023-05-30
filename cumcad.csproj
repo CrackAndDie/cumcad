@@ -123,6 +123,7 @@
     <Compile Include="ViewModels\EditorPageViewModel.cs" />
     <Compile Include="ViewModels\Handlers\BitwiseNotViewModel.cs" />
     <Compile Include="ViewModels\Handlers\BitwiseOrAndViewModel.cs" />
+    <Compile Include="ViewModels\Handlers\BlobViewModel.cs" />
     <Compile Include="ViewModels\Handlers\CannyViewModel.cs" />
     <Compile Include="ViewModels\Handlers\CenterOfMassViewModel.cs" />
     <Compile Include="ViewModels\Handlers\ConcatViewModel.cs" />
@@ -159,6 +160,9 @@
     </Compile>
     <Compile Include="Views\Handlers\BitwiseOrAndView.xaml.cs">
       <DependentUpon>BitwiseOrAndView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Handlers\BlobView.xaml.cs">
+      <DependentUpon>BlobView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Handlers\CannyView.xaml.cs">
       <DependentUpon>CannyView.xaml</DependentUpon>
@@ -264,6 +268,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Handlers\BitwiseOrAndView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Handlers\BlobView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

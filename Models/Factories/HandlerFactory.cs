@@ -34,6 +34,7 @@ namespace cumcad.Models.Factories
             new HandlerType() { Name = "Dilate", RealName = "Dilate", Icon = PackIconKind.ArrowExpandHorizontal, },
             new HandlerType() { Name = "Erode", RealName = "Erode", Icon = PackIconKind.FormatHorizontalAlignCenter, },
             new HandlerType() { Name = "Flip", RealName = "Flip", Icon = PackIconKind.Mirror, },
+            new HandlerType() { Name = "Blob", RealName = "Blob", Icon = PackIconKind.LiquidSpot, },
         };
 
         static HandlerFactory()

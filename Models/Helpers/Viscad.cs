@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 using System.Windows.Media;
+using System.Security.Cryptography;
 
 namespace cumcad.Models.Helpers
 {
@@ -111,6 +112,12 @@ namespace cumcad.Models.Helpers
             Funcad.ReleaseMat(stats);
             Funcad.ReleaseMat(centroids);
             return dst;
+        }
+
+        internal static Point[][] GetSortedBlobs(Mat src)
+        {
+            Cv2.FindContours(src, out Point[][] countours, out HierarchyIndex[] _, RetrievalModes.CComp, ContourApproximationModes.ApproxSimple);
+            return countours.ToList().OrderBy(x => Cv2.ContourArea(x)).ToArray();
         }
     }
 }
