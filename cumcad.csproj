@@ -128,6 +128,8 @@
     <Compile Include="ViewModels\Handlers\ConcatViewModel.cs" />
     <Compile Include="ViewModels\Handlers\CountNonZeroViewModel.cs" />
     <Compile Include="ViewModels\Handlers\CvtColorViewModel.cs" />
+    <Compile Include="ViewModels\Handlers\DilateViewModel.cs" />
+    <Compile Include="ViewModels\Handlers\ErodeViewModel.cs" />
     <Compile Include="ViewModels\Handlers\ExtractImageViewModel.cs" />
     <Compile Include="ViewModels\Handlers\FillHolesViewModel.cs" />
     <Compile Include="ViewModels\Handlers\GaussianBlurViewModel.cs" />
@@ -171,6 +173,12 @@
     </Compile>
     <Compile Include="Views\Handlers\CvtColorView.xaml.cs">
       <DependentUpon>CvtColorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Handlers\DilateView.xaml.cs">
+      <DependentUpon>DilateView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Handlers\ErodeView.xaml.cs">
+      <DependentUpon>ErodeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Handlers\ExtractImageView.xaml.cs">
       <DependentUpon>ExtractImageView.xaml</DependentUpon>
@@ -272,6 +280,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Handlers\CvtColorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Handlers\DilateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Handlers\ErodeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

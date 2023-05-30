@@ -31,6 +31,8 @@ namespace cumcad.Models.Factories
             new HandlerType() { Name = "Split", RealName = "Split", Icon = PackIconKind.CallSplit, },
             new HandlerType() { Name = "Transpose", RealName = "Transpose", Icon = PackIconKind.AlphaTBoxOutline, },
             new HandlerType() { Name = "Canny", RealName = "Canny", Icon = PackIconKind.LandslideOutline, },
+            new HandlerType() { Name = "Dilate", RealName = "Dilate", Icon = PackIconKind.ArrowExpandHorizontal, },
+            new HandlerType() { Name = "Erode", RealName = "Erode", Icon = PackIconKind.FormatHorizontalAlignCenter, },
         };
 
         static HandlerFactory()
