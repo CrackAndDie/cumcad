@@ -22,7 +22,8 @@
                HorizontalAlignment="Stretch"
                VerticalAlignment="Stretch"
                RenderOptions.BitmapScalingMode="Fant"
-               Source="{Binding ViewedImage}"/>
+               Source="{Binding ViewedImage}"
+               Margin="10"/>
 
         <TreeView Grid.Column="1"
                   SelectedItemChanged="TreeView_SelectedItemChanged"

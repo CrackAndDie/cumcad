@@ -8,20 +8,21 @@ using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
 namespace cumcad.ViewModels.Handlers
 {
-    internal class BitwiseOrAndViewModel : BindableBase, IHandler, ISaveable
+    internal class ConcatViewModel : BindableBase, IHandler, ISaveable
     {
         public EditorPageModel HandlerEditorModel { get; set; }
 
-        private bool isOrChecked;
-        public bool IsOrChecked
+        private bool isVChecked;
+        public bool IsVChecked
         {
-            get { return isOrChecked; }
-            set { SetProperty(ref isOrChecked, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
+            get { return isVChecked; }
+            set { SetProperty(ref isVChecked, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
         }
 
         private List<Brush> img2EditorBrushes;
@@ -52,39 +53,11 @@ namespace cumcad.ViewModels.Handlers
             set { SetProperty(ref selectedImg2Handler, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
         }
 
-        private List<Brush> maskEditorBrushes;
-        public List<Brush> MaskEditorBrushes
-        {
-            get { return maskEditorBrushes; }
-            set { SetProperty(ref maskEditorBrushes, value); }
-        }
-
-        private int selectedMaskEditor;
-        public int SelectedMaskEditor
-        {
-            get { return selectedMaskEditor; }
-            set { SetProperty(ref selectedMaskEditor, value); MaskSelectionChanged(selectedMaskEditor); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
-        }
-
-        private List<string> maskEditorHandlers;
-        public List<string> MaskEditorHandlers
-        {
-            get { return maskEditorHandlers; }
-            set { SetProperty(ref maskEditorHandlers, value); }
-        }
-
-        private int selectedMaskHandler;
-        public int SelectedMaskHandler
-        {
-            get { return selectedMaskHandler; }
-            set { SetProperty(ref selectedMaskHandler, value); PropertiesChanged?.Invoke(this, EventArgs.Empty); }
-        }
-
         public event EventHandler<EventArgs> PropertiesChanged;
 
-        public BitwiseOrAndViewModel()
+        public ConcatViewModel()
         {
-            IsOrChecked = true;
+            IsVChecked = true;
         }
 
         public async Task<Mat> GetResult(Mat image)
@@ -95,30 +68,22 @@ namespace cumcad.ViewModels.Handlers
                 try
                 {
                     var independentModels = EditorsHandler.GetIndependentEditorModels(HandlerEditorModel, this);
-                    Mat mask = null;
-                    if (SelectedMaskEditor > 0)
-                    {
-                        var maskEditorModel = independentModels[SelectedMaskEditor - 1];
-                        mask = maskEditorModel.GetUpToQuiet(maskEditorModel.GetItems()[SelectedMaskHandler]).GetAwaiter().GetResult();
-                    }
 
                     if (SelectedImg2Editor >= 0 && independentModels.Count > 0)
                     {
                         var img2EditorModel = independentModels[SelectedImg2Editor];
                         Mat img2 = img2EditorModel.GetUpToQuiet(img2EditorModel.GetItems()[SelectedImg2Handler]).GetAwaiter().GetResult();
 
-                        if (IsOrChecked)
+                        if (IsVChecked)
                         {
-                            Cv2.BitwiseOr(image, img2, mat, mask);
+                            Cv2.VConcat(new Mat[] { image, img2 }, mat);
                         }
                         else
                         {
-                            Cv2.BitwiseAnd(image, img2, mat, mask);
+                            Cv2.HConcat(new Mat[] { image, img2 }, mat);
                         }
                         Funcad.ReleaseMat(img2);
                     }
-                    if (mask != null)
-                        Funcad.ReleaseMat(mask);
                 }
                 catch (Exception ex)
                 {
@@ -129,23 +94,9 @@ namespace cumcad.ViewModels.Handlers
             return mat;
         }
 
-        public void OnRemove()
-        {
-            
-        }
-
         private void Img2SelectionChanged(int index)
         {
             Img2EditorHandlers = GetHandlerNames(index);
-        }
-
-        private void MaskSelectionChanged(int index)
-        {
-            index -= 1;
-            if (index >= 0)
-                MaskEditorHandlers = GetHandlerNames(index);
-            else
-                MaskEditorHandlers = null;
         }
 
         private List<string> GetHandlerNames(int index)
@@ -161,19 +112,15 @@ namespace cumcad.ViewModels.Handlers
             return EditorsHandler.GetIndependentEditorModels(HandlerEditorModel, this).Select(x => x.EditorResult.IconColor as Brush).ToList();
         }
 
-        private List<Brush> GetMaskBrushes()
+        public void OnRemove()
         {
-            var lst = GetImg2Brushes();
-            lst.Insert(0, Funcad.RedStrokeBrush());
-            return lst;
+            
         }
 
         public void Selected()
         {
             Img2EditorBrushes = GetImg2Brushes();
-            MaskEditorBrushes = GetMaskBrushes();
             Img2SelectionChanged(SelectedImg2Editor);
-            MaskSelectionChanged(SelectedMaskEditor);
         }
 
         public void UnSelected()
@@ -186,7 +133,7 @@ namespace cumcad.ViewModels.Handlers
             return new HandlerSaveableClass()
             {
                 Name = this.GetType().Name.Substring(0, this.GetType().Name.Length - 9),
-                Params = string.Join(";", new int[] { IsOrChecked ? 1 : 0, SelectedImg2Editor, SelectedImg2Handler, SelectedMaskEditor, SelectedMaskHandler }),
+                Params = string.Join(";", new int[] { IsVChecked ? 1 : 0, SelectedImg2Editor, SelectedImg2Handler }),
             };
         }
 
@@ -194,11 +141,9 @@ namespace cumcad.ViewModels.Handlers
         {
             var hsc = obj as HandlerSaveableClass;
             string[] items = hsc.Params.Split(';');
-            IsOrChecked = items[0] == "1";
+            IsVChecked = items[0] == "1";
             SelectedImg2Editor = int.Parse(items[1]);
             SelectedImg2Handler = int.Parse(items[2]);
-            SelectedMaskEditor = int.Parse(items[3]);
-            SelectedMaskHandler = int.Parse(items[4]);
         }
     }
 }

@@ -104,7 +104,15 @@ namespace cumcad.Models
                         {
                             // ViewedImage.Clear();
                         }
-                        ViewedImage = Funcad.FromMatToBitmap(mat);
+                        try
+                        {
+                            ViewedImage = Funcad.FromMatToBitmap(mat);
+                        }
+                        catch (OpenCVException ex)
+                        {
+                            MessageBoxFactory.Show("Something went wrong, check out the next message", MessageBoxFactory.WARN_LOGO);
+                            MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
+                        }
                     });
                     Funcad.ReleaseMat(mat);
                 }
@@ -128,7 +136,15 @@ namespace cumcad.Models
                         {
                             // ViewedImage.Clear();
                         }
-                        ViewedImage = Funcad.FromMatToBitmap(mat);
+                        try
+                        {
+                            ViewedImage = Funcad.FromMatToBitmap(mat);
+                        }
+                        catch (OpenCVException ex)
+                        {
+                            MessageBoxFactory.Show("Something went wrong, check out the next message", MessageBoxFactory.WARN_LOGO);
+                            MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
+                        }
                     });
                     Funcad.ReleaseMat(mat);
                     WaiterHelper.RemoveWaiter();
@@ -227,24 +243,30 @@ namespace cumcad.Models
 
         internal EditorItem Add(int index)
         {
-            var name = HandlerFactory.StringItems[index];
-            return Add(name);
+            var type = HandlerFactory.HandlerItems[index];
+            return Add(type);
         }
 
-        internal EditorItem Add(string name)
+        internal EditorItem Add(string realName)
         {
-            var item = HandlerFactory.GetHandler(name);
+            var type = HandlerFactory.HandlerItems.FirstOrDefault(x => x.RealName == realName);
+            return Add(type);
+        }
+
+        internal EditorItem Add(HandlerType type)
+        {
+            var item = HandlerFactory.GetHandler(type);
             if (item == null)
                 return null;
-            return Add(item, name);
+            return Add(item, type);
         }
 
-        internal EditorItem Add(UserControl item, string name)
+        internal EditorItem Add(UserControl item, HandlerType type)
         {
             (item.DataContext as IHandler).HandlerEditorModel = this;
             var handler = new EditorItem(item)
             {
-                Name = name,
+                Name = type.Name,
             };
             EditorItems.Add(handler);
             handler.WantsToBeMoved += OnItemWantsToBeMoved;

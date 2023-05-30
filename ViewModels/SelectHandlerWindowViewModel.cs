@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows;
 using cumcad.Models.Other;
 using cumcad.Models.Factories;
+using cumcad.Models.Classes;
 
 namespace cumcad.ViewModels
 {
@@ -24,7 +25,7 @@ namespace cumcad.ViewModels
 
         private bool? isSelected;
 
-        public List<string> ListViewItems => HandlerFactory.StringItems;
+        public List<HandlerType> ListViewItems => HandlerFactory.HandlerItems;
 
         #region Commands
         public ICommand DoneCommand { get; set; }

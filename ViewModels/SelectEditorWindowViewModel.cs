@@ -117,7 +117,7 @@ namespace cumcad.ViewModels
 
         private void OnCreateWindowCommand(object paramenter)
         {
-            result.IsSelected = true;
+            result.IsSelected = ImageFilePath != null;
             result.ImagePath = ImageFilePath;
             (paramenter as Window).Close();
         }

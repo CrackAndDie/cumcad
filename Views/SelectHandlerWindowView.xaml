@@ -11,8 +11,8 @@
         WindowStyle="None"
         x:Name="ThisWindow"
         Title=""
-        Height="272"
-        Width="204"
+        Height="322"
+        Width="264"
         Background="#FF2a2a2a"
         WindowStartupLocation="CenterOwner">
 
@@ -49,10 +49,15 @@
                                     ProgressBarVisibility="Collapsed"
                                     CheckAllDoneVisibility="Collapsed" />
 
-            <ListView Grid.Row="1" Margin="20" ItemsSource="{Binding ListViewItems}" SelectedIndex="{Binding SelectedIndex}">
+            <ListView Grid.Row="1" Margin="14" ItemsSource="{Binding ListViewItems}" SelectedIndex="{Binding SelectedIndex}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Foreground="AliceBlue" Text="{Binding}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Width="30" Height="30" Kind="{Binding Icon}" Margin="0, 0, 10, 0"/>
+                            <TextBlock Foreground="AliceBlue"
+                                       Text="{Binding Name}" 
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

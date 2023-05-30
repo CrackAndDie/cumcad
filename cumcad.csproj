@@ -99,6 +99,7 @@
     </ApplicationDefinition>
     <Compile Include="Models\Classes\CumcadSaveableClass.cs" />
     <Compile Include="Models\Classes\EditorItem.cs" />
+    <Compile Include="Models\Classes\HandlerType.cs" />
     <Compile Include="Models\Classes\SelectEditorResult.cs" />
     <Compile Include="Models\Classes\TabItemClass.cs" />
     <Compile Include="Models\EditorPageModel.cs" />
@@ -122,18 +123,24 @@
     <Compile Include="ViewModels\EditorPageViewModel.cs" />
     <Compile Include="ViewModels\Handlers\BitwiseNotViewModel.cs" />
     <Compile Include="ViewModels\Handlers\BitwiseOrAndViewModel.cs" />
+    <Compile Include="ViewModels\Handlers\CannyViewModel.cs" />
     <Compile Include="ViewModels\Handlers\CenterOfMassViewModel.cs" />
+    <Compile Include="ViewModels\Handlers\ConcatViewModel.cs" />
     <Compile Include="ViewModels\Handlers\CountNonZeroViewModel.cs" />
     <Compile Include="ViewModels\Handlers\CvtColorViewModel.cs" />
     <Compile Include="ViewModels\Handlers\ExtractImageViewModel.cs" />
     <Compile Include="ViewModels\Handlers\FillHolesViewModel.cs" />
+    <Compile Include="ViewModels\Handlers\GaussianBlurViewModel.cs" />
     <Compile Include="ViewModels\Handlers\InRangeGrayViewModel.cs" />
     <Compile Include="ViewModels\Handlers\InRangeViewModel.cs" />
     <Compile Include="ViewModels\Handlers\MainHandlerViewModel.cs" />
+    <Compile Include="ViewModels\Handlers\MergeViewModel.cs" />
     <Compile Include="ViewModels\Handlers\ParticleFilterViewModel.cs" />
     <Compile Include="ViewModels\Handlers\RejectBordersViewModel.cs" />
     <Compile Include="ViewModels\Handlers\ResizeViewModel.cs" />
     <Compile Include="ViewModels\Handlers\RotateImageViewModel.cs" />
+    <Compile Include="ViewModels\Handlers\SplitViewModel.cs" />
+    <Compile Include="ViewModels\Handlers\TransposeViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\MyMessageBoxViewModel.cs" />
     <Compile Include="ViewModels\SelectEditorWindowViewModel.cs" />
@@ -150,8 +157,14 @@
     <Compile Include="Views\Handlers\BitwiseOrAndView.xaml.cs">
       <DependentUpon>BitwiseOrAndView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Handlers\CannyView.xaml.cs">
+      <DependentUpon>CannyView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Handlers\CenterOfMassView.xaml.cs">
       <DependentUpon>CenterOfMassView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Handlers\ConcatView.xaml.cs">
+      <DependentUpon>ConcatView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Handlers\CountNonZeroView.xaml.cs">
       <DependentUpon>CountNonZeroView.xaml</DependentUpon>
@@ -165,6 +178,9 @@
     <Compile Include="Views\Handlers\FillHolesView.xaml.cs">
       <DependentUpon>FillHolesView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Handlers\GaussianBlurView.xaml.cs">
+      <DependentUpon>GaussianBlurView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Handlers\InRangeGrayView.xaml.cs">
       <DependentUpon>InRangeGrayView.xaml</DependentUpon>
     </Compile>
@@ -173,6 +189,9 @@
     </Compile>
     <Compile Include="Views\Handlers\MainHandlerView.xaml.cs">
       <DependentUpon>MainHandlerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Handlers\MergeView.xaml.cs">
+      <DependentUpon>MergeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Handlers\ParticleFilterView.xaml.cs">
       <DependentUpon>ParticleFilterView.xaml</DependentUpon>
@@ -185,6 +204,12 @@
     </Compile>
     <Compile Include="Views\Handlers\RotateImageView.xaml.cs">
       <DependentUpon>RotateImageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Handlers\SplitView.xaml.cs">
+      <DependentUpon>SplitView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Handlers\TransposeView.xaml.cs">
+      <DependentUpon>TransposeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MyMessageBoxView.xaml.cs">
       <DependentUpon>MyMessageBoxView.xaml</DependentUpon>
@@ -230,7 +255,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Handlers\CannyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Handlers\CenterOfMassView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Handlers\ConcatView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -250,6 +283,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Handlers\GaussianBlurView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Handlers\InRangeGrayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -259,6 +296,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Handlers\MainHandlerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Handlers\MergeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -275,6 +316,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Handlers\RotateImageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Handlers\SplitView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Handlers\TransposeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
