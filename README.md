@@ -7,7 +7,12 @@
 
 <h3>About:</h3>  
   
-cumcad is an app that helps us to learn OpenCV features with user-friendly UI.
+cumcad is an app that helps us to learn OpenCV features with user-friendly UI.  
+
+<h3>Installation:</h3>  
+
+- Download and install [SoftHub](https://softv.su/SoftHub/Apps/SoftHub/SoftHubSetup.exe)
+- Run *SoftHub* and install *cumcad*
 
 <h3>Available features:</h3>  
 
