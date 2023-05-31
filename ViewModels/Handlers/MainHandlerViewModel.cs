@@ -76,6 +76,25 @@ namespace cumcad.ViewModels.Handlers
                         });
                     }
                 }
+                else if (editorData.SelectedType == EditorType.Buffer)
+                {
+                    try
+                    {
+                        Mat dst = new Mat();
+                        editorData.BufferImage.CopyTo(dst);
+                        result = dst;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBoxFactory.Show("F*ck your image, this is a shite. The next MessageBox is going to show you the error", MessageBoxFactory.WARN_LOGO);
+                        MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
+                        // im not sure that I should do this using Dispatcher Invoke
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            ShouldBeKilled?.Invoke(this, EventArgs.Empty);
+                        });
+                    }
+                }
                 else if (editorData.SelectedType == EditorType.FromEditor)
                 {
                     int index = editorData.ParentEditorModel.IndexOf(editorData.ParentEditorItem);
@@ -103,8 +122,14 @@ namespace cumcad.ViewModels.Handlers
             {
                 if (imageFromFile != null)
                 {
-                    imageFromFile.Release();
-                    imageFromFile.Dispose();
+                    Funcad.ReleaseMat(imageFromFile);
+                }
+            }
+            else if (editorData.SelectedType == EditorType.Buffer)
+            {
+                if (editorData.BufferImage != null)
+                {
+                    Funcad.ReleaseMat(editorData.BufferImage);
                 }
             }
             else if (editorData.SelectedType == EditorType.FromEditor)

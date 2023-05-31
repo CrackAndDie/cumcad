@@ -73,6 +73,18 @@
                 <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
                              Margin="4"
                              IsChecked="{Binding SelectedTabIndex, Converter={StaticResource ResourceKey=editorTypeConverterKey}, ConverterParameter=1}"
+                             x:Name="BufferRB">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="ContentPaste"
+                                                 Foreground="AliceBlue" />
+                        <TextBlock Margin="4 0 0 0"
+                                   Text="BUFFER"
+                                   Style="{StaticResource CommonText}" />
+                    </StackPanel>
+                </RadioButton>
+                <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
+                             Margin="4"
+                             IsChecked="{Binding SelectedTabIndex, Converter={StaticResource ResourceKey=editorTypeConverterKey}, ConverterParameter=2}"
                              IsEnabled="False">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="CameraOutline"
@@ -84,7 +96,7 @@
                 </RadioButton>
                 <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
                              Margin="4"
-                             IsChecked="{Binding SelectedTabIndex, Converter={StaticResource ResourceKey=editorTypeConverterKey}, ConverterParameter=2}"
+                             IsChecked="{Binding SelectedTabIndex, Converter={StaticResource ResourceKey=editorTypeConverterKey}, ConverterParameter=3}"
                              IsEnabled="False">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Snail"
@@ -96,6 +108,7 @@
                 </RadioButton>
             </StackPanel>
 
+            <!--Image tab-->
             <Grid Grid.Row="2"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch">
@@ -140,6 +153,57 @@
                              materialDesign:HintAssist.Hint="Image path" />
                 </StackPanel>
             </Grid>
+
+            <!--Buffer tab-->
+            <Grid Grid.Row="2"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch">
+                <Grid.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=BufferRB, Path=IsChecked}"
+                                         Value="False">
+                                <Setter Property="Button.Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=BufferRB, Path=IsChecked}"
+                                         Value="True">
+                                <Setter Property="Button.Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            MinHeight="76">
+                    <Button Style="{StaticResource MaterialDesignOutlinedLightButton}"
+                            ToolTip="OpenFile"
+                            Width="56"
+                            Height="56"
+                            Padding="0"
+                            Margin="15, 0"
+                            Command="{Binding PasteFromBufferCommand}">
+                        <materialDesign:PackIcon Kind="ContentPaste"
+                                                 Height="32"
+                                                 Width="32"
+                                                 Foreground="AliceBlue" />
+                    </Button>
+                    <Border Width="120"
+                            Height="120"
+                            Background="Transparent"
+                            BorderBrush="AliceBlue"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            Margin="15, 0">
+                        <Image Source="{Binding BufferImage}" 
+                               RenderOptions.BitmapScalingMode="Fant"
+                               Margin="4"/>
+                    </Border>
+                </StackPanel>
+            </Grid>
+            
             <StackPanel Grid.Row="3" VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Style="{StaticResource MaterialDesignOutlinedLightButton}"
                         ToolTip="OpenFile"

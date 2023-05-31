@@ -13,12 +13,17 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using cumcad.Models.Classes;
+using System.Windows.Media.Imaging;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 
 namespace cumcad.ViewModels
 {
     public enum EditorType
     {
         Image,
+        Buffer,
         CameraStream,
         Shufflecad,
         FromEditor
@@ -32,14 +37,23 @@ namespace cumcad.ViewModels
         public int SelectedTabIndex
         {
             get { return selectedTabIndex; }
-            set { SetProperty(ref selectedTabIndex, value); }
+            set { SetProperty(ref selectedTabIndex, value); result.SelectedType = (EditorType)value; }
         }
 
+        // for IMAGE
         private string imageFilePath;
         public string ImageFilePath
         {
             get { return imageFilePath; }
             set { SetProperty(ref imageFilePath, value); }
+        }
+
+        // for BUFFER
+        private BitmapImage bufferImage;
+        public BitmapImage BufferImage
+        {
+            get { return bufferImage; }
+            set { SetProperty(ref bufferImage, value); }
         }
 
         private SolidColorBrush iconColor;
@@ -51,6 +65,7 @@ namespace cumcad.ViewModels
 
         #region Commands
         public ICommand OpenFileCommand { get; set; }
+        public ICommand PasteFromBufferCommand { get; set; }
         public ICommand OpenColorPickerCommand { get; set; }
         public ICommand CreateEditorCommand { get; set; }
         public ICommand CloseWindowCommand { get; set; }
@@ -61,6 +76,7 @@ namespace cumcad.ViewModels
             CloseWindowCommand = new DelegateCommand(OnCloseWindowCommand);
             CreateEditorCommand = new DelegateCommand(OnCreateWindowCommand);
             OpenFileCommand = new DelegateCommand(OnOpenFileCommand);
+            PasteFromBufferCommand = new DelegateCommand(OnPasteFromBufferCommand);
             OpenColorPickerCommand = new DelegateCommand(OnOpenColorPickerCommand);
 
             // setting default color
@@ -106,6 +122,37 @@ namespace cumcad.ViewModels
             }
         }
 
+        private void OnPasteFromBufferCommand(object parameter)
+        {
+            if (Clipboard.ContainsImage())
+            {
+                System.Windows.Forms.IDataObject clipboardData = System.Windows.Forms.Clipboard.GetDataObject();
+                if (clipboardData != null)
+                {
+                    if (clipboardData.GetDataPresent(System.Windows.Forms.DataFormats.Bitmap))
+                    {
+                        Bitmap bitmap = (Bitmap)clipboardData.GetData(System.Windows.Forms.DataFormats.Bitmap);
+                        using (var memory = new MemoryStream())
+                        {
+                            bitmap.Save(memory, ImageFormat.Png);
+                            memory.Position = 0;
+
+                            var bitmapImage = new BitmapImage();
+                            bitmapImage.BeginInit();
+                            bitmapImage.StreamSource = memory;
+                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmapImage.EndInit();
+                            bitmapImage.Freeze();
+
+                            BufferImage = bitmapImage;
+                            memory.Position = 0;
+                            result.BufferImage = OpenCvSharp.Mat.FromStream(memory, OpenCvSharp.ImreadModes.Unchanged);
+                        }
+                    }
+                }
+            }
+        }
+
         async private void OnOpenColorPickerCommand(object paramenter)
         {
             var brush = await SelectorsFactory.OpenColorPickerWindow();
@@ -117,7 +164,10 @@ namespace cumcad.ViewModels
 
         private void OnCreateWindowCommand(object paramenter)
         {
-            result.IsSelected = ImageFilePath != null;
+            if (result.SelectedType == EditorType.Image)
+                result.IsSelected = ImageFilePath != null;
+            else if (result.SelectedType == EditorType.Buffer)
+                result.IsSelected = result.BufferImage != null;
             result.ImagePath = ImageFilePath;
             (paramenter as Window).Close();
         }

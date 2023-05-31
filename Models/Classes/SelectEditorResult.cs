@@ -1,4 +1,5 @@
 ﻿using cumcad.ViewModels;
+using OpenCvSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace cumcad.Models.Classes
         internal SolidColorBrush IconColor { get; set; }
         // for IMAGE type
         internal string ImagePath { get; set; }
+        // for BUFFER type
+        internal Mat BufferImage { get; set; }
         // for FROMEDITOR type
         internal EditorPageModel ParentEditorModel { get; set; }
         internal EditorItem ParentEditorItem { get; set; }
