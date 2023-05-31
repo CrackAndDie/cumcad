@@ -11,8 +11,7 @@
         WindowStyle="None"
         ResizeMode="NoResize"
         Background="Transparent"
-        Loaded="Window_Loaded"
-        Visibility="Collapsed">
+        Loaded="Window_Loaded">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0"
                       ResizeBorderThickness="0"/>
@@ -21,13 +20,24 @@
         <Border Background="#232323"
                 BorderThickness="0"
                 CornerRadius="15"
-                BorderBrush="#D9D9D9">
-            <MediaElement x:Name="MPlayer"
-                          Source="Resources/cad_video_2.mp4"
-                          MediaEnded="MediaElement_MediaEnded"
-                          LoadedBehavior="Play"
-                          Margin="10"
-                          Stretch="UniformToFill" />
+                BorderBrush="#D9D9D9"
+                x:Name="MainBorder">
+            <Grid>
+                <Border x:Name="MaskBorder"
+                        Background="#232323"
+                        CornerRadius="15" />
+                <Grid>
+                    <Grid.OpacityMask>
+                        <VisualBrush Visual="{Binding ElementName=MaskBorder}" />
+                    </Grid.OpacityMask>
+                    <MediaElement x:Name="MPlayer"
+                                  Source="Resources/cad_video_2.mp4"
+                                  MediaEnded="MediaElement_MediaEnded"
+                                  LoadedBehavior="Play">
+                    </MediaElement>
+                </Grid>
+            </Grid>
+            
         </Border>
         <ProgressBar ToolTip="Запуск приложения"
                      Style="{StaticResource MaterialDesignCircularProgressBar}"
