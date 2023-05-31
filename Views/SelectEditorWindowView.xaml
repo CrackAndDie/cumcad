@@ -12,7 +12,7 @@
         x:Name="ThisWindow"
         Title="SelectEditorWindow"
         Height="340"
-        Width="540"
+        Width="620"
         Background="#FF2a2a2a"
         WindowStartupLocation="CenterOwner">
     <Window.Resources>
@@ -85,6 +85,18 @@
                 <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
                              Margin="4"
                              IsChecked="{Binding SelectedTabIndex, Converter={StaticResource ResourceKey=editorTypeConverterKey}, ConverterParameter=2}"
+                             x:Name="MatRB">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Matrix"
+                                                 Foreground="AliceBlue" />
+                        <TextBlock Margin="4 0 0 0"
+                                   Text="MAT"
+                                   Style="{StaticResource CommonText}" />
+                    </StackPanel>
+                </RadioButton>
+                <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
+                             Margin="4"
+                             IsChecked="{Binding SelectedTabIndex, Converter={StaticResource ResourceKey=editorTypeConverterKey}, ConverterParameter=3}"
                              IsEnabled="False">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="CameraOutline"
@@ -96,7 +108,7 @@
                 </RadioButton>
                 <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
                              Margin="4"
-                             IsChecked="{Binding SelectedTabIndex, Converter={StaticResource ResourceKey=editorTypeConverterKey}, ConverterParameter=3}"
+                             IsChecked="{Binding SelectedTabIndex, Converter={StaticResource ResourceKey=editorTypeConverterKey}, ConverterParameter=4}"
                              IsEnabled="False">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Snail"
@@ -203,7 +215,107 @@
                     </Border>
                 </StackPanel>
             </Grid>
-            
+
+            <!--Mat tab-->
+            <Grid Grid.Row="2"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch">
+                <Grid.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=MatRB, Path=IsChecked}"
+                                         Value="False">
+                                <Setter Property="Button.Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=MatRB, Path=IsChecked}"
+                                         Value="True">
+                                <Setter Property="Button.Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            MinHeight="76">
+                    <StackPanel>
+                        <TextBox Width="130"
+                                 Height="36"
+                                 IsTabStop="False"
+                                 IsReadOnly="False"
+                                 Text="{Binding MatWidth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                 TextWrapping="NoWrap"
+                                 HorizontalAlignment="Left"
+                                 Margin="18, 5, 16, 20"
+                                 TextAlignment="Center"
+                                 FontSize="16"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 materialDesign:HintAssist.Hint="Width"
+                                 materialDesign:HintAssist.Foreground="AliceBlue"
+                                 materialDesign:HintAssist.FloatingOffset="2, -26"
+                                 materialDesign:HintAssist.Background="Transparent"
+                                 Foreground="AliceBlue"
+                                 AcceptsReturn="False" 
+                                 Padding="6"/>
+                        <TextBox Width="130"
+                                 Height="36"
+                                 IsTabStop="False"
+                                 IsReadOnly="False"
+                                 Text="{Binding MatHeight, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                 TextWrapping="NoWrap"
+                                 HorizontalAlignment="Left"
+                                 Margin="18, 5, 16, 10"
+                                 TextAlignment="Center"
+                                 FontSize="16"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 materialDesign:HintAssist.Hint="Height"
+                                 materialDesign:HintAssist.Foreground="AliceBlue"
+                                 materialDesign:HintAssist.FloatingOffset="2, -26"
+                                 materialDesign:HintAssist.Background="Transparent"
+                                 Foreground="AliceBlue"
+                                 AcceptsReturn="False"
+                                 Padding="6" />
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBox Width="130"
+                                 Height="36"
+                                 IsTabStop="False"
+                                 IsReadOnly="False"
+                                 Text="{Binding MatFill, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                 TextWrapping="NoWrap"
+                                 HorizontalAlignment="Left"
+                                 Margin="18, 5, 16, 20"
+                                 TextAlignment="Center"
+                                 FontSize="16"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 materialDesign:HintAssist.Hint="Fill value"
+                                 materialDesign:HintAssist.Foreground="AliceBlue"
+                                 materialDesign:HintAssist.FloatingOffset="2, -26"
+                                 materialDesign:HintAssist.Background="Transparent"
+                                 Foreground="AliceBlue"
+                                 AcceptsReturn="False"
+                                 Padding="6" />
+                        <ComboBox x:Name="OutlinedComboBox"
+                                  Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                                  ItemsSource="{Binding MatTypeItems}"
+                                  Width="130"
+                                  Height="36"
+                                  Padding="6"
+                                  HorizontalContentAlignment="Center"
+                                  FontSize="16"
+                                  Margin="18, 5, 16, 10"
+                                  SelectedItem="{Binding SelectedMatType, Mode=TwoWay}"
+                                  materialDesign:HintAssist.Hint="Mat type"
+                                  materialDesign:HintAssist.Foreground="AliceBlue"
+                                  materialDesign:HintAssist.FloatingOffset="2, -26"
+                                  materialDesign:HintAssist.Background="Transparent"
+                                  Foreground="AliceBlue" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+
             <StackPanel Grid.Row="3" VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Style="{StaticResource MaterialDesignOutlinedLightButton}"
                         ToolTip="OpenFile"

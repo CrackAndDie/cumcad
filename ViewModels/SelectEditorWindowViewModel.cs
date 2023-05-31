@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Reflection;
 
 namespace cumcad.ViewModels
 {
@@ -24,6 +25,7 @@ namespace cumcad.ViewModels
     {
         Image,
         Buffer,
+        Mat,
         CameraStream,
         Shufflecad,
         FromEditor
@@ -56,6 +58,42 @@ namespace cumcad.ViewModels
             set { SetProperty(ref bufferImage, value); }
         }
 
+        // for MAT
+        private int matWidth;
+        public int MatWidth
+        {
+            get { return matWidth; }
+            set { SetProperty(ref matWidth, value); }
+        }
+
+        private int matHeight;
+        public int MatHeight
+        {
+            get { return matHeight; }
+            set { SetProperty(ref matHeight, value); }
+        }
+
+        private int matFill;
+        public int MatFill
+        {
+            get { return matFill; }
+            set { SetProperty(ref matFill, value); }
+        }
+
+        private List<string> matTypeItems;
+        public List<string> MatTypeItems
+        {
+            get { return matTypeItems; }
+            set { SetProperty(ref matTypeItems, value); }
+        }
+
+        private string selectedMatType;
+        public string SelectedMatType
+        {
+            get { return selectedMatType; }
+            set { SetProperty(ref selectedMatType, value); }
+        }
+
         private SolidColorBrush iconColor;
         public SolidColorBrush IconColor
         {
@@ -81,6 +119,8 @@ namespace cumcad.ViewModels
 
             // setting default color
             IconColor = new SolidColorBrush(Colors.AliceBlue);
+
+            MatTypeItems = typeof(OpenCvSharp.MatType).GetFields(BindingFlags.Static | BindingFlags.Public).Select(x => x.Name).ToList();
         }
 
         async internal Task<SelectEditorResult> GetSelectionTask()
@@ -168,6 +208,21 @@ namespace cumcad.ViewModels
                 result.IsSelected = ImageFilePath != null;
             else if (result.SelectedType == EditorType.Buffer)
                 result.IsSelected = result.BufferImage != null;
+            else if (result.SelectedType == EditorType.Mat)
+            {
+                if (MatWidth > 0 && MatHeight > 0 && SelectedMatType != null)
+                {
+                    result.NewMatWidth = MatWidth;
+                    result.NewMatHeight = MatHeight;
+                    result.NewMatFill = MatFill;
+                    result.NewMatType = (OpenCvSharp.MatType)typeof(OpenCvSharp.MatType).GetFields(BindingFlags.Static | BindingFlags.Public).FirstOrDefault(x => x.Name == SelectedMatType).GetValue(null);
+                    result.IsSelected = true;
+                }
+                else
+                {
+                    result.IsSelected = false;
+                }
+            }
             result.ImagePath = ImageFilePath;
             (paramenter as Window).Close();
         }

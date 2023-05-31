@@ -19,6 +19,11 @@ namespace cumcad.Models.Classes
         internal string ImagePath { get; set; }
         // for BUFFER type
         internal Mat BufferImage { get; set; }
+        // for MAT type
+        internal int NewMatWidth { get; set; }
+        internal int NewMatHeight { get; set; }
+        internal int NewMatFill { get; set; }
+        internal MatType NewMatType { get; set; }
         // for FROMEDITOR type
         internal EditorPageModel ParentEditorModel { get; set; }
         internal EditorItem ParentEditorItem { get; set; }

@@ -36,6 +36,8 @@ namespace cumcad.ViewModels.Handlers
 
         private Mat imageFromFile;
 
+        private Mat imageFromMat;
+
         public MainHandlerViewModel(SelectEditorResult editorData)
         {
             Name = editorData.SelectedType.ToString();
@@ -44,6 +46,10 @@ namespace cumcad.ViewModels.Handlers
             if (editorData.SelectedType == EditorType.Image)
             {
                 imageFromFile = new Mat(editorData.ImagePath, ImreadModes.Color);
+            }
+            else if (editorData.SelectedType == EditorType.Mat)
+            {
+                imageFromMat = new Mat(editorData.NewMatHeight, editorData.NewMatWidth, editorData.NewMatType, editorData.NewMatFill);
             }
             else if (editorData.SelectedType == EditorType.FromEditor)
             {
@@ -95,6 +101,25 @@ namespace cumcad.ViewModels.Handlers
                         });
                     }
                 }
+                else if (editorData.SelectedType == EditorType.Mat)
+                {
+                    try
+                    {
+                        Mat dst = new Mat();
+                        imageFromMat.CopyTo(dst);
+                        result = dst;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBoxFactory.Show("F*ck your image, this is a shite. The next MessageBox is going to show you the error", MessageBoxFactory.WARN_LOGO);
+                        MessageBoxFactory.Show(ex.Message, MessageBoxFactory.WARN_LOGO);
+                        // im not sure that I should do this using Dispatcher Invoke
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            ShouldBeKilled?.Invoke(this, EventArgs.Empty);
+                        });
+                    }
+                }
                 else if (editorData.SelectedType == EditorType.FromEditor)
                 {
                     int index = editorData.ParentEditorModel.IndexOf(editorData.ParentEditorItem);
@@ -130,6 +155,13 @@ namespace cumcad.ViewModels.Handlers
                 if (editorData.BufferImage != null)
                 {
                     Funcad.ReleaseMat(editorData.BufferImage);
+                }
+            }
+            else if (editorData.SelectedType == EditorType.Mat)
+            {
+                if (imageFromMat != null)
+                {
+                    Funcad.ReleaseMat(imageFromMat);
                 }
             }
             else if (editorData.SelectedType == EditorType.FromEditor)
