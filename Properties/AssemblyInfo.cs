@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyTitle("cumcad")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Abdrakov corp.")]
 [assembly: AssemblyProduct("cumcad")]
 [assembly: AssemblyCopyright("Copyright ©  2023")]
 [assembly: AssemblyTrademark("")]

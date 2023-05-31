@@ -43,6 +43,20 @@ namespace cumcad.Models.Helpers
             return bitmap;
         }
 
+        public static byte[] BytesFromMat(Mat src)
+        {
+            if (src == null || src.Cols == 0 || src.Rows == 0)
+            {
+                return new byte[1];
+            }
+            using (var ms = ToMemoryStream(src))
+            {
+                var bytes = new byte[ms.Length];
+                ms.Read(bytes, 0, bytes.Length);
+                return bytes;
+            }
+        }
+
         public static void ReleaseMat(Mat mat)
         {
             mat.Release();

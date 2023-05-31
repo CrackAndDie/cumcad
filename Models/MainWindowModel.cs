@@ -259,7 +259,16 @@ namespace cumcad.Models
                 {
                     IsSelected = true,
                     IconColor = e.IconColor,
+
                     ImagePath = e.ImagePath,
+
+                    NewMatWidth = e.NewMatWidth,
+                    NewMatHeight = e.NewMatHeight,
+                    NewMatFill = e.NewMatFill,
+                    NewMatType = e.NewMatType,
+
+                    BufferImage = OpenCvSharp.Mat.FromStream(new MemoryStream(e.BufferImage), OpenCvSharp.ImreadModes.Unchanged),
+
                     SelectedType = e.SelectedType,
                     EditorIndex = e.EditorIndex,
                     ParentEditorModel = parentEditorModel,

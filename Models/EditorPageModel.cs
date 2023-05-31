@@ -329,7 +329,16 @@ namespace cumcad.Models
                 HandlerItems = GetHandlerSaveableObjects(),
                 EditorIndex = EditorIndex,
                 IconColor = EditorResult.IconColor,
+
                 ImagePath = EditorResult.ImagePath,
+
+                NewMatWidth = EditorResult.NewMatWidth,
+                NewMatHeight = EditorResult.NewMatHeight,
+                NewMatFill = EditorResult.NewMatFill,
+                NewMatType = EditorResult.NewMatType,
+
+                BufferImage = Funcad.BytesFromMat(EditorResult.BufferImage),
+
                 SelectedType = EditorResult.SelectedType,
                 ParentEditorModelIndex = parentInd,
                 ParentEditorItemIndex = parentInd >= 0 ? parentInd : -1,
