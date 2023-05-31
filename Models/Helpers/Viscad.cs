@@ -119,5 +119,32 @@ namespace cumcad.Models.Helpers
             Cv2.FindContours(src, out Point[][] countours, out HierarchyIndex[] _, RetrievalModes.CComp, ContourApproximationModes.ApproxSimple);
             return countours.ToList().OrderBy(x => Cv2.ContourArea(x)).ToArray();
         }
+
+        internal static Mat AutoBrightness(Mat cut, Mat needed, int value)
+        {
+            Cv2.Split(cut, out Mat[] mats);
+            double val = Cv2.Mean(mats[2]).ToDouble();
+            double mulK = value / val;
+
+            foreach (var m in mats)
+            {
+                Funcad.ReleaseMat(m);
+            }
+
+            Mat brightV = new Mat();
+            Cv2.Split(needed, out Mat[] neededMats);
+            Cv2.Multiply(neededMats[2], new Scalar(mulK), brightV);
+
+            Mat outMat = new Mat();
+            Cv2.Merge(new Mat[] { neededMats[0], neededMats[1], brightV }, outMat);
+
+            Funcad.ReleaseMat(brightV);
+            foreach (var m in neededMats)
+            {
+                Funcad.ReleaseMat(m);
+            }
+
+            return outMat;
+        }
     }
 }

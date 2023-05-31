@@ -35,6 +35,7 @@ namespace cumcad.Models.Factories
             new HandlerType() { Name = "Erode", RealName = "Erode", Icon = PackIconKind.FormatHorizontalAlignCenter, },
             new HandlerType() { Name = "Flip", RealName = "Flip", Icon = PackIconKind.Mirror, },
             new HandlerType() { Name = "Blob", RealName = "Blob", Icon = PackIconKind.LiquidSpot, },
+            new HandlerType() { Name = "AutoBrightness (HSV)", RealName = "AutoBrightness", Icon = PackIconKind.BrightnessAuto, },
         };
 
         static HandlerFactory()
